@@ -1,0 +1,4 @@
+Manifest-Version: 1.0
+Created-By: Florian Tarazona (florian.tarazona@telecom-paris.fr)
+Main-Class: Main
+Class-Path: src/
