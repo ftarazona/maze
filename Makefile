@@ -1,7 +1,7 @@
 JC = javac
 LD = jar
 
-PACKAGES = 
+PACKAGES = graph
 
 DIRS = $(foreach PACKAGE, $(PACKAGES), src/$(PACKAGE)) $(foreach SRC, src, $(SRC))
 SRC = $(foreach DIR, $(DIRS), $(wildcard $(DIR)/*.java))
