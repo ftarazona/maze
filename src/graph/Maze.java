@@ -75,7 +75,7 @@ public class Maze
 			ret.add((Vertex)boxes[y][x + 1]);
 		}
 		if(y + 1 < height)	{
-			ret.add((Vertex)boxes[y][x + 1]);
+			ret.add((Vertex)boxes[y + 1][x]);
 		}
 
 		return ret;
