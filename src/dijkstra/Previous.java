@@ -2,6 +2,7 @@ package dijkstra;
 
 import java.util.ArrayList;
 import graph.Vertex;
+import graph.Graph;
 
 public interface Previous	{
 
@@ -16,4 +17,9 @@ public interface Previous	{
 	/* Gets the full path from root. */
 
 	public ArrayList<Vertex> getFullPath(Vertex cur);
+
+	/* Printing methods. */
+
+	public void printPath(Vertex vertex);
+	public void printPaths(Graph graph);
 }
