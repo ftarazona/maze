@@ -58,7 +58,7 @@ public class Box
 
 
 	public int getID()	{
-		return x * maxx + y;
+		return y * maxx + x;
 	}
 
 	public int getX()	{
