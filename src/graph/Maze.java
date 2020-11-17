@@ -46,8 +46,8 @@ public class Maze
 	public ArrayList<Vertex> getVertices()	{
 		ArrayList<Vertex> ret = new ArrayList<Vertex>(width * height);
 
-		for(int i = 0; i < width; i++)	{
-			for(int j = 0; j < height; j++)	{
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
 				ret.add((Vertex)boxes[i][j]);	
 			}
 		}
