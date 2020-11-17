@@ -107,6 +107,6 @@ public class Box
 
 
 	public String toString()	{
-		return Integer.toString(x) + ", " + Integer.toString(y) + " : " + Integer.toString(getID()) + " which is " + type;
+		return "(" + Integer.toString(x) + "," + Integer.toString(y) + ")" + ":" + Integer.toString(getID()) + " (" + type + ")";
 	}
 }
