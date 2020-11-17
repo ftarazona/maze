@@ -22,6 +22,7 @@ public class Box
 	public static int nullID = -1;
 
 	private BoxType type;
+	private boolean marked;
 
 	/* A box is unique by its coordinates. Therefore we need three
 	 *  numbers to give an ID :
@@ -103,6 +104,18 @@ public class Box
 
 	public void setType(BoxType type)	{
 		this.type = type;
+	}
+
+	public void mark()	{
+		marked = true;
+	}
+
+	public void unmark()	{
+		marked = false;
+	}
+
+	public boolean marked()	{
+		return marked;
 	}
 
 
