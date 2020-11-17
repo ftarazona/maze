@@ -31,9 +31,13 @@ public class Dijkstra	{
 
 			/* Updates the successors of piv. */
 
-			for(Vertex v: vertices)	{
+			for(Vertex v: graph.getSuccessors(piv))	{
 				if(a.contains(v) == false)	{
 					int newDist = dPiv + graph.distance(piv, v);
+					if(graph.distance(piv, v) == Pi.distant)	{
+						newDist = Pi.distant;
+					}
+
 					if(newDist < pi.get(v))	{
 						prev.set(v, piv);
 						pi.set(v, newDist);
