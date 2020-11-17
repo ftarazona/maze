@@ -43,8 +43,8 @@ public class Box
 	 *  the BoxType is EMPTY. */
 
 	public Box()	{
-		this.x = 0;
-		this.y = -1;
+		this.x = -1;
+		this.y = 0;
 		this.maxx = 0;
 		this.type = BoxType.EMPTY;
 	}
