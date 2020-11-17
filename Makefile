@@ -5,7 +5,8 @@ PACKAGES = graph
 
 DIRS = $(foreach PACKAGE, $(PACKAGES), src/$(PACKAGE)) $(foreach SRC, src, $(SRC))
 SRC = $(foreach DIR, $(DIRS), $(wildcard $(DIR)/*.java))
-CLASS = $(SRC:%.java=%.class)
+CLASS = $(foreach DIR, $(DIRS), $(wildcard $(DIR)/*.class))
+
 MF = META-INF/MANIFEST.MF
 
 EXE = app
