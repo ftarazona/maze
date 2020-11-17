@@ -10,6 +10,11 @@ package graph;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Maze
 	implements Graph	{
@@ -17,6 +22,10 @@ public class Maze
 	/* distant indicates two vertices are not connected. */
 
 	public static int distant = Integer.MAX_VALUE;
+
+	/* Information for IO operations. */
+
+	private String mapsPrefix = "maps/";
 
 	/* To store the boxes, we use a two-dimensional array. */
 
@@ -35,8 +44,16 @@ public class Maze
 		this.height = boxes.length;
 	}
 
+	/*
+	 * Loader constructor reads a maze map from a file input.
+	 */
+
 	public Maze(String filename)	{
-		//TO BE IMPLEMENTED
+		try	{
+			loadFromFile(filename);
+		} catch(MazeReadingException e)	{
+			e.printMessage();
+		}
 	}
 
 
@@ -108,5 +125,108 @@ public class Maze
 
 	public int size()	{
 		return width * height;
+	}
+
+	/* Loading a maze from file consists in parsing a map file and
+	 *  create boxes of type depending on the letter read.
+	 * The method reads each line, and for each line reads each
+	 *  character. If some line is longer or shorter, it raises an
+	 *  exception of bad map format. */
+
+	private BoxType charToType(char c)	{
+		switch(c)	{
+			case 'E' : return BoxType.EMPTY;
+			case 'W' : return BoxType.WALL;
+			case 'S' : return BoxType.START;
+			case 'T' : return BoxType.END;
+			default: return BoxType.EMPTY;
+		}
+	}
+
+	private void loadFromFile(String filename)
+		throws MazeReadingException	{
+	try	{
+	
+		FileReader file;
+		BufferedReader input;
+
+		file = new FileReader(mapsPrefix + filename);
+		input = new BufferedReader(file);
+
+		ArrayList<ArrayList<Box> > tempBoxes = new ArrayList<ArrayList<Box> >();
+
+		/* Reading the first line provides information about
+		 *  the map format. */
+
+		String line = input.readLine();
+		int y = 0;
+		final int maxx = line.length();
+
+		/* Reads the whole file. */
+
+		while(line != null)	{
+			if(line.length() != maxx)	{
+				throw new MazeReadingException(filename, y + 1, "Bad format : read " + Integer.toString(line.length()) + " instead of " + Integer.toString(maxx));
+			}
+
+			tempBoxes.add(new ArrayList<Box>());
+
+			for(int x = 0; x < line.length(); x++)	{
+				tempBoxes.get(y).add(new Box(x, y, maxx, charToType(line.charAt(x))));
+			}
+
+			line = input.readLine();
+			y++;
+		}
+
+		/* Converts ArrayList into Arrays. */
+
+		width = maxx;
+		height = y;
+		boxes = new Box[height][width];
+
+		for(int i = 0; i < y; i++)	{
+			for(int j = 0; j < maxx; j++)	{
+				boxes[i][j] = tempBoxes.get(i).get(j);
+			}
+		}
+
+		input.close();
+
+	} catch(FileNotFoundException e)	{
+		e.printStackTrace();
+	} catch(IOException e)	{
+		e.printStackTrace();
+	} catch(MazeReadingException e)	{
+		e.printMessage();
+	}
+	}
+
+	private char typeToChar(BoxType type)	{
+		switch(type)	{
+			case EMPTY: return 'E';
+			case WALL: return 'W';
+			case START: return 'S';
+			case END: return 'T';
+			default: return 'E';
+		}
+	}
+
+	public void writeToFile(String filename)	{
+	try	{
+		FileWriter file = new FileWriter(mapsPrefix + filename);
+
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				file.write(typeToChar(boxes[i][j].getType()));
+			}
+			file.write('\n');
+		}
+
+		file.flush();
+		file.close();
+	} catch(Exception e)	{
+		e.printStackTrace();
+	}
 	}
 }
