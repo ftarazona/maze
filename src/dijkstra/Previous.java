@@ -1,8 +1,9 @@
 package dijkstra;
 
 import java.util.ArrayList;
+import graph.Vertex;
 
-public interface Vertex	{
+public interface Previous	{
 
 	/* Sets the previous vertex for a given one. */
 
