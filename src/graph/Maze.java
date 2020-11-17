@@ -66,16 +66,16 @@ public class Maze
 		int y = b.getY();
 
 		if(x > 0)	{
-			ret.add((Vertex)boxes[x - 1][y]);
+			ret.add((Vertex)boxes[y][x - 1]);
 		}
 		if(y > 0)	{
-			ret.add((Vertex)boxes[x][y - 1]);
+			ret.add((Vertex)boxes[y - 1][x]);
 		}
 		if(x + 1 < width)	{
-			ret.add((Vertex)boxes[x + 1][y]);
+			ret.add((Vertex)boxes[y][x + 1]);
 		}
 		if(y + 1 < height)	{
-			ret.add((Vertex)boxes[x][y + 1]);
+			ret.add((Vertex)boxes[y][x + 1]);
 		}
 
 		return ret;
