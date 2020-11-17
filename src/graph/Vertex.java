@@ -1,3 +1,5 @@
+package graph;
+
 /*
  * A graph is a set of vertices, linked together by arcs.
  *

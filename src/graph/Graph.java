@@ -1,3 +1,5 @@
+package graph;
+
 /*
  * The interface below declares which methods a graph might propose.
  * A user shall be allowed to get a list of all the vertices of the
