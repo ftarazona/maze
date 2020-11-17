@@ -21,15 +21,6 @@ public class Box
 
 	static int defaultID = -1;
 
-	/* The BoxType type describes the nature of the box. */
-
-	enum BoxType	{
-		EMPTY,
-		WALL,
-		START,
-		END
-	}
-
 	private BoxType type;
 
 	/* A box is unique by its coordinates. Therefore we need three
@@ -108,6 +99,10 @@ public class Box
 	public void setXY(Coordinates c)	{
 		x = c.X;
 		y = c.Y;
+	}
+
+	public void setMaxx(int maxx)	{
+		this.maxx = maxx;
 	}
 
 	
