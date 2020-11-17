@@ -113,4 +113,9 @@ public class Box
 	public void setType(BoxType type)	{
 		this.type = type;
 	}
+
+
+	public String toString()	{
+		return Integer.toString(x) + ", " + Integer.toString(y) + " : " + Integer.toString(getID()) + " which is " + type;
+	}
 }
