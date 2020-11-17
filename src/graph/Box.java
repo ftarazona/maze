@@ -19,7 +19,7 @@ public class Box
 	 *  instance.
 	 */
 
-	static int defaultID = -1;
+	public static int nullID = -1;
 
 	private BoxType type;
 
