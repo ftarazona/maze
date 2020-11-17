@@ -16,7 +16,7 @@ public class Maze
 
 	/* distant indicates two vertices are not connected. */
 
-	static int distant = Integer.MAX_VALUE;
+	public static int distant = Integer.MAX_VALUE;
 
 	/* To store the boxes, we use a two-dimensional array. */
 
