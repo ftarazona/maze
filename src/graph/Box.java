@@ -33,15 +33,6 @@ public class Box
 	 *  which index and IDs can be identified, with an optimal
 	 *  cost in memory. */
 
-	private class Coordinates	{
-		public int X;
-		public int Y;
-		public Coordinates(int X, int Y)	{
-			this.X = X;
-			this.Y = Y;
-		}
-	};
-
 	private int x;
 	private int y;
 	private int maxx;

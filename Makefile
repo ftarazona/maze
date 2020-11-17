@@ -5,7 +5,7 @@ PACKAGES = graph
 
 DIRS = $(foreach PACKAGE, $(PACKAGES), src/$(PACKAGE)) $(foreach SRC, src, $(SRC))
 SRC = $(foreach DIR, $(DIRS), $(wildcard $(DIR)/*.java))
-CLASS = $(foreach DIR, $(DIRS), $(wildcard $(DIR)/*.class))
+CLASS = $(SRC:%.java=%.class)
 
 MF = META-INF/MANIFEST.MF
 
@@ -18,7 +18,7 @@ $(CLASS):
 	@$(JC) $(SRC)
 
 clean:
-	$(RM) $(CLASS)
+	find . -type f | grep ".class" | xargs $(RM)
 
 #all: $(CLASS) $(EXE) clean
 
