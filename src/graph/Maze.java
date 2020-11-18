@@ -127,6 +127,47 @@ public class Maze
 		return width * height;
 	}
 
+
+	/* Selection and marking operation */
+
+	public ArrayList<Box> select(BoxType selectType)	{
+		ArrayList<Box> ret = new ArrayList<Box>();
+
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				if(boxes[i][j].getType() == selectType)	{
+					ret.add(boxes[i][j]);
+				}
+			}
+		}
+
+		return ret;
+	}
+
+	public void vmark(ArrayList<Vertex> toMark)	{
+		ArrayList<Box> wrapped = new ArrayList<Box>();
+		for(Vertex v: toMark)	{
+			wrapped.add((Box)v);
+		}
+		mark(wrapped);
+	}
+
+	public void mark(ArrayList<Box> toMark)	{
+		for(Box b: toMark)	{
+			boxes[b.getY()][b.getX()].mark();
+		}
+	}
+
+	public void unmark()	{
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				boxes[i][j].unmark();
+			}
+		}
+	}
+
+	/* IO Operations */
+
 	/* Loading a maze from file consists in parsing a map file and
 	 *  create boxes of type depending on the letter read.
 	 * The method reads each line, and for each line reads each
@@ -202,8 +243,11 @@ public class Maze
 	}
 	}
 
-	private char typeToChar(BoxType type)	{
-		switch(type)	{
+	private char boxToChar(Box box)	{
+		if(box.marked())	{
+			return 'O';
+		}
+		switch(box.getType())	{
 			case EMPTY: return 'E';
 			case WALL: return 'W';
 			case START: return 'S';
@@ -212,15 +256,25 @@ public class Maze
 		}
 	}
 
+	public String toString()	{
+		String ret = new String();
+
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				ret += boxToChar(boxes[i][j]);
+			}
+			ret += '\n';
+		}
+
+		return ret;
+	}
+
 	public void writeToFile(String filename)	{
 	try	{
 		FileWriter file = new FileWriter(mapsPrefix + filename);
 
-		for(int i = 0; i < height; i++)	{
-			for(int j = 0; j < width; j++)	{
-				file.write(typeToChar(boxes[i][j].getType()));
-			}
-			file.write('\n');
+		for(char c: toString().toCharArray())	{
+			file.write(c);
 		}
 
 		file.flush();
