@@ -25,9 +25,10 @@ public class PiFunction
 
 
 	public int get(Vertex vertex)	{
-		try	{
+		if(table.containsKey(vertex))	{
 			return table.get(vertex).intValue();
-		} catch (NullPointerException e)	{
+		}
+		else	{
 			return Pi.distant;
 		}
 	}
