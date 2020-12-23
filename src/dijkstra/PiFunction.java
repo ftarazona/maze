@@ -7,30 +7,32 @@ package dijkstra;
  *  values.
  */
 
-import java.util.Arrays;
 import graph.Vertex;
 import graph.Maze;
+import java.util.HashMap;
 
-public class PiFunction
+public class PiFunction	
 	implements Pi	{
 
-	private int[] dists;
-
+	private HashMap<Vertex, Integer> table;
 
 	/* Constructor
 	 * It requires the size. */
 
-	public PiFunction(int size)	{
-		dists = new int[size];
-		Arrays.fill(dists, Maze.distant);
+	public PiFunction()	{
+		table = new HashMap<Vertex, Integer>();
 	}
 
 
 	public int get(Vertex vertex)	{
-		return dists[vertex.getID()];
+		try	{
+			return table.get(vertex).intValue();
+		} catch (NullPointerException e)	{
+			return Pi.distant;
+		}
 	}
 
 	public void set(Vertex vertex, int dist)	{
-		dists[vertex.getID()] = dist;
+		table.put(vertex, new Integer(dist));
 	}
 }
