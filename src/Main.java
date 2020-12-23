@@ -10,7 +10,7 @@ public class Main	{
 		Box end = maze.select(BoxType.END).get(0);
 
 		PiFunction pi = new PiFunction();
-		PreviousFunction prev = new PreviousFunction(maze.size());
+		PreviousFunction prev = new PreviousFunction();
 
 		Dijkstra.dijkstra(maze, start, new Visited(maze.size()), pi, prev);
 
