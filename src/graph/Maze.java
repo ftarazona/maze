@@ -194,11 +194,20 @@ public class Maze
 		input.close();
 
 	} catch(FileNotFoundException e)	{
+		System.out.println("ERROR: File not found: " + mapsPrefix + filename);
 		e.printStackTrace();
 	} catch(IOException e)	{
+		System.out.println("ERROR: Could not read input from file " + mapsPrefix + filename);
 		e.printStackTrace();
 	} catch(MazeReadingException e)	{
 		e.printMessage();
+	} finally	{
+		try	{
+			input.close();
+		} catch(Exception e)	{
+			System.out.println("ERROR: Could not close file " + mapsPrefix + filename);
+			e.printStackTrace();
+		}
 	}
 	}
 
@@ -224,9 +233,19 @@ public class Maze
 		}
 
 		file.flush();
-		file.close();
-	} catch(Exception e)	{
+	} catch(FileNotFoundException e)	{
+		System.out.println("ERROR: File not found: " + mapsPrefix + filename);
 		e.printStackTrace();
+	} catch(IOException e)	{
+		System.out.println("ERROR: Could not write input from file " + mapsPrefix + filename);
+		e.printStackTrace();
+	} finally	{
+		try	{
+			file.close();
+		} catch(Exception e)	{
+			System.out.println("ERROR: Could not close file " + mapsPrefix + filename);
+			e.printStackTrace();
+		}
 	}
 	}
 }
