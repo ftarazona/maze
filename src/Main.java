@@ -12,7 +12,7 @@ public class Main	{
 		PiFunction pi = new PiFunction();
 		PreviousFunction prev = new PreviousFunction();
 
-		Dijkstra.dijkstra(maze, start, new Visited(maze.size()), pi, prev);
+		Dijkstra.dijkstra(maze, start, new Visited(), pi, prev);
 
 		maze.vmark(prev.getFullPath(end));
 		System.out.println(maze);
