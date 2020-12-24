@@ -13,10 +13,4 @@ public interface Vertex	{
 	/* Returns the ID of the vertex. */
 
 	public int getID();
-
-	/* Sets the ID of the vertex to the given value id. */
-
-	public void setID(int id);
-
-	public String toString();
 }

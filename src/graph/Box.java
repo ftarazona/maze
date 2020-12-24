@@ -19,7 +19,13 @@ public class Box
 	 *  instance.
 	 */
 
-	public static int nullID = -1;
+	private static int nextID = 0;
+
+	public static final int ON_PATH 	= 1;
+	public static final int TO_WRITE 	= 2;
+	public static final int TO_DRAW 	= 4;
+	public static final int START		= 8;
+	public static final int END		= 16;
 
 	private BoxType type;
 
@@ -33,32 +39,33 @@ public class Box
 	 *  which index and IDs can be identified, with an optimal
 	 *  cost in memory. */
 
-	private int x;
-	private int y;
-	private int maxx;
-
+	private final int x;
+	private final int y;
+	private final int id;
+	private int flags;
 
 	/* Default constructor
 	 *  the ID by default is -1, which is maxx = 0, x = 0, y = -1.
 	 *  the BoxType is EMPTY. */
 
-	public Box()	{
-		this.x = -1;
-		this.y = 0;
-		this.maxx = 0;
-		this.type = BoxType.EMPTY;
-	}
-
-	public Box(int x, int y, int maxx, BoxType type)	{
+	public Box(int x, int y)	{
 		this.x = x;
 		this.y = y;
-		this.maxx = maxx;
+		this.id = nextID;
+		nextID++;
+		this.type = BoxType.EMPTY;;
+	}
+
+	public Box(int x, int y, BoxType type)	{
+		this.x = x;
+		this.y = y;
+		this.id = nextID;
+		nextID++;
 		this.type = type;
 	}
 
-
 	public int getID()	{
-		return y * maxx + x;
+		return id;
 	}
 
 	public int getX()	{
@@ -68,34 +75,6 @@ public class Box
 	public int getY()	{
 		return y;
 	}
-
-	public Coordinates getXY()	{
-		Coordinates c = new Coordinates(x, y);
-		return c;
-	}
-
-	public void setID(int id)	{
-		x = id / maxx;
-		y = id % maxx;
-	}
-
-	public void setX(int x)	{
-		this.x = x;
-	}
-
-	public void setY(int y)	{
-		this.y = y;
-	}
-
-	public void setXY(Coordinates c)	{
-		x = c.X;
-		y = c.Y;
-	}
-
-	public void setMaxx(int maxx)	{
-		this.maxx = maxx;
-	}
-
 	
 	public BoxType getType()	{
 		return type;
@@ -105,8 +84,23 @@ public class Box
 		this.type = type;
 	}
 
+	public int getFlags()	{
+		return flags;
+	}
 
-	public String toString()	{
-		return "(" + Integer.toString(x) + "," + Integer.toString(y) + ")" + ":" + Integer.toString(getID()) + " (" + type + ")";
+	public void setFlags(int flags)	{
+		this.flags = flags;
+	}
+
+	public void addFlag(int flag)	{
+		this.flags |= flag;
+	}
+
+	public void remFlag(int flag)	{
+		this.flags &= ~flag;
+	}
+
+	public void clearFlags()	{
+		this.flags = 0;
 	}
 }

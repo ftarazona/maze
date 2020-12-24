@@ -10,45 +10,38 @@ import java.util.ArrayList;
 import graph.Vertex;
 import graph.Graph;
 import graph.Box;
+import java.util.HashMap;
 
 public class PreviousFunction
 	implements Previous	{
 
-	private Vertex[] prevs;
+	private HashMap<Vertex, Vertex> table;
 
-
-	public PreviousFunction(int size)	{
-		prevs = new Vertex[size];
-		Box nullbox = new Box();
-		Arrays.fill(prevs, (Vertex)nullbox);
+	public PreviousFunction()	{
+		table = new HashMap<Vertex, Vertex>();
 	}
 
 	public Vertex get(Vertex vertex)	{
-		return prevs[vertex.getID()];
+		if(table.containsKey(vertex))	{
+			return table.get(vertex);
+		}
+		else	{
+			return new Box();
+		}
 	}
 
 	public ArrayList<Vertex> getFullPath(Vertex vertex)	{
-		if(vertex.getID() == Box.nullID)	{
+		if(table.containsKey(vertex) == false)	{
 			return new ArrayList<Vertex>();
 		}
 		else	{
-			ArrayList<Vertex> path = getFullPath(get(vertex));
+			ArrayList<Vertex> path = getFullPath(table.get(vertex));
 			path.add(vertex);
 			return path;
 		}
 	}
 
-	public void printPath(Vertex vertex)	{
-		System.out.println("From root to " + vertex + " : " + getFullPath(vertex));
-	}
-
-	public void printPaths(Graph graph)	{
-		for(Vertex v: graph.getVertices())	{
-			printPath(v);
-		}
-	}
-
 	public void set(Vertex cur, Vertex prev)	{
-		prevs[cur.getID()] = prev;
+		table.put(cur, prev);
 	}
 }
