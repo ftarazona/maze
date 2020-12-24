@@ -19,6 +19,10 @@ $(CLASS):
 
 clean:
 	find . -type f | grep ".class" | xargs $(RM)
+	$(RM) -r doc/
+
+doc:
+	javadoc -d doc $(SRC) 
 
 #all: $(CLASS) $(EXE) clean
 

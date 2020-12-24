@@ -1,13 +1,5 @@
 package graph;
 
-/*
- * The class below implements the Graph interface.
- *
- * It is implemented by a matrix containing the boxes.
- * There is no need to store the distances, we can calculate them with
- *  the types of the boxes.
- */
-
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.io.FileReader;

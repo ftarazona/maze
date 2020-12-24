@@ -1,36 +1,43 @@
 package dijkstra;
   
-/*
- * The class below implements the interface ASet.
- *
- * As the set would eventually contain every vertex, the benefits of
- *  an implementation by the list of the vertices are useless in the
- *  end.
- * Therefore, it will use an array of boolean, indexed by the IDs of
- *  the vertices which are assumed to be successive.
- */
-
 import graph.Vertex;
 import java.util.HashSet;
 
+/** The class Visited implements a unordered set of vertices which can
+ *  only increase in size.
+ *  It uses {@link java.util.HashSet} to be more efficient.
+ */
 public class Visited
         implements ASet {
 
+	/** The HashSet containing the vertices in the set. */
         private HashSet<Vertex> table;
 
-        /* Constructor
-         * It requires to indicate the size. */
-
+	/** Constructs an empty set of vertices with the default
+	 *  capacity and load  of a HashSet. Please refer to
+	 *  {@link java.util.HashSet} for further information.
+	 */
         public Visited()        {
                 table = new HashSet<Vertex>();
         }
 
-
-        public void add(Vertex vertex)  {
-                table.add(vertex);
+	/** Adds a vertex to the set. Once the vertex added, it shall
+	 *  not be removed from the graph until the algorithm is
+	 *  finished. An early removal would result in an undefined
+	 *  behavior.
+	 *  @param v is the vertex to be added.
+	 */
+        public void add(Vertex v)  {
+                table.add(v);
         }
 
-        public boolean contains(Vertex vertex)  {
-                return table.contains(vertex);
+	/** Checks whether a vertex is in the set. In case of an early
+	 *  removal of the vertex in the graph by the algorithm, the
+	 *  has an undefined behavior.
+	 *  @param v is the vertex to be check.
+	 *  @return true if the set contains v, false otherwise.
+	 */
+        public boolean contains(Vertex v)  {
+                return table.contains(v);
         }
 }
