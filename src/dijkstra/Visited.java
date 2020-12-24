@@ -1,5 +1,5 @@
 package dijkstra;
-
+  
 /*
  * The class below implements the interface ASet.
  *
@@ -10,29 +10,27 @@ package dijkstra;
  *  the vertices which are assumed to be successive.
  */
 
-import java.util.Arrays;
 import graph.Vertex;
+import java.util.HashSet;
 
 public class Visited
-	implements ASet	{
+        implements ASet {
 
-	private boolean[] visited;
+        private HashSet<Vertex> table;
 
+        /* Constructor
+         * It requires to indicate the size. */
 
-	/* Constructor
-	 * It requires to indicate the size. */
-
-	public Visited(int size)	{
-		visited = new boolean[size];
-		Arrays.fill(visited, false);
-	}
+        public Visited()        {
+                table = new HashSet<Vertex>();
+        }
 
 
-	public void add(Vertex vertex)	{
-		visited[vertex.getID()] = true;
-	}
+        public void add(Vertex vertex)  {
+                table.add(vertex);
+        }
 
-	public boolean contains(Vertex vertex)	{
-		return visited[vertex.getID()];
-	}
+        public boolean contains(Vertex vertex)  {
+                return table.contains(vertex);
+        }
 }
