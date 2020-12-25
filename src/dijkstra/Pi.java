@@ -9,8 +9,6 @@ import graph.Vertex;
 
 public interface Pi	{
 
-	public static int distant = Integer.MAX_VALUE;
-
 	/** Sets the value of Pi for a given vertex. 
 	 *  @param v is the vertex for which the @param value is set.
 	 */

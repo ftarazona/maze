@@ -1,7 +1,7 @@
 package dijkstra;
 
 import graph.Vertex;
-import graph.Maze;
+import graph.Graph;
 import java.util.HashMap;
 
 /** This class implements a function from the set of the graph's
@@ -33,7 +33,7 @@ public class PiFunction
 			return table.get(v).intValue();
 		}
 		else	{
-			return Pi.distant;
+			return Graph.distant;
 		}
 	}
 

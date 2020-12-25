@@ -8,6 +8,10 @@ import java.util.ArrayList;
 
 public interface Graph	{
 
+	/** distant is the value considered to be greater than any other
+	 *  distance. */
+	public final static int distant = Integer.MAX_VALUE;
+
 	/** @return a list of all the vertices. */
 	public ArrayList<Vertex> getVertices();
 

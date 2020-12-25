@@ -11,10 +11,6 @@ import java.io.IOException;
 public class Maze
 	implements Graph	{
 
-	/* distant indicates two vertices are not connected. */
-
-	public static int distant = Integer.MAX_VALUE;
-
 	/* Information for IO operations. */
 
 	private String mapsPrefix = "maps/";

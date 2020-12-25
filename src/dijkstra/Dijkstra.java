@@ -39,8 +39,8 @@ public class Dijkstra	{
 			for(Vertex v: graph.getSuccessors(piv))	{
 				if(a.contains(v) == false)	{
 					int newDist = dPiv + graph.distance(piv, v);
-					if(graph.distance(piv, v) == Pi.distant)	{
-						newDist = Pi.distant;
+					if(graph.distance(piv, v) == Graph.distant)	{
+						newDist = Graph.distant;
 					}
 
 					if(newDist < pi.get(v))	{
@@ -53,7 +53,7 @@ public class Dijkstra	{
 			// Finding the new pivot comes down to a
 			// linear research of minimal value.
 
-			int minValue = Pi.distant;
+			int minValue = Graph.distant;
 			
 			for(Vertex v : vertices)	{
 				if(a.contains(v) == false && pi.get(v) < minValue)	{
