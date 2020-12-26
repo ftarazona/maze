@@ -1,5 +1,13 @@
 package graph;
 
+import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.IOException;
+import fileops.IOInterface;
+import fileops.BadFormatException;
+import fileops.ReadingException;
+
 /*
  * The class below implements the Vertex interface.
  *
@@ -33,6 +41,7 @@ public abstract class Box
 	public static final int TO_DRAW 	= 4;
 	public static final int START		= 8;
 	public static final int END		= 16;
+	public static final int MAX_FLAG	= NO_FLAG + ON_PATH + TO_WRITE + TO_DRAW + START + END;
 
 	/* A box is unique by its coordinates. Therefore we need three
 	 *  numbers to give an ID :
@@ -44,9 +53,9 @@ public abstract class Box
 	 *  which index and IDs can be identified, with an optimal
 	 *  cost in memory. */
 
-	private final int x;
-	private final int y;
-	private final int z;
+	private int x;
+	private int y;
+	private int z;
 	private final int id;
 	private int flags;
 
@@ -71,12 +80,24 @@ public abstract class Box
 		return x;
 	}
 
+	protected void setX(int x)	{
+		this.x = x;
+	}
+
 	public int getY()	{
 		return y;
 	}
 
+	protected void setY(int y)	{
+		this.y = y;
+	}
+
 	public int getZ()	{
 		return z;
+	}
+
+	protected void setZ(int z)	{
+		this.z = z;
 	}
 
 	public abstract int getPracticability();
@@ -104,4 +125,33 @@ public abstract class Box
 	public void clearFlags()	{
 		this.flags = NO_FLAG;
 	}
+
+	protected void writeGeneralData(OutputStream out)	
+		throws IOException	{
+
+		out.write(x);
+		out.write(y);
+		out.write(z);
+		out.write(flags);
+		out.write(255);
+	}
+
+	protected ArrayList<Integer> readRawData(InputStream in)	
+		throws IOException	{
+
+		ArrayList<Integer> data = new ArrayList<Integer>();
+		int i = in.read();
+
+		while(i != 255)	{
+			data.add(new Integer(i));
+			i = in.read();
+		}
+
+		return data;
+	}
+
+	public abstract void write(OutputStream out)
+		throws IOException;
+	public abstract void read(InputStream in)
+		throws IOException, BadFormatException, ReadingException;
 }

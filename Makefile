@@ -1,7 +1,7 @@
 JC = javac
 LD = jar
 
-PACKAGES = graph dijkstra
+PACKAGES = graph dijkstra fileops
 
 DIRS = $(foreach PACKAGE, $(PACKAGES), src/$(PACKAGE)) $(foreach SRC, src, $(SRC))
 SRC = $(foreach DIR, $(DIRS), $(wildcard $(DIR)/*.java))
