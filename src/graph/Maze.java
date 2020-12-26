@@ -11,7 +11,6 @@ import java.io.IOException;
 public class Maze
 	implements Graph	{
 
-
 	private String mapsPrefix = "maps/";
 
 	/* To store the boxes, we use a two-dimensional array. */
@@ -59,7 +58,7 @@ public class Maze
 		return ret;
 	}
 
-	/* The successors of a box is its neighbours, IF they exist.
+	/* The successors of a box is its neighbours, IF they e'xist.
 	 *  the conditional statements ensure to be within the bounds
 	 *  of the matrix. */
 
@@ -88,13 +87,9 @@ public class Maze
 	/* The distance is given by the sum of the weights determined
 	 *  by the type of each box. */
 
-	private int weight(Box box)	{
-		return Graph.distant;
-	}
-
 	public int distance(Vertex src, Vertex dst)	{
-		int wsrc = weight((Box)src);
-		int wdst = weight((Box)dst);
+		int wsrc = ((Box)src).getPracticability();
+		int wdst = ((Box)dst).getPracticability();
 		
 		if(wsrc == distant || wdst == distant)	{
 			return distant;
@@ -184,7 +179,7 @@ public class Maze
 			tempBoxes.add(new ArrayList<Box>());
 
 			for(int x = 0; x < line.length(); x++)	{
-				tempBoxes.get(y).add(new Box(x, y, 0));
+				tempBoxes.get(y).add(new WallBox(x, y, 0));
 			}
 
 			line = input.readLine();

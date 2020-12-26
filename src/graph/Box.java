@@ -11,7 +11,7 @@ package graph;
  *  the box to allow the graph to estimate the distances.
  */
 
-public class Box
+public abstract class Box
 	implements Vertex	{
 
 	/* defaultID indicates there is no Box.
@@ -20,6 +20,12 @@ public class Box
 	 */
 
 	private static int nextID = 0;
+
+	public static final char BOX_WALL	= 'W';
+	public static final char BOX_EMPTY	= 'E';
+	public static final char BOX_STAIRS	= 'S';
+	public static final char BOX_WATER	= 'O';
+	public static final char BOX_BRIDGE	= 'B';
 
 	public static final int NO_FLAG		= 0;
 	public static final int ON_PATH 	= 1;
@@ -72,7 +78,9 @@ public class Box
 	public int getZ()	{
 		return z;
 	}
-	
+
+	public abstract int getPracticability();
+
 	public int getFlags()	{
 		return flags;
 	}
