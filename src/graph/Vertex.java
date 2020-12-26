@@ -1,16 +1,11 @@
 package graph;
 
-/*
- * A graph is a set of vertices, linked together by arcs.
- *
- * The interface below declares which methods a vertex might propose.
- * As vertices are distinct in a graph, a vertex shall be given a
- *  unique identifier.
+/** A vertex is the atomic unit used to describe a graph.
+ *  As it is atomic, it should be made unique by an ID.
  */
 
 public interface Vertex	{
-
-	/* Returns the ID of the vertex. */
-
+	
+	 /** @return the ID of the vertex. */
 	public int getID();
 }

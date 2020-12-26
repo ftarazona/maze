@@ -11,7 +11,7 @@ package graph;
  *  the box to allow the graph to estimate the distances.
  */
 
-public class Box
+public abstract class Box
 	implements Vertex	{
 
 	/* defaultID indicates there is no Box.
@@ -21,13 +21,18 @@ public class Box
 
 	private static int nextID = 0;
 
+	public static final char BOX_WALL	= 'W';
+	public static final char BOX_EMPTY	= 'E';
+	public static final char BOX_STAIRS	= 'S';
+	public static final char BOX_WATER	= 'O';
+	public static final char BOX_BRIDGE	= 'B';
+
+	public static final int NO_FLAG		= 0;
 	public static final int ON_PATH 	= 1;
 	public static final int TO_WRITE 	= 2;
 	public static final int TO_DRAW 	= 4;
 	public static final int START		= 8;
 	public static final int END		= 16;
-
-	private BoxType type;
 
 	/* A box is unique by its coordinates. Therefore we need three
 	 *  numbers to give an ID :
@@ -41,6 +46,7 @@ public class Box
 
 	private final int x;
 	private final int y;
+	private final int z;
 	private final int id;
 	private int flags;
 
@@ -48,20 +54,13 @@ public class Box
 	 *  the ID by default is -1, which is maxx = 0, x = 0, y = -1.
 	 *  the BoxType is EMPTY. */
 
-	public Box(int x, int y)	{
+	public Box(int x, int y, int z)	{
 		this.x = x;
 		this.y = y;
+		this.z = z;
 		this.id = nextID;
 		nextID++;
-		this.type = BoxType.EMPTY;;
-	}
-
-	public Box(int x, int y, BoxType type)	{
-		this.x = x;
-		this.y = y;
-		this.id = nextID;
-		nextID++;
-		this.type = type;
+		this.flags = NO_FLAG;
 	}
 
 	public int getID()	{
@@ -75,17 +74,19 @@ public class Box
 	public int getY()	{
 		return y;
 	}
-	
-	public BoxType getType()	{
-		return type;
+
+	public int getZ()	{
+		return z;
 	}
 
-	public void setType(BoxType type)	{
-		this.type = type;
-	}
+	public abstract int getPracticability();
 
 	public int getFlags()	{
 		return flags;
+	}
+
+	public boolean hasFlag(int flag)	{
+		return (flags & flag) != 0;
 	}
 
 	public void setFlags(int flags)	{
@@ -101,6 +102,6 @@ public class Box
 	}
 
 	public void clearFlags()	{
-		this.flags = 0;
+		this.flags = NO_FLAG;
 	}
 }

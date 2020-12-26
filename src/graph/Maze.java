@@ -1,13 +1,5 @@
 package graph;
 
-/*
- * The class below implements the Graph interface.
- *
- * It is implemented by a matrix containing the boxes.
- * There is no need to store the distances, we can calculate them with
- *  the types of the boxes.
- */
-
 import java.util.Arrays;
 import java.util.ArrayList;
 import java.io.FileReader;
@@ -18,12 +10,6 @@ import java.io.IOException;
 
 public class Maze
 	implements Graph	{
-
-	/* distant indicates two vertices are not connected. */
-
-	public static int distant = Integer.MAX_VALUE;
-
-	/* Information for IO operations. */
 
 	private String mapsPrefix = "maps/";
 
@@ -72,7 +58,7 @@ public class Maze
 		return ret;
 	}
 
-	/* The successors of a box is its neighbours, IF they exist.
+	/* The successors of a box is its neighbours, IF they e'xist.
 	 *  the conditional statements ensure to be within the bounds
 	 *  of the matrix. */
 
@@ -101,19 +87,9 @@ public class Maze
 	/* The distance is given by the sum of the weights determined
 	 *  by the type of each box. */
 
-	private int weight(Box box)	{
-		switch(box.getType())	{
-			case EMPTY: return 1;
-			case WALL: return distant;
-			case START: return 1;
-			case END: return 1;
-			default: return distant;
-		}
-	}
-
 	public int distance(Vertex src, Vertex dst)	{
-		int wsrc = weight((Box)src);
-		int wdst = weight((Box)dst);
+		int wsrc = ((Box)src).getPracticability();
+		int wdst = ((Box)dst).getPracticability();
 		
 		if(wsrc == distant || wdst == distant)	{
 			return distant;
@@ -130,13 +106,13 @@ public class Maze
 
 	/* Selection and marking operation */
 
-	public ArrayList<Box> select(BoxType selectType)	{
-		ArrayList<Box> ret = new ArrayList<Box>();
+	public ArrayList<Vertex> getSelection(int flag)	{
+		ArrayList<Vertex> ret = new ArrayList<Vertex>();
 
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j].getType() == selectType)	{
-					ret.add(boxes[i][j]);
+				if(boxes[i][j].hasFlag(flag))	{
+					ret.add((Vertex)boxes[i][j]);
 				}
 			}
 		}
@@ -144,27 +120,27 @@ public class Maze
 		return ret;
 	}
 
-	public void vmark(ArrayList<Vertex> toMark)	{
-		ArrayList<Box> wrapped = new ArrayList<Box>();
-		for(Vertex v: toMark)	{
-			wrapped.add((Box)v);
-		}
-		mark(wrapped);
-	}
-
-	public void mark(ArrayList<Box> toMark)	{
-		for(Box b: toMark)	{
-			boxes[b.getY()][b.getX()].mark();
+	public void setSelection(ArrayList<Vertex> sel, int flag)	{
+		for(Vertex v: sel)	{
+			boxes[((Box)v).getY()][((Box)v).getX()].addFlag(flag);
 		}
 	}
 
-	public void unmark()	{
+	public void clearSelection(ArrayList<Vertex> sel, int flag)	{
+		for(Vertex v: sel)	{
+			boxes[((Box)v).getY()][((Box)v).getX()].remFlag(flag);
+		}
+	}
+
+	public void clearAll()	{
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				boxes[i][j].unmark();
+				boxes[i][j].clearFlags();
 			}
 		}
 	}
+
+
 
 	/* IO Operations */
 
@@ -173,16 +149,6 @@ public class Maze
 	 * The method reads each line, and for each line reads each
 	 *  character. If some line is longer or shorter, it raises an
 	 *  exception of bad map format. */
-
-	private BoxType charToType(char c)	{
-		switch(c)	{
-			case 'E' : return BoxType.EMPTY;
-			case 'W' : return BoxType.WALL;
-			case 'S' : return BoxType.START;
-			case 'T' : return BoxType.END;
-			default: return BoxType.EMPTY;
-		}
-	}
 
 	private void loadFromFile(String filename)
 		throws MazeReadingException	{
@@ -213,7 +179,7 @@ public class Maze
 			tempBoxes.add(new ArrayList<Box>());
 
 			for(int x = 0; x < line.length(); x++)	{
-				tempBoxes.get(y).add(new Box(x, y, maxx, charToType(line.charAt(x))));
+				tempBoxes.get(y).add(new WallBox(x, y, 0));
 			}
 
 			line = input.readLine();
@@ -252,25 +218,12 @@ public class Maze
 	}
 	}
 
-	private char boxToChar(Box box)	{
-		if(box.marked())	{
-			return 'O';
-		}
-		switch(box.getType())	{
-			case EMPTY: return 'E';
-			case WALL: return 'W';
-			case START: return 'S';
-			case END: return 'T';
-			default: return 'E';
-		}
-	}
-
 	public String toString()	{
 		String ret = new String();
 
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				ret += boxToChar(boxes[i][j]);
+				ret += '0';
 			}
 			ret += '\n';
 		}
@@ -280,7 +233,7 @@ public class Maze
 
 	public void writeToFile(String filename)	{
 	try	{
-		FileWriter file = new FileWriter(mapsPrefix + filename);
+		FileWriter file = new FileWriter(filename);
 
 		for(char c: toString().toCharArray())	{
 			file.write(c);
