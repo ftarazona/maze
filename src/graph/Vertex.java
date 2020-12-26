@@ -5,7 +5,7 @@ package graph;
  */
 
 public interface Vertex	{
-
+	
 	 /** @return the ID of the vertex. */
 	public int getID();
 }

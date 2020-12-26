@@ -11,7 +11,6 @@ import java.io.IOException;
 public class Maze
 	implements Graph	{
 
-	/* Information for IO operations. */
 
 	private String mapsPrefix = "maps/";
 
@@ -90,13 +89,7 @@ public class Maze
 	 *  by the type of each box. */
 
 	private int weight(Box box)	{
-		switch(box.getType())	{
-			case EMPTY: return 1;
-			case WALL: return distant;
-			case START: return 1;
-			case END: return 1;
-			default: return distant;
-		}
+		return Graph.distant;
 	}
 
 	public int distance(Vertex src, Vertex dst)	{
@@ -118,13 +111,13 @@ public class Maze
 
 	/* Selection and marking operation */
 
-	public ArrayList<Box> select(BoxType selectType)	{
-		ArrayList<Box> ret = new ArrayList<Box>();
+	public ArrayList<Vertex> getSelection(int flag)	{
+		ArrayList<Vertex> ret = new ArrayList<Vertex>();
 
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j].getType() == selectType)	{
-					ret.add(boxes[i][j]);
+				if(boxes[i][j].hasFlag(flag))	{
+					ret.add((Vertex)boxes[i][j]);
 				}
 			}
 		}
@@ -132,27 +125,27 @@ public class Maze
 		return ret;
 	}
 
-	public void vmark(ArrayList<Vertex> toMark)	{
-		ArrayList<Box> wrapped = new ArrayList<Box>();
-		for(Vertex v: toMark)	{
-			wrapped.add((Box)v);
-		}
-		mark(wrapped);
-	}
-
-	public void mark(ArrayList<Box> toMark)	{
-		for(Box b: toMark)	{
-			boxes[b.getY()][b.getX()].mark();
+	public void setSelection(ArrayList<Vertex> sel, int flag)	{
+		for(Vertex v: sel)	{
+			boxes[((Box)v).getY()][((Box)v).getX()].addFlag(flag);
 		}
 	}
 
-	public void unmark()	{
+	public void clearSelection(ArrayList<Vertex> sel, int flag)	{
+		for(Vertex v: sel)	{
+			boxes[((Box)v).getY()][((Box)v).getX()].remFlag(flag);
+		}
+	}
+
+	public void clearAll()	{
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				boxes[i][j].unmark();
+				boxes[i][j].clearFlags();
 			}
 		}
 	}
+
+
 
 	/* IO Operations */
 
@@ -161,16 +154,6 @@ public class Maze
 	 * The method reads each line, and for each line reads each
 	 *  character. If some line is longer or shorter, it raises an
 	 *  exception of bad map format. */
-
-	private BoxType charToType(char c)	{
-		switch(c)	{
-			case 'E' : return BoxType.EMPTY;
-			case 'W' : return BoxType.WALL;
-			case 'S' : return BoxType.START;
-			case 'T' : return BoxType.END;
-			default: return BoxType.EMPTY;
-		}
-	}
 
 	private void loadFromFile(String filename)
 		throws MazeReadingException	{
@@ -201,7 +184,7 @@ public class Maze
 			tempBoxes.add(new ArrayList<Box>());
 
 			for(int x = 0; x < line.length(); x++)	{
-				tempBoxes.get(y).add(new Box(x, y, maxx, charToType(line.charAt(x))));
+				tempBoxes.get(y).add(new Box(x, y, 0));
 			}
 
 			line = input.readLine();
@@ -231,25 +214,12 @@ public class Maze
 	}
 	}
 
-	private char boxToChar(Box box)	{
-		if(box.marked())	{
-			return 'O';
-		}
-		switch(box.getType())	{
-			case EMPTY: return 'E';
-			case WALL: return 'W';
-			case START: return 'S';
-			case END: return 'T';
-			default: return 'E';
-		}
-	}
-
 	public String toString()	{
 		String ret = new String();
 
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				ret += boxToChar(boxes[i][j]);
+				ret += '0';
 			}
 			ret += '\n';
 		}
@@ -259,7 +229,7 @@ public class Maze
 
 	public void writeToFile(String filename)	{
 	try	{
-		FileWriter file = new FileWriter(mapsPrefix + filename);
+		FileWriter file = new FileWriter(filename);
 
 		for(char c: toString().toCharArray())	{
 			file.write(c);
