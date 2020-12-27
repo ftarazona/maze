@@ -12,6 +12,7 @@ public class WaterBox extends Box	{
 
 	private boolean deep;
 
+	public WaterBox()	{}
 	public WaterBox(int x, int y, int z, int depth)	{
 		super(x, y, z);
 		deep = depth != 0;

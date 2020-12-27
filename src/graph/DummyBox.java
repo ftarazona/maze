@@ -9,6 +9,7 @@ import fileops.IOInterface;
 
 public class DummyBox extends Box	{
 
+	public DummyBox()	{}
 	public DummyBox(int x, int y)	{
 		super(x, y, 0);
 	}

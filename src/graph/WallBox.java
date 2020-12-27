@@ -9,6 +9,8 @@ import fileops.BadFormatException;
 import fileops.ReadingException;
 
 public class WallBox extends Box	{
+
+	public WallBox()	{}
 	public WallBox(int x, int y, int z)	{
 		super(x, y, z);
 	}

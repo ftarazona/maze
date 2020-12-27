@@ -10,7 +10,8 @@ import fileops.ReadingException;
 
 
 public class EmptyBox extends Box	{
-	
+
+	public EmptyBox()	{}
 	public EmptyBox(int x, int y, int z)	{
 		super(x, y, z);
 	}

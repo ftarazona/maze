@@ -20,7 +20,7 @@ import fileops.ReadingException;
  */
 
 public abstract class Box
-	implements Vertex	{
+	implements Vertex, IOInterface	{
 
 	/* defaultID indicates there is no Box.
 	 * It can prove useful when making recursive functions for
@@ -62,6 +62,8 @@ public abstract class Box
 	/* Default constructor
 	 *  the ID by default is -1, which is maxx = 0, x = 0, y = -1.
 	 *  the BoxType is EMPTY. */
+
+	public Box()	{id = -1;}
 
 	public Box(int x, int y, int z)	{
 		this.x = x;
@@ -142,7 +144,7 @@ public abstract class Box
 		ArrayList<Integer> data = new ArrayList<Integer>();
 		int i = in.read();
 
-		while(i != 255)	{
+		while(i != 255 && i != -1)	{
 			data.add(new Integer(i));
 			i = in.read();
 		}

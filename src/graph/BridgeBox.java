@@ -10,6 +10,7 @@ import fileops.ReadingException;
 
 public class BridgeBox extends Box	{
 
+	public BridgeBox()	{}
 	public BridgeBox(int x, int y, int z)	{
 		super(x, y, z);
 	}

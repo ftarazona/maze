@@ -2,14 +2,20 @@ package graph;
 
 import java.util.Arrays;
 import java.util.ArrayList;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import fileops.IOInterface;
+import fileops.BadFormatException;
+import fileops.ReadingException;
 
 public class Maze
-	implements Graph	{
+	implements Graph, IOInterface	{
 
 	private String mapsPrefix = "maps/";
 
@@ -35,11 +41,6 @@ public class Maze
 	 */
 
 	public Maze(String filename)	{
-		try	{
-			loadFromFile(filename);
-		} catch(MazeReadingException e)	{
-			e.printMessage();
-		}
 	}
 
 
@@ -150,109 +151,77 @@ public class Maze
 	 *  character. If some line is longer or shorter, it raises an
 	 *  exception of bad map format. */
 
-	private void loadFromFile(String filename)
-		throws MazeReadingException	{
-	try	{
-	
-		FileReader file;
-		BufferedReader input;
-
-		file = new FileReader(mapsPrefix + filename);
-		input = new BufferedReader(file);
-
-		ArrayList<ArrayList<Box> > tempBoxes = new ArrayList<ArrayList<Box> >();
-
-		/* Reading the first line provides information about
-		 *  the map format. */
-
-		String line = input.readLine();
-		int y = 0;
-		final int maxx = line.length();
-
-		/* Reads the whole file. */
-
-		while(line != null)	{
-			if(line.length() != maxx)	{
-				throw new MazeReadingException(filename, y + 1, "Bad format : read " + Integer.toString(line.length()) + " instead of " + Integer.toString(maxx));
-			}
-
-			tempBoxes.add(new ArrayList<Box>());
-
-			for(int x = 0; x < line.length(); x++)	{
-				tempBoxes.get(y).add(new WallBox(x, y, 0));
-			}
-
-			line = input.readLine();
-			y++;
-		}
-
-		/* Converts ArrayList into Arrays. */
-
-		width = maxx;
-		height = y;
-		boxes = new Box[height][width];
-
-		for(int i = 0; i < y; i++)	{
-			for(int j = 0; j < maxx; j++)	{
-				boxes[i][j] = tempBoxes.get(i).get(j);
-			}
-		}
-
-		input.close();
-
-	} catch(FileNotFoundException e)	{
-		System.out.println("ERROR: File not found: " + mapsPrefix + filename);
-		e.printStackTrace();
-	} catch(IOException e)	{
-		System.out.println("ERROR: Could not read input from file " + mapsPrefix + filename);
-		e.printStackTrace();
-	} catch(MazeReadingException e)	{
-		e.printMessage();
-	} finally	{
-		try	{
-			input.close();
-		} catch(Exception e)	{
-			System.out.println("ERROR: Could not close file " + mapsPrefix + filename);
-			e.printStackTrace();
-		}
-	}
-	}
-
-	public String toString()	{
-		String ret = new String();
+	public void write(OutputStream out)	
+		throws IOException	{
 
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				ret += '0';
+				boxes[i][j].write(out);
 			}
-			ret += '\n';
-		}
-
-		return ret;
-	}
-
-	public void writeToFile(String filename)	{
-	try	{
-		FileWriter file = new FileWriter(filename);
-
-		for(char c: toString().toCharArray())	{
-			file.write(c);
-		}
-
-		file.flush();
-	} catch(FileNotFoundException e)	{
-		System.out.println("ERROR: File not found: " + mapsPrefix + filename);
-		e.printStackTrace();
-	} catch(IOException e)	{
-		System.out.println("ERROR: Could not write input from file " + mapsPrefix + filename);
-		e.printStackTrace();
-	} finally	{
-		try	{
-			file.close();
-		} catch(Exception e)	{
-			System.out.println("ERROR: Could not close file " + mapsPrefix + filename);
-			e.printStackTrace();
 		}
 	}
+
+	private void convertBoxList(ArrayList<Box> boxList)	{
+		int maxX = 0, maxY = 0;
+
+		for(Box b: boxList)	{
+			if(b.getX() > maxX)	{ maxX = b.getX(); }
+			if(b.getY() > maxY)	{ maxY = b.getY(); }
+		}
+
+		width = maxX;
+		height = maxY;
+		boxes = new Box[height][width];
+
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				boxes[i][j] = new DummyBox(j, i);
+			}
+		}
+
+		for(Box b: boxList)	{
+			boxes[b.getY()][b.getX()] = b;
+		}
+	}
+
+	public void read(InputStream in)	
+		throws IOException, BadFormatException, ReadingException	{
+		ArrayList<Box> boxList = new ArrayList<Box>();
+		int c = in.read();
+
+		while(c != -1)	{
+			Box newBox = null;
+			switch(c)	{
+				case Box.BOX_WALL:
+					newBox = new WallBox();
+					break;
+				case Box.BOX_EMPTY:
+					newBox = new EmptyBox();
+					break;
+				case Box.BOX_WATER:
+					newBox = new WaterBox();
+					break;
+				case Box.BOX_BRIDGE:
+					newBox = new BridgeBox();
+					break;
+				case Box.BOX_STAIRS:
+					newBox = new StairsBox();
+					break;
+				default:
+					while(in.read() != 255 && in.read() != -1);
+					break;
+			}
+			if(newBox != null)	{
+				try	{
+					newBox.read(in);
+					boxList.add(newBox);
+				} catch (Exception e)	{
+					System.out.println(e.getMessage());
+					e.printStackTrace();
+				}
+			}
+		}
+
+		convertBoxList(boxList);
 	}
 }

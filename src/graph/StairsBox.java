@@ -15,6 +15,7 @@ public class StairsBox extends Box	{
 
 	private int dir;
 
+	public StairsBox()	{}
 	public StairsBox(int x, int y, int z, int dir)	{
 		super(x, y, z);
 		this.dir = dir;
