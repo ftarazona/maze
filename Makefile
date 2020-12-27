@@ -18,8 +18,12 @@ $(CLASS):
 	@$(JC) $(SRC)
 
 clean:
-	find . -type f | grep ".class" | xargs $(RM)
+	find . -type f | grep ".class$$" | xargs $(RM)
+
+clean-doc:
 	$(RM) -r doc/
+
+clean-all: clean clean-doc
 
 doc:
 	javadoc -d doc $(SRC) 
