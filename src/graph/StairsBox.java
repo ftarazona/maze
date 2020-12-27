@@ -15,7 +15,15 @@ public class StairsBox extends Box	{
 
 	private int dir;
 
+	/** Constructs a StairsBox at coordinates (0, 0, 0), no flag
+	 *  and in the vertical direction.
+	 *  This box however should not be used unless a call to
+	 *  IO method read has been processed succesfully. */
 	public StairsBox()	{}
+	
+	/** Constructs a WaterBox with given coordinates and no flag.
+	 *  @param x, y, z are the coordinates of the WallBox. 
+	 *  @param dir indicates the direction of the stairs. */
 	public StairsBox(int x, int y, int z, int dir)	{
 		super(x, y, z);
 		this.dir = dir;

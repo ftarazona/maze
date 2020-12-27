@@ -9,7 +9,13 @@ import fileops.IOInterface;
 
 public class DummyBox extends Box	{
 
+	/** Constructs a DummyBox at coordinates (0, 0, 0) and no
+	 *  flag. This box however should not be used unless a call to
+	 *  IO method read has been processed succesfully. */
 	public DummyBox()	{}
+	
+	/** Constructs a DummyBox with given coordinates and no flag.
+	 *  @param x, y are the coordinates of the box. */
 	public DummyBox(int x, int y)	{
 		super(x, y, 0);
 	}

@@ -10,7 +10,13 @@ import fileops.ReadingException;
 
 public class WallBox extends Box	{
 
+	/** Constructs a WallBox at coordinates (0, 0, 0) and no flag.
+	 *  This box however should not be used unless a call to IO
+	 *  method read has been processed succesfully. */
 	public WallBox()	{}
+
+	/** Constructs a WallBox with given coordinates and no flag.
+	 *  @param x, y, z are the coordinates of the WallBox. */
 	public WallBox(int x, int y, int z)	{
 		super(x, y, z);
 	}

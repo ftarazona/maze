@@ -10,7 +10,13 @@ import fileops.ReadingException;
 
 public class BridgeBox extends Box	{
 
+	/** Constructs a BridgeBox at coordinates (0, 0, 0) and no
+	 *  flag. This box however should not be used unless a call to
+	 *  IO method read has been processed succesfully. */
 	public BridgeBox()	{}
+
+	/** Constructs a BridgeBox with given coordinates and no flag.
+	 *  @param x, y, z are the coordinates of the box. */
 	public BridgeBox(int x, int y, int z)	{
 		super(x, y, z);
 	}

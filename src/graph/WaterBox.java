@@ -12,7 +12,15 @@ public class WaterBox extends Box	{
 
 	private boolean deep;
 
+	/** Constructs a WaterBox at coordinates (0, 0, 0), no flag
+	 *  and no depth. 
+	 *  This box however should not be used unless a call to
+	 *  IO method read has been processed succesfully. */
 	public WaterBox()	{}
+	
+	/** Constructs a WaterBox with given coordinates and no flag.
+	 *  @param x, y, z are the coordinates of the WallBox. 
+	 *  @param depth indicates whether the waters are deep. */
 	public WaterBox(int x, int y, int z, int depth)	{
 		super(x, y, z);
 		deep = depth != 0;

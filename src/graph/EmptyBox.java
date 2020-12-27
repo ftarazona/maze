@@ -11,7 +11,13 @@ import fileops.ReadingException;
 
 public class EmptyBox extends Box	{
 
+	/** Constructs an EmptyBox at coordinates (0, 0, 0) and no
+	 *  flag. This box however should not be used unless a call to
+	 *  IO method read has been processed succesfully. */
 	public EmptyBox()	{}
+	
+	/** Constructs an EmptyBox with given coordinates and no flag.
+	 *  @param x, y, z are the coordinates of the WallBox. */
 	public EmptyBox(int x, int y, int z)	{
 		super(x, y, z);
 	}

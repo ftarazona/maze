@@ -17,31 +17,19 @@ import fileops.ReadingException;
 public class Maze
 	implements Graph, IOInterface	{
 
-	private String mapsPrefix = "maps/";
-
-	/* To store the boxes, we use a two-dimensional array. */
-
 	private Box[][] boxes;
 	private int width;
 	private int height;
 
-
-	/* Default constructor
-	 *  there is none : an empty maze is not a maze...
-	 *  you must either give a matrix or a file to be read. */
-
+	/** Constructs an empty maze */
 	public Maze()	{}
+
+	/** Constructs a maze from a matrix of boxes.
+	 *  @param boxes a matrix of boxes. */
 	public Maze(Box[][] boxes)	{
 		this.boxes = boxes;
 		this.width = boxes[0].length;
 		this.height = boxes.length;
-	}
-
-	/*
-	 * Loader constructor reads a maze map from a file input.
-	 */
-
-	public Maze(String filename)	{
 	}
 
 
