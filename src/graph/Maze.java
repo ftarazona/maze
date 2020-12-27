@@ -20,6 +20,7 @@ public class Maze
 	private Box[][] boxes;
 	private int width;
 	private int height;
+	private int area;
 
 	/** Constructs an empty maze */
 	public Maze()	{}
@@ -42,9 +43,9 @@ public class Maze
 		}
 	}
 
-	/* To get a list of all the vertices, we need to traverse the
-	 *  whole matrix. */
-
+	/** Returns a list of all the vertices in the graph, including
+	 *  DummyBoxes.
+	 *  @return a list of all the vertices. */
 	public ArrayList<Vertex> getVertices()	{
 		ArrayList<Vertex> ret = new ArrayList<Vertex>(width * height);
 
@@ -57,10 +58,10 @@ public class Maze
 		return ret;
 	}
 
-	/* The successors of a box is its neighbours, IF they e'xist.
-	 *  the conditional statements ensure to be within the bounds
-	 *  of the matrix. */
-
+	/** Returns a list of the successors of a given vertex, 
+	 *  including DummyBoxes.
+	 *  @param v is the parent vertex.
+	 *  @return a list of the successors of parent. */
 	public ArrayList<Vertex> getSuccessors(Vertex v)	{
 		ArrayList<Vertex> ret = new ArrayList<Vertex>(4);
 		Box b = (Box) v;
@@ -83,9 +84,9 @@ public class Maze
 		return ret;
 	}
 
-	/* The distance is given by the sum of the weights determined
-	 *  by the type of each box. */
-
+	/** Returns the distance between two vertices.
+	 *  @param src and dst are the two vertices to consider.
+	 *  @return the distance between src and dst. */
 	public int distance(Vertex src, Vertex dst)	{
 		int wsrc = ((Box)src).getPracticability();
 		int wdst = ((Box)dst).getPracticability();
@@ -98,13 +99,15 @@ public class Maze
 		}
 	}
 
+	/** Returns the area of the maze, DummyBoxes excluded. 
+	 *  @return the number of boxes in the graph. */
 	public int size()	{
-		return width * height;
+		return area;
 	}
 
-
-	/* Selection and marking operation */
-
+	/** Returns a list of vertices carrying a given flag.
+	 *  @param flag is the flag to be looked for.
+	 *  @return a list of vertices carrying the flag. */
 	public ArrayList<Vertex> getSelection(int flag)	{
 		ArrayList<Vertex> ret = new ArrayList<Vertex>();
 
@@ -119,6 +122,9 @@ public class Maze
 		return ret;
 	}
 
+	/** Gives all the vertices in the list the given flag.
+	 *  @param sel is a list of the vertices to flag.
+	 *  @param flag is the flag to be added. */
 	public void setSelection(ArrayList<Vertex> sel, int flag)	{
 		for(Vertex v: sel)	{
 			boxes[((Box)v).getY()][((Box)v).getX()].addFlag(flag);
@@ -131,6 +137,7 @@ public class Maze
 		}
 	}
 
+	/** Clears all the flags of every vertex in the graph. */
 	public void clearAll()	{
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
@@ -139,16 +146,9 @@ public class Maze
 		}
 	}
 
-
-
-	/* IO Operations */
-
-	/* Loading a maze from file consists in parsing a map file and
-	 *  create boxes of type depending on the letter read.
-	 * The method reads each line, and for each line reads each
-	 *  character. If some line is longer or shorter, it raises an
-	 *  exception of bad map format. */
-
+	/** Writes the graph in an output stream.
+	 *  @param out is the output stream to be written.
+	 *  @throws IOException if an I/O error occurs. */
 	public void write(OutputStream out)	
 		throws IOException	{
 
@@ -159,6 +159,9 @@ public class Maze
 		}
 	}
 
+	/** Converts a box list to a matrix, determines the size of it
+	 *  from the coordinates of the vertices.
+	 *  @param boxList is the list of vertices to be converted. */
 	private void convertBoxList(ArrayList<Box> boxList)	{
 		int maxX = 0, maxY = 0;
 
@@ -179,9 +182,13 @@ public class Maze
 
 		for(Box b: boxList)	{
 			boxes[b.getY()][b.getX()] = b;
+			area++;
 		}
 	}
 
+	/** Reads a graph from an input stream.
+	 *  @param in is the input stream to be read.
+	 *  @throws IOException if an I/O error occurs. */
 	public void read(InputStream in)	
 		throws IOException, BadFormatException, ReadingException	{
 		ArrayList<Box> boxList = new ArrayList<Box>();
