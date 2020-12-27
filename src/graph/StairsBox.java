@@ -38,7 +38,7 @@ public class StairsBox extends Box	{
 		ArrayList<Integer> data = readRawData(in);
 
 		if(data.size() != 5)	{
-			throw new BadFormatException(5, data.size());
+			throw new BadFormatException(data.size(), 5);
 		}
 
 		setX(data.get(1));
@@ -56,5 +56,9 @@ public class StairsBox extends Box	{
 		}
 
 		dir = data.get(0);
+	}
+
+	public void display()	{
+		System.out.print("/");
 	}
 }

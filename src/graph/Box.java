@@ -138,7 +138,7 @@ public abstract class Box
 		out.write(255);
 	}
 
-	protected ArrayList<Integer> readRawData(InputStream in)	
+	protected ArrayList<Integer> readRawData(InputStream in)
 		throws IOException	{
 
 		ArrayList<Integer> data = new ArrayList<Integer>();
@@ -156,4 +156,6 @@ public abstract class Box
 		throws IOException;
 	public abstract void read(InputStream in)
 		throws IOException, BadFormatException, ReadingException;
+
+	public abstract void display();
 }

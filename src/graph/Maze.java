@@ -30,6 +30,7 @@ public class Maze
 	 *  there is none : an empty maze is not a maze...
 	 *  you must either give a matrix or a file to be read. */
 
+	public Maze()	{}
 	public Maze(Box[][] boxes)	{
 		this.boxes = boxes;
 		this.width = boxes[0].length;
@@ -43,6 +44,15 @@ public class Maze
 	public Maze(String filename)	{
 	}
 
+
+	public void display()	{
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				boxes[i][j].display();
+			}
+			System.out.println("");
+		}
+	}
 
 	/* To get a list of all the vertices, we need to traverse the
 	 *  whole matrix. */
@@ -169,8 +179,8 @@ public class Maze
 			if(b.getY() > maxY)	{ maxY = b.getY(); }
 		}
 
-		width = maxX;
-		height = maxY;
+		width = maxX + 1;
+		height = maxY + 1;
 		boxes = new Box[height][width];
 
 		for(int i = 0; i < height; i++)	{
@@ -191,6 +201,7 @@ public class Maze
 
 		while(c != -1)	{
 			Box newBox = null;
+			System.out.println(c);
 			switch(c)	{
 				case Box.BOX_WALL:
 					newBox = new WallBox();
@@ -220,6 +231,7 @@ public class Maze
 					e.printStackTrace();
 				}
 			}
+			c = in.read();
 		}
 
 		convertBoxList(boxList);

@@ -22,4 +22,8 @@ public class DummyBox extends Box	{
 		throws IOException {}
 	public void read(InputStream in)
 		throws IOException, BadFormatException, ReadingException {}
+
+	public void display()	{
+		System.out.print("_");
+	}
 }

@@ -40,7 +40,7 @@ public class WaterBox extends Box	{
 		ArrayList<Integer> data = readRawData(in);
 
 		if(data.size() != 5)	{
-			throw new BadFormatException(5, data.size());
+			throw new BadFormatException(data.size(), 5);
 		}
 
 		setX(data.get(1));
@@ -54,5 +54,9 @@ public class WaterBox extends Box	{
 		setFlags(data.get(4));
 
 		deep = data.get(0) != 0;
+	}
+
+	public void display()	{
+		System.out.print("~");
 	}
 }

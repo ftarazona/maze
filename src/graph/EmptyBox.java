@@ -33,7 +33,7 @@ public class EmptyBox extends Box	{
 		ArrayList<Integer> data = readRawData(in);
 
 		if(data.size() != 4)	{
-			throw new BadFormatException(4, data.size());
+			throw new BadFormatException(data.size(), 4);
 		}
 
 		setX(data.get(0));
@@ -45,5 +45,9 @@ public class EmptyBox extends Box	{
 		}
 
 		setFlags(data.get(3));
+	}
+
+	public void display()	{
+		System.out.print("O");
 	}
 }
