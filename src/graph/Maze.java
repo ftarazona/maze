@@ -37,7 +37,12 @@ public class Maze
 	public void display()	{
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				boxes[i][j].display();
+				if(boxes[i][j] != null)	{
+					boxes[i][j].display();
+				}
+				else	{
+					System.out.print(" ");
+				}
 			}
 			System.out.println("");
 		}
@@ -200,7 +205,6 @@ public class Maze
 
 		while(c != -1)	{
 			Box newBox = null;
-			System.out.println(c);
 			switch(c)	{
 				case Box.BOX_WALL:
 					newBox = new WallBox();
@@ -284,9 +288,9 @@ public class Maze
 				area--;
 			}
 		}
-		for(int i = pos; i < height; i++)	{
+		for(int i = pos; i < height - 1; i++)	{
 			for(int j = 0; j < width; j++)	{
-				temp[i - 1][j] = boxes[i][j];
+				temp[i][j] = boxes[i + 1][j];
 				boxes[i][j].setX(j);
 				boxes[i][j].setY(i - 1);
 			}
@@ -342,9 +346,9 @@ public class Maze
 				area--;
 			}
 		}
-		for(int j = pos; j < width; j++)	{
+		for(int j = pos; j < width - 1; j++)	{
 			for(int i = 0; i < height; i++)	{
-				temp[i][j - 1] = boxes[i][j];
+				temp[i][j] = boxes[i][j + 1];
 				boxes[i][j].setX(j - 1);
 				boxes[i][j].setY(i);
 			}
