@@ -36,7 +36,7 @@ public class StairsBox extends Box	{
 	public void write(OutputStream out)
 		throws IOException	{
 
-		out.write(Box.BOX_STAIRS);
+		out.write(Box.STAIRS_ID);
 		out.write(dir);
 		writeGeneralData(out);
 	}
@@ -52,11 +52,6 @@ public class StairsBox extends Box	{
 		setX(data.get(1));
 		setY(data.get(2));
 		setZ(data.get(2));
-
-		if(data.get(4) > MAX_FLAG)	{
-			throw new ReadingException((char)data.get(4).intValue(), "flags", String.format("integer between %d and %d", NO_FLAG, MAX_FLAG));
-		}
-
 		setFlags(data.get(4));
 
 		if(data.get(0) != STAIRS_DOWNTOP && data.get(0) != STAIRS_LEFTRIGHT)	{

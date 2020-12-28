@@ -28,7 +28,7 @@ public class BridgeBox extends Box	{
 	public void write(OutputStream out)
 		throws IOException	{
 		
-		out.write(Box.BOX_BRIDGE);
+		out.write(Box.BRIDGE_ID);
 		writeGeneralData(out);
 	}
 
@@ -44,11 +44,6 @@ public class BridgeBox extends Box	{
 		setX(data.get(0));
 		setY(data.get(1));
 		setZ(data.get(2));
-
-		if(data.get(3) > MAX_FLAG)	{
-			throw new ReadingException((char)data.get(3).intValue(), "flags", String.format("integer between %d and %d", NO_FLAG, MAX_FLAG));
-		}
-
 		setFlags(data.get(3));
 	}
 

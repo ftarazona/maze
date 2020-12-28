@@ -27,8 +27,8 @@ public class WallBox extends Box	{
 
 	public void write(OutputStream out)	
 		throws IOException	{
-		
-		out.write(Box.BOX_WALL);
+
+		out.write(Box.WALL_ID);
 		writeGeneralData(out);
 	}
 
@@ -43,11 +43,6 @@ public class WallBox extends Box	{
 		setX(data.get(0));
 		setY(data.get(1));
 		setZ(data.get(2));
-		
-		if(data.get(3) > MAX_FLAG)	{
-			throw new ReadingException((char)data.get(3).intValue(), "flags", String.format("integer between %d and %d", NO_FLAG, MAX_FLAG));
-		}
-
 		setFlags(data.get(3));
 	}
 

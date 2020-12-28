@@ -1,6 +1,7 @@
 package graph;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
@@ -13,29 +14,21 @@ import fileops.ReadingException;
 public abstract class Box
 	implements Vertex, IOInterface	{
 
+	public final static int WALL_ID = 'W';
+	public final static int EMPTY_ID = 'E';
+	public final static int STAIRS_ID = 'S';
+	public final static int WATER_ID = 'O';
+	public final static int BRIDGE_ID = 'B';
+
 	/** An object counter used to ensure each object gets a unique
 	 *  ID. */
 	private static int nextID = 0;
-
-	public static final char BOX_WALL	= 'W';
-	public static final char BOX_EMPTY	= 'E';
-	public static final char BOX_STAIRS	= 'S';
-	public static final char BOX_WATER	= 'O';
-	public static final char BOX_BRIDGE	= 'B';
-
-	public static final int NO_FLAG		= 0;
-	public static final int ON_PATH 	= 1;
-	public static final int TO_WRITE 	= 2;
-	public static final int TO_DRAW 	= 4;
-	public static final int START		= 8;
-	public static final int END		= 16;
-	public static final int MAX_FLAG	= NO_FLAG + ON_PATH + TO_WRITE + TO_DRAW + START + END;
 
 	private int x;
 	private int y;
 	private int z;
 	private final int id;
-	private int flags;
+	private EnumSet<BoxFlag> flags;
 
 	/** Constructs a Box with coordinates (0, 0, 0) and no flag.
 	 *  This box however should not be used unless a call to 
@@ -53,7 +46,7 @@ public abstract class Box
 		this.z = z;
 		this.id = nextID;
 		nextID++;
-		this.flags = NO_FLAG;
+		this.flags = EnumSet.noneOf(BoxFlag.class);
 	}
 
 	/** Returns the ID of the box.
@@ -114,7 +107,7 @@ public abstract class Box
 
 	/** Returns the flags as an integer.
 	 *  @return the flags of the box. */
-	public int getFlags()	{
+	public EnumSet<BoxFlag> getFlags()	{
 		return flags;
 	}
 
@@ -122,34 +115,38 @@ public abstract class Box
 	 *  @param flag is the flag to be looked for.
 	 *  @return true if the box carries the flag, false otherwise.
 	 *  If the flag is invalid, returns false. */
-	public boolean hasFlag(int flag)	{
-		return (flags & flag) != 0;
+	public boolean hasFlag(BoxFlag flag)	{
+		return flags.contains(flag);
 	}
 
 	/** Sets the flags to a given value. There is no guarantee for
 	 *  the value of flags to be under MAX_FLAG.
 	 *  @param flags is the new value. */
-	public void setFlags(int flags)	{
+	public void setFlags(EnumSet<BoxFlag> flags)	{
 		this.flags = flags;
+	}
+
+	public void setFlags(int value)	{
+		this.flags = BoxFlag.IntToBoxFlags(value);
 	}
 
 	/** Adds a flag to the box. The method does not guarantee the
 	 *  new value of flags is under MAX_FLAG.
 	 *  @param flag is the flag to be added. It should contain
 	 *  only one 1 in its binary form. */
-	public void addFlag(int flag)	{
-		this.flags |= flag;
+	public void addFlag(BoxFlag flag)	{
+		flags.add(flag);
 	}
 
 	/** Removes a flag to the box if it is carried.
 	 *  @param flag is the flag to be removed. */
-	public void remFlag(int flag)	{
-		this.flags &= ~flag;
+	public void remFlag(BoxFlag flag)	{
+		flags.remove(flag);
 	}
 
 	/** Clears all flags. */
 	public void clearFlags()	{
-		this.flags = NO_FLAG;
+		this.flags.clear();
 	}
 
 	/** Writes the coordinates and the flags of the box in an
@@ -163,7 +160,7 @@ public abstract class Box
 		out.write(x);
 		out.write(y);
 		out.write(z);
-		out.write(flags);
+		out.write(BoxFlag.BoxFlagsToInt(flags));
 		out.write(255);
 	}
 

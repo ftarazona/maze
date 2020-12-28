@@ -115,7 +115,7 @@ public class Maze
 	/** Returns a list of vertices carrying a given flag.
 	 *  @param flag is the flag to be looked for.
 	 *  @return a list of vertices carrying the flag. */
-	public ArrayList<Vertex> getSelection(int flag)	{
+	public ArrayList<Vertex> getSelection(BoxFlag flag)	{
 		ArrayList<Vertex> ret = new ArrayList<Vertex>();
 
 		for(int i = 0; i < height; i++)	{
@@ -132,13 +132,13 @@ public class Maze
 	/** Gives all the vertices in the list the given flag.
 	 *  @param sel is a list of the vertices to flag.
 	 *  @param flag is the flag to be added. */
-	public void setSelection(ArrayList<Vertex> sel, int flag)	{
+	public void setSelection(ArrayList<Vertex> sel, BoxFlag flag)	{
 		for(Vertex v: sel)	{
 			boxes[((Box)v).getY()][((Box)v).getX()].addFlag(flag);
 		}
 	}
 
-	public void clearSelection(ArrayList<Vertex> sel, int flag)	{
+	public void clearSelection(ArrayList<Vertex> sel, BoxFlag flag)	{
 		for(Vertex v: sel)	{
 			boxes[((Box)v).getY()][((Box)v).getX()].remFlag(flag);
 		}
@@ -163,7 +163,9 @@ public class Maze
 
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				boxes[i][j].write(out);
+				if(boxes[i][j] != null)	{
+					boxes[i][j].write(out);
+				}
 			}
 		}
 	}
@@ -206,19 +208,19 @@ public class Maze
 		while(c != -1)	{
 			Box newBox = null;
 			switch(c)	{
-				case Box.BOX_WALL:
+				case Box.WALL_ID:
 					newBox = new WallBox();
 					break;
-				case Box.BOX_EMPTY:
+				case Box.EMPTY_ID:
 					newBox = new EmptyBox();
 					break;
-				case Box.BOX_WATER:
+				case Box.WATER_ID:
 					newBox = new WaterBox();
 					break;
-				case Box.BOX_BRIDGE:
+				case Box.BRIDGE_ID:
 					newBox = new BridgeBox();
 					break;
-				case Box.BOX_STAIRS:
+				case Box.STAIRS_ID:
 					newBox = new StairsBox();
 					break;
 				default:

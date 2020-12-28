@@ -29,7 +29,7 @@ public class EmptyBox extends Box	{
 	public void write(OutputStream out)
 		throws IOException	{
 		
-		out.write(Box.BOX_EMPTY);
+		out.write(Box.EMPTY_ID);
 		writeGeneralData(out);
 	}
 
@@ -45,15 +45,16 @@ public class EmptyBox extends Box	{
 		setX(data.get(0));
 		setY(data.get(1));
 		setZ(data.get(2));
-
-		if(data.get(3) > MAX_FLAG)	{
-			throw new ReadingException((char)data.get(3).intValue(), "flags", String.format("integer between %d and %d", NO_FLAG, MAX_FLAG));
-		}
-
 		setFlags(data.get(3));
 	}
 
 	public void display()	{
-		System.out.print("O");
+		if(this.hasFlag(BoxFlag.BOX_START))	{
+			System.out.print("S");
+		} else if(this.hasFlag(BoxFlag.BOX_END))	{
+			System.out.print("E");
+		} else	{
+			System.out.print("O");
+		}
 	}
 }
