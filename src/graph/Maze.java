@@ -51,7 +51,9 @@ public class Maze
 
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				ret.add((Vertex)boxes[i][j]);	
+				if(boxes[i][j] != null)	{
+					ret.add((Vertex)boxes[i][j]);	
+				}
 			}
 		}
 
@@ -68,16 +70,16 @@ public class Maze
 		int x = b.getX();
 		int y = b.getY();
 
-		if(x > 0)	{
+		if(x > 0 && boxes[y][x - 1] != null)	{
 			ret.add((Vertex)boxes[y][x - 1]);
 		}
-		if(y > 0)	{
+		if(y > 0 && boxes[y - 1][x] != null)	{
 			ret.add((Vertex)boxes[y - 1][x]);
 		}
-		if(x + 1 < width)	{
+		if(x + 1 < width && boxes[y][x + 1] != null)	{
 			ret.add((Vertex)boxes[y][x + 1]);
 		}
-		if(y + 1 < height)	{
+		if(y + 1 < height && boxes[y + 1][x] != null)	{
 			ret.add((Vertex)boxes[y + 1][x]);
 		}
 
@@ -141,7 +143,9 @@ public class Maze
 	public void clearAll()	{
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				boxes[i][j].clearFlags();
+				if(boxes[i][j] != null)	{
+					boxes[i][j].clearFlags();
+				}
 			}
 		}
 	}
@@ -176,7 +180,7 @@ public class Maze
 
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				boxes[i][j] = new DummyBox(j, i);
+				boxes[i][j] = null;
 			}
 		}
 
@@ -230,5 +234,151 @@ public class Maze
 		}
 
 		convertBoxList(boxList);
+	}
+
+
+	public void addRow(int pos)	
+		throws MazeOutOfBounds	{
+
+		if(pos < 0 || pos > height)	{
+			throw new MazeOutOfBounds();
+		}
+
+		Box[][] temp = new Box[height + 1][width];
+
+		for(int i = 0; i < pos; i++)	{
+			for(int j = 0; j < width; j++)	{
+				temp[i][j] = boxes[i][j];
+			}
+		}
+		for(int j = 0; j < width; j++)	{
+			temp[pos][j] = null;
+		}
+		for(int i = pos; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				temp[i + 1][j] = boxes[i][j];
+				boxes[i][j].setX(j);
+				boxes[i][j].setY(i + 1);
+			}
+		}
+		boxes = temp;
+		height++;
+	}
+
+	public void remRow(int pos)	
+		throws MazeOutOfBounds	{
+
+		if(pos < 0 || pos >= height)	{
+			throw new MazeOutOfBounds();
+		}
+
+		Box[][] temp = new Box[height - 1][width];
+
+		for(int i = 0; i < pos; i++)	{
+			for(int j = 0; j < width; j++)	{
+				temp[i][j] = boxes[i][j];
+			}
+		}
+		for(int j = 0; j < width; j++)	{
+			if(boxes[pos][j] == null)	{
+				area--;
+			}
+		}
+		for(int i = pos; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				temp[i - 1][j] = boxes[i][j];
+				boxes[i][j].setX(j);
+				boxes[i][j].setY(i - 1);
+			}
+		}
+		boxes = temp;
+		height--;
+	}
+
+	public void addCol(int pos)	
+		throws MazeOutOfBounds	{
+
+		if(pos < 0 || pos > width)	{
+			throw new MazeOutOfBounds();
+		}
+
+		Box[][] temp = new Box[height][width + 1];
+
+		for(int j = 0; j < pos; j++)	{
+			for(int i = 0; i < height; i++)	{
+				temp[i][j] = boxes[i][j];
+			}
+		}
+		for(int i = 0; i < height; i++)	{
+			temp[i][pos] = null;
+		}
+		for(int j = pos; j < width; j++)	{
+			for(int i = 0; i < height; i++)	{
+				temp[i][j + 1] = boxes[i][j];
+				boxes[i][j].setX(j + 1);
+				boxes[i][j].setY(i);
+			}
+		}
+		boxes = temp;
+		width++;
+	}
+
+	public void remCol(int pos)	
+		throws MazeOutOfBounds	{
+
+		if(pos < 0 || pos >= width)	{
+			throw new MazeOutOfBounds();
+		}
+
+		Box[][] temp = new Box[height][width - 1];
+
+		for(int j = 0; j < pos; j++)	{
+			for(int i = 0; i < height; i++)	{
+				temp[i][j] = boxes[i][j];
+			}
+		}
+		for(int i = 0; i < height; i++)	{
+			if(boxes[i][pos] == null)	{
+				area--;
+			}
+		}
+		for(int j = pos; j < width; j++)	{
+			for(int i = 0; i < height; i++)	{
+				temp[i][j - 1] = boxes[i][j];
+				boxes[i][j].setX(j - 1);
+				boxes[i][j].setY(i);
+			}
+		}
+		boxes = temp;
+		width--;
+
+	}
+
+	public void addBox(Box newBox)
+		throws MazeOutOfBounds	{
+		
+		int x = newBox.getX();
+		int y = newBox.getY();
+
+		if(x < 0 || x >= width || y < 0 || y >= height)	{
+			throw new MazeOutOfBounds();
+		}
+
+		if(boxes[y][x] == null)	{
+			area--;
+		}
+
+		boxes[y][x] = newBox;
+	}
+
+	public void remBox(int x, int y)	
+		throws MazeOutOfBounds	{
+
+		if(x < 0 || x >= width || y < 0 || y >= height)	{
+			throw new MazeOutOfBounds();
+		}
+
+		boxes[y][x] = null;
+		area--;
 	}
 }

@@ -72,7 +72,7 @@ public abstract class Box
 	 *  incorrect (i.e. negative), the coordinate is not changed.
 	 *  @param x is the coordinate to be set.
 	 *  @return true if x was a correct value, false otherwise. */
-	protected boolean setX(int x)	{
+	public boolean setX(int x)	{
 		if(x >= 0)	{ this.x = x; }
 		return x >= 0;
 	}
@@ -87,7 +87,7 @@ public abstract class Box
 	 *  incorrect (i.e. negative), the coordinate is not changed.
 	 *  @param y is the coordinate to be set.
 	 *  @return true if y was a correct value, false otherwise. */
-	protected boolean setY(int y)	{
+	public boolean setY(int y)	{
 		if(y >= 0)	{ this.y = y; }
 		return y >= 0;
 	}
@@ -102,7 +102,7 @@ public abstract class Box
 	 *  incorrect (i.e. negative), the coordinate is not changed.
 	 *  @param z is the coordinate to be set.
 	 *  @return true if z was a correct value, false otherwise. */
-	protected boolean setZ(int z)	{
+	public boolean setZ(int z)	{
 		if(z >= 0)	{ this.z = z; }
 		return z >= 0;
 	}
