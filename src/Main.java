@@ -6,11 +6,11 @@ import java.io.*;
 
 public class Main	{
 	public static void main(String[] args)	{
-		MazeManager ui = new MazeManager();
+		MazeManager ui = new MazeManager(args);
 		ui.run();
 	}
 
-	public static void qmain(String[] args)	{
+/*	public static void qmain(String[] args)	{
 		FileInputStream file = null;
 		BufferedInputStream buffer = null;
 		Maze maze = new Maze();
@@ -162,4 +162,5 @@ public class Main	{
 		}
 
 	}
+*/
 }

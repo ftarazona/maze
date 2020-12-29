@@ -10,5 +10,5 @@ public class InvalidArgumentsException extends UIException	{
 		this.pos = pos;
 	}
 
-	public getMessage()	{ return "Argument " + String.valueOf(pos) + " has unexpected value " + arg; }
+	public String getMessage()	{ return "Argument " + String.valueOf(pos) + " has unexpected value " + arg; }
 }

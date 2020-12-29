@@ -8,5 +8,5 @@ public class UnknownBoxTypeException extends UIException	{
 		this.type = type;
 	}
 
-	public getMessage()	{ return "Unknown box type: " + type; }
+	public String getMessage()	{ return "Unknown box type: " + type; }
 }

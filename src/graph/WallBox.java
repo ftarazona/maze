@@ -28,7 +28,7 @@ public class WallBox extends Box	{
 	public void write(OutputStream out)	
 		throws IOException	{
 
-		out.write(Box.WALL_ID);
+		out.write(context.WALL_ID);
 		writeGeneralData(out);
 	}
 

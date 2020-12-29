@@ -23,11 +23,33 @@ public class Maze
 	private int area;
 
 	/** Constructs an empty maze */
-	public Maze()	{}
+	public Maze()	{
+	}
+
+	public Maze(int height, int width, int type)	{
+		this();
+		newMaze(height, width, type);
+	}
+
+	public void newMaze(int height, int width, int type)	{
+		boxes = new Box[height][width];
+		this.height = height;
+		this.width = width;
+		this.area = 0;
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				try	{
+					boxes[j][i] = null;
+					addBox(j, i, 0, type);
+				} catch (MazeOutOfBoundsException e) {}
+			}
+		}
+	}
 
 	/** Constructs a maze from a matrix of boxes.
 	 *  @param boxes a matrix of boxes. */
 	public Maze(Box[][] boxes)	{
+		this();
 		this.boxes = boxes;
 		this.width = boxes[0].length;
 		this.height = boxes.length;
@@ -208,19 +230,19 @@ public class Maze
 		while(c != -1)	{
 			Box newBox = null;
 			switch(c)	{
-				case Box.WALL_ID:
+				case BoxContext.WALL_ID:
 					newBox = new WallBox();
 					break;
-				case Box.EMPTY_ID:
+				case BoxContext.EMPTY_ID:
 					newBox = new EmptyBox();
 					break;
-				case Box.WATER_ID:
+				case BoxContext.WATER_ID:
 					newBox = new WaterBox();
 					break;
-				case Box.BRIDGE_ID:
+				case BoxContext.BRIDGE_ID:
 					newBox = new BridgeBox();
 					break;
-				case Box.STAIRS_ID:
+				case BoxContext.STAIRS_ID:
 					newBox = new StairsBox();
 					break;
 				default:
@@ -360,21 +382,38 @@ public class Maze
 
 	}
 
-	public void addBox(Box newBox)
+	public void addBox(int x, int y, int z, int type)
 		throws MazeOutOfBoundsException	{
-		
-		int x = newBox.getX();
-		int y = newBox.getY();
 
 		if(x < 0 || x >= width || y < 0 || y >= height)	{
 			throw new MazeOutOfBoundsException();
 		}
 
-		if(boxes[y][x] == null)	{
-			area--;
+		if(boxes[y][x] == null && type != BoxContext.NULL_ID)	{
+			area++;
 		}
 
-		boxes[y][x] = newBox;
+		Box box = null;
+		switch (type)	{
+			case BoxContext.WALL_ID:
+				box = new WallBox(x, y, z);
+				break;
+			case BoxContext.EMPTY_ID:
+				box = new EmptyBox(x, y, z);
+				break;
+			case BoxContext.WATER_ID:
+				box = new WaterBox(x, y, z, 0);
+				break;
+			case BoxContext.BRIDGE_ID:
+				box = new BridgeBox(x, y, z);
+				break;
+			case BoxContext.STAIRS_ID:
+				box = new StairsBox(x, y, z, 0);
+				break;
+			default: break;
+		}
+	
+		boxes[y][x] = box;
 	}
 
 	public void remBox(int x, int y)	

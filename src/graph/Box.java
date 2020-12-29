@@ -14,12 +14,6 @@ import fileops.ReadingException;
 public abstract class Box
 	implements Vertex, IOInterface	{
 
-	public final static int WALL_ID = 'W';
-	public final static int EMPTY_ID = 'E';
-	public final static int STAIRS_ID = 'S';
-	public final static int WATER_ID = 'O';
-	public final static int BRIDGE_ID = 'B';
-
 	/** An object counter used to ensure each object gets a unique
 	 *  ID. */
 	private static int nextID = 0;
@@ -27,26 +21,27 @@ public abstract class Box
 	private int x;
 	private int y;
 	private int z;
-	private final int id;
 	private EnumSet<BoxFlag> flags;
+	private final int id;
+	protected final BoxContext context;
 
 	/** Constructs a Box with coordinates (0, 0, 0) and no flag.
 	 *  This box however should not be used unless a call to 
 	 *  IO method read has been processed successfully. */
 	public Box()	{
+		context = new BoxContext();
 		this.id = nextID;
 		nextID++;
+		this.flags = EnumSet.noneOf(BoxFlag.class);
 	}
 
 	/** Constructs a Box with given coordinates and no flag.
 	 *  @param x, y, z are the coordinates of the Box. */
 	public Box(int x, int y, int z)	{
+		this();
 		this.x = x;
 		this.y = y;
 		this.z = z;
-		this.id = nextID;
-		nextID++;
-		this.flags = EnumSet.noneOf(BoxFlag.class);
 	}
 
 	/** Returns the ID of the box.

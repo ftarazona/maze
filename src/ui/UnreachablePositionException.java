@@ -10,6 +10,6 @@ public class UnreachablePositionException extends UIException	{
 		this.y = y;
 	}
 
-	public getMessage()	{ return "Position " + String.valueOf(x) + " , " + String.valueOf(y) + " could not be reached."; }
+	public String getMessage()	{ return "Position " + String.valueOf(x) + " , " + String.valueOf(y) + " could not be reached."; }
 }
 

@@ -10,5 +10,5 @@ public class IncorrectUsageException extends UIException	{
 		this.nArgsRec = rec;
 	}
 
-	public getMessage()	{ return "Expected " + String.valueOf(nArgsExp + " arguments but received " + String.valueOf(nArgsRec) + "."; }
+	public String getMessage()	{ return "Expected " + String.valueOf(nArgsExp) + " arguments but received " + String.valueOf(nArgsRec) + "."; }
 }

@@ -4,9 +4,9 @@ public class UnknownCommandException extends UIException	{
 	
 	private final String cmd;
 
-	public UnknownCommadException(String cmd)	{
+	public UnknownCommandException(String cmd)	{
 		this.cmd = cmd;
 	}
 
-	public getMessage()	{ return "Unknown command: " + cmd; }
+	public String getMessage()	{ return "Unknown command: " + cmd; }
 }

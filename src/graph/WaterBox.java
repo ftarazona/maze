@@ -33,7 +33,7 @@ public class WaterBox extends Box	{
 	public void write(OutputStream out)
 		throws IOException	{
 	
-		out.write(Box.WATER_ID);
+		out.write(context.WATER_ID);
 		if(deep)	{
 			out.write(1);
 		}

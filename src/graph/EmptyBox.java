@@ -29,7 +29,7 @@ public class EmptyBox extends Box	{
 	public void write(OutputStream out)
 		throws IOException	{
 		
-		out.write(Box.EMPTY_ID);
+		out.write(context.EMPTY_ID);
 		writeGeneralData(out);
 	}
 
