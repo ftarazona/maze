@@ -244,10 +244,10 @@ public class Maze
 
 
 	public void addRow(int pos)	
-		throws MazeOutOfBounds	{
+		throws MazeOutOfBoundsException	{
 
 		if(pos < 0 || pos > height)	{
-			throw new MazeOutOfBounds();
+			throw new MazeOutOfBoundsException();
 		}
 
 		Box[][] temp = new Box[height + 1][width];
@@ -272,10 +272,10 @@ public class Maze
 	}
 
 	public void remRow(int pos)	
-		throws MazeOutOfBounds	{
+		throws MazeOutOfBoundsException	{
 
 		if(pos < 0 || pos >= height)	{
-			throw new MazeOutOfBounds();
+			throw new MazeOutOfBoundsException();
 		}
 
 		Box[][] temp = new Box[height - 1][width];
@@ -302,10 +302,10 @@ public class Maze
 	}
 
 	public void addCol(int pos)	
-		throws MazeOutOfBounds	{
+		throws MazeOutOfBoundsException	{
 
 		if(pos < 0 || pos > width)	{
-			throw new MazeOutOfBounds();
+			throw new MazeOutOfBoundsException();
 		}
 
 		Box[][] temp = new Box[height][width + 1];
@@ -330,10 +330,10 @@ public class Maze
 	}
 
 	public void remCol(int pos)	
-		throws MazeOutOfBounds	{
+		throws MazeOutOfBoundsException	{
 
 		if(pos < 0 || pos >= width)	{
-			throw new MazeOutOfBounds();
+			throw new MazeOutOfBoundsException();
 		}
 
 		Box[][] temp = new Box[height][width - 1];
@@ -361,13 +361,13 @@ public class Maze
 	}
 
 	public void addBox(Box newBox)
-		throws MazeOutOfBounds	{
+		throws MazeOutOfBoundsException	{
 		
 		int x = newBox.getX();
 		int y = newBox.getY();
 
 		if(x < 0 || x >= width || y < 0 || y >= height)	{
-			throw new MazeOutOfBounds();
+			throw new MazeOutOfBoundsException();
 		}
 
 		if(boxes[y][x] == null)	{
@@ -378,10 +378,10 @@ public class Maze
 	}
 
 	public void remBox(int x, int y)	
-		throws MazeOutOfBounds	{
+		throws MazeOutOfBoundsException	{
 
 		if(x < 0 || x >= width || y < 0 || y >= height)	{
-			throw new MazeOutOfBounds();
+			throw new MazeOutOfBoundsException();
 		}
 
 		boxes[y][x] = null;

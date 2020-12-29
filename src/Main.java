@@ -1,10 +1,16 @@
 import graph.*;
 import dijkstra.*;
 import fileops.*;
+import ui.*;
 import java.io.*;
 
 public class Main	{
 	public static void main(String[] args)	{
+		MazeManager ui = new MazeManager();
+		ui.run();
+	}
+
+	public static void qmain(String[] args)	{
 		FileInputStream file = null;
 		BufferedInputStream buffer = null;
 		Maze maze = new Maze();
@@ -30,7 +36,7 @@ public class Main	{
 			maze.remBox(3, 3);
 			maze.addBox(new WaterBox(2, 2, 0, 0));
 			maze.addBox(new EmptyBox(3, 3, 0));
-		} catch (MazeOutOfBounds e)	{
+		} catch (MazeOutOfBoundsException e)	{
 			System.out.println("Caught an error.");
 		}
 
