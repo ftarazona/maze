@@ -22,6 +22,8 @@ public class UIContext	{
 		cmdTab.put("addcol", new EDIT_AddCol(maze));
 		cmdTab.put("remrow", new EDIT_RemRow(maze));
 		cmdTab.put("remcol", new EDIT_RemCol(maze));
+		cmdTab.put("addbox", new EDIT_AddBox(maze));
+		cmdTab.put("rembox", new EDIT_RemBox(maze));
 	}
 	
 	public void setBoxTab()	{

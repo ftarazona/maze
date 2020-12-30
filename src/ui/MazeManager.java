@@ -11,6 +11,7 @@ import java.io.PrintStream;
 import java.io.InputStream;
 import java.io.FileInputStream;
 import java.io.OutputStream;
+import java.io.IOException;
 
 public class MazeManager implements UserInterface	{
 	
@@ -28,6 +29,7 @@ public class MazeManager implements UserInterface	{
 		stop = false;
 		context = new UIContext();
 		context.setCommandTab(maze);
+		context.setBoxTab();
 		out = System.out;
 		in = System.in;
 	}
@@ -43,29 +45,43 @@ public class MazeManager implements UserInterface	{
 	}
 
 	public void run(String[] args)	{
-		int i = 1;
-
+		int i = 0;
 		while(i < args.length)	{
 			if(args[i].equals("--script") || args[i].equals("-s"))	{
 				i++;
+				FileReader file = null;
+				BufferedReader script = null;
 				try	{
-					BufferedReader script = new BufferedReader(new FileReader(args[i]));
+					file = new FileReader(args[i]);
+					script = new BufferedReader(file);
 					while((cmd = script.readLine()) != null)	{
 						exec();
 					}
+					script.close();
+					file.close();
 				} catch (IndexOutOfBoundsException e)	{
 					System.out.println(usage());
 					return;
 				} catch (Exception e)	{
 					System.out.println("An error occured while loading the specified script : " + e.getMessage());
 					System.out.println("Cancelling...");
-					String[] newArgs = {"new"};
 					try	{
-					context.command("new").run(newArgs);	} catch (Exception f)	{}
+						maze.newMaze(0, 0, context.boxType("null"));
+					} catch (Exception f)	{
+						System.out.println("Could not access context : " + f.getMessage());
+					}
+				} finally	{
+					try	{
+						script.close();
+						file.close();
+					} catch (Exception e)	{
+						System.out.println("An error occured while closing the script : " + e.getMessage());
+					}
 				}
 			}
 			i++;
 		}
+		cmd = "";
 
 		while(!stop)	{
 			if(!cmd.isEmpty())	{
@@ -123,6 +139,8 @@ public class MazeManager implements UserInterface	{
 			print(context.command("addcol").description());
 			print(context.command("remrow").description());
 			print(context.command("remcol").description());
+			print(context.command("addbox").description());
+			print(context.command("rembox").description());
 		} catch	(UnknownCommandException e)	{
 			println(e.getMessage());
 		}

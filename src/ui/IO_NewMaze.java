@@ -16,7 +16,7 @@ public class IO_NewMaze implements CommandInterface	{
 	public void run(String[] args)	
 		throws UIException	{
 		
-		if(args.length > 4)	{ throw new IncorrectUsageException(4, args.length); }
+		if(args.length == 1 || args.length > 4)	{ throw new IncorrectUsageException(4, args.length); }
 
 		int usage = 3;
 		int width = 0, height = 0, type = context.boxType("null");
@@ -33,10 +33,7 @@ public class IO_NewMaze implements CommandInterface	{
 			width = Integer.parseInt(args[2]);
 		} catch (NumberFormatException e)	{
 			throw new InvalidArgumentsException(args[2], 2);
-		} catch (IndexOutOfBoundsException e)	{
-			throw new IncorrectUsageException(2, args.length);
 		}
-
 		try	{
 			type = context.boxType(args[3]);
 		} catch (IndexOutOfBoundsException e)	{
