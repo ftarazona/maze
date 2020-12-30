@@ -18,11 +18,12 @@ public class MazeManager implements UserInterface	{
 		maze = new Maze();
 		stop = false;
 		context = new UIContext();
+		context.setCommandTab(maze);
 	}
 
 	public void run()	{
-		while(stop == false)	{
-			if(cmd.isEmpty() == false)	{
+		while(!stop)	{
+			if(!cmd.isEmpty())	{
 				exec();
 			} else	{
 				getCmd();
@@ -40,9 +41,7 @@ public class MazeManager implements UserInterface	{
 		String[] args = cmd.toLowerCase().split(" ");
 		cmd = "";
 
-		if(args[0] == "quit")	{
-			stop = true;
-		}
+		if(args[0].equals("quit"))	{ quit(); }
 		else	{
 			try	{
 				context.command(args[0]).run(args);
@@ -50,5 +49,9 @@ public class MazeManager implements UserInterface	{
 				System.out.println(e.getMessage());
 			}
 		}
+	}
+
+	private void quit()	{
+		stop = true;
 	}
 }

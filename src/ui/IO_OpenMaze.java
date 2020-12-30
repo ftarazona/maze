@@ -23,6 +23,8 @@ public class IO_OpenMaze implements CommandInterface	{
 			file = new FileInputStream(args[1]);
 			bs = new BufferedInputStream(file);
 			maze.read(bs);
+			bs.close();
+			file.close();
 		} catch (IndexOutOfBoundsException e)	{
 			throw new IncorrectUsageException(2, args.length);
 		} catch (Exception e)	{

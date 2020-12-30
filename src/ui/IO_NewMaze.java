@@ -1,18 +1,16 @@
 package ui;
 
 import graph.Maze;
-import graph.BoxContext;
 
 public class IO_NewMaze implements CommandInterface	{
 	
 	private Maze maze;
 	private final UIContext context;
-	private final BoxContext boxcontext;
 
 	public IO_NewMaze(Maze maze)	{
 		this.maze = maze;
 		this.context = new UIContext();
-		this.boxcontext = new BoxContext();
+		context.setBoxTab();
 	}
 
 	public void run(String[] args)	
@@ -21,7 +19,7 @@ public class IO_NewMaze implements CommandInterface	{
 		if(args.length > 4)	{ throw new IncorrectUsageException(4, args.length); }
 
 		int usage = 3;
-		int width = 0, height = 0, type = BoxContext.NULL_ID;
+		int width = 0, height = 0, type = context.boxType("null");
 
 		try	{
 			height = Integer.parseInt(args[1]);
@@ -47,8 +45,8 @@ public class IO_NewMaze implements CommandInterface	{
 			throw e;
 		}
 
-		if(usage == 1)	{ maze.newMaze(0, 0, boxcontext.NULL_ID); }
-		else if(usage == 2)	{ maze.newMaze(height, width, boxcontext.NULL_ID); }
+		if(usage == 1)	{ maze.newMaze(0, 0, context.boxType("null")); }
+		else if(usage == 2)	{ maze.newMaze(height, width, context.boxType("null")); }
 		else	{ maze.newMaze(height, width, type); }
 	}
 

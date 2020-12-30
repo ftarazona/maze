@@ -39,7 +39,7 @@ public class Maze
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
 				try	{
-					boxes[j][i] = null;
+					boxes[i][j] = null;
 					addBox(j, i, 0, type);
 				} catch (MazeOutOfBoundsException e) {}
 			}
@@ -63,7 +63,6 @@ public class Maze
 					boxes[i][j].display();
 				}
 				else	{
-					System.out.print(" ");
 				}
 			}
 			System.out.println("");
@@ -412,7 +411,7 @@ public class Maze
 				break;
 			default: break;
 		}
-	
+		
 		boxes[y][x] = box;
 	}
 
