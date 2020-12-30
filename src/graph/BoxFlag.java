@@ -3,17 +3,12 @@ package graph;
 import java.util.EnumSet;
 
 public enum BoxFlag	{
-	BOX_NO_FLAG,
 	BOX_START,
 	BOX_END,
 	BOX_MARKED;
 
 	public int toInt()	{
 		return 1 << this.ordinal();
-	}
-
-	static public int MAX_FLAG()	{
-		return BOX_NO_FLAG.toInt() + BOX_START.toInt() + BOX_END.toInt() + BOX_MARKED.toInt();
 	}
 
 	static public int BoxFlagsToInt(EnumSet<BoxFlag> flags)	{

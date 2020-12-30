@@ -46,7 +46,6 @@ public class UIContext	{
 
 	public void setFlagTab()	{
 		flagTab = new HashMap<String, BoxFlag>();
-		flagTab.put("null", BoxFlag.BOX_NO_FLAG);
 		flagTab.put("start", BoxFlag.BOX_START);
 		flagTab.put("end", BoxFlag.BOX_END);
 		flagTab.put("marked", BoxFlag.BOX_MARKED);
