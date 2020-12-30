@@ -45,6 +45,6 @@ public class PiFunction
 	 *  @param dist is the new distance to be written.
 	 */
 	public void set(Vertex vertex, int dist)	{
-		table.put(vertex, new Integer(dist));
+		table.put(vertex, Integer.valueOf(dist));
 	}
 }

@@ -1,7 +1,8 @@
 package ui;
 
 public class IncorrectUsageException extends UIException	{
-
+	
+	public static final long serialVersionUID = 202012301425L;
 	private final int nArgsExp;
 	private final int nArgsRec;
 

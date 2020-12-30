@@ -36,7 +36,7 @@ public class StairsBox extends Box	{
 	public void write(OutputStream out)
 		throws IOException	{
 
-		out.write(context.STAIRS_ID);
+		out.write(BoxContext.STAIRS_ID);
 		out.write(dir);
 		writeGeneralData(out);
 	}

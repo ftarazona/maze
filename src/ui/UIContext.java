@@ -36,12 +36,12 @@ public class UIContext	{
 	
 	public void setBoxTab()	{
 		boxIDs = new HashMap<String, Integer>();
-		boxIDs.put("null", new Integer(BoxContext.NULL_ID));
-		boxIDs.put("wall", new Integer(BoxContext.WALL_ID));
-		boxIDs.put("empty", new Integer(BoxContext.EMPTY_ID));
-		boxIDs.put("water", new Integer(BoxContext.WATER_ID));
-		boxIDs.put("bridge", new Integer(BoxContext.BRIDGE_ID));
-		boxIDs.put("stairs", new Integer(BoxContext.STAIRS_ID));
+		boxIDs.put("null", Integer.valueOf(BoxContext.NULL_ID));
+		boxIDs.put("wall", Integer.valueOf(BoxContext.WALL_ID));
+		boxIDs.put("empty", Integer.valueOf(BoxContext.EMPTY_ID));
+		boxIDs.put("water", Integer.valueOf(BoxContext.WATER_ID));
+		boxIDs.put("bridge", Integer.valueOf(BoxContext.BRIDGE_ID));
+		boxIDs.put("stairs", Integer.valueOf(BoxContext.STAIRS_ID));
 	}
 
 	public void setFlagTab()	{

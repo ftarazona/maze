@@ -2,6 +2,7 @@ package fileops;
 
 public class ReadingException extends Exception	{
 
+	public static final long serialVersionUID = 202012301431L;
 	private char unexpected;
 	private String type;
 	private String expected;

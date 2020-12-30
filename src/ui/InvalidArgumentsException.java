@@ -1,7 +1,8 @@
 package ui;
 
 public class InvalidArgumentsException extends UIException	{
-	
+
+	public static final long serialVersionUID = 202012301429L;
 	private final String arg;
 	private final int pos;
 

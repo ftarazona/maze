@@ -28,7 +28,7 @@ public class BridgeBox extends Box	{
 	public void write(OutputStream out)
 		throws IOException	{
 		
-		out.write(context.BRIDGE_ID);
+		out.write(BoxContext.BRIDGE_ID);
 		writeGeneralData(out);
 	}
 

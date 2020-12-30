@@ -1,7 +1,8 @@
 package fileops;
 
 public class BadFormatException extends Exception	{
-	
+
+	public static final long serialVersionUID = 202012301431L;
 	private int expected;
 	private int received;
 

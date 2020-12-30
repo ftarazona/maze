@@ -192,7 +192,7 @@ public abstract class Box
 		int i = in.read();
 
 		while(i != 255 && i != -1)	{
-			data.add(new Integer(i));
+			data.add(Integer.valueOf(i));
 			i = in.read();
 		}
 
