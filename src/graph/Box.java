@@ -111,7 +111,15 @@ public abstract class Box
 	 *  @return true if the box carries the flag, false otherwise.
 	 *  If the flag is invalid, returns false. */
 	public boolean hasFlag(BoxFlag flag)	{
-		return flags.contains(flag);
+		if(flag.equals(BoxFlag.BOX_NO_FLAG))	{
+			return hasNoFlag();
+		} else	{
+			return flags.contains(flag);
+		}
+	}
+
+	public boolean hasNoFlag()	{
+		return flags.isEmpty();
 	}
 
 	/** Sets the flags to a given value. There is no guarantee for
@@ -142,6 +150,26 @@ public abstract class Box
 	/** Clears all flags. */
 	public void clearFlags()	{
 		this.flags.clear();
+	}
+
+	public void displayFlag(BoxFlag flag)	{
+		if(hasFlag(flag))	{
+			System.out.print("X");
+		} else	{
+			System.out.print(" ");
+		}
+	}
+
+	public void displayFlags()	{
+		if(hasFlag(BoxFlag.BOX_START))	{
+			System.out.print("S");
+		} else if(hasFlag(BoxFlag.BOX_END))	{
+			System.out.print("E");
+		} else if(hasFlag(BoxFlag.BOX_MARKED))	{
+			System.out.print("X");
+		} else	{
+			System.out.print(" ");
+		}
 	}
 
 	/** Writes the coordinates and the flags of the box in an

@@ -49,12 +49,6 @@ public class EmptyBox extends Box	{
 	}
 
 	public void display()	{
-		if(this.hasFlag(BoxFlag.BOX_START))	{
-			System.out.print("S");
-		} else if(this.hasFlag(BoxFlag.BOX_END))	{
-			System.out.print("E");
-		} else	{
-			System.out.print("O");
-		}
+		System.out.print("O");
 	}
 }

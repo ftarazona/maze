@@ -135,12 +135,18 @@ public class MazeManager implements UserInterface	{
 			print(context.command("open").description());
 			print(context.command("save").description());
 			print(context.command("display").description());
+			print(context.command("displayflag").description());
+			print(context.command("displayflags").description());
+			print(context.command("displayall").description());
 			print(context.command("addrow").description());
 			print(context.command("addcol").description());
 			print(context.command("remrow").description());
 			print(context.command("remcol").description());
 			print(context.command("addbox").description());
 			print(context.command("rembox").description());
+			print(context.command("addflag").description());
+			print(context.command("remflag").description());
+			print(context.command("setroot").description());
 		} catch	(UnknownCommandException e)	{
 			println(e.getMessage());
 		}

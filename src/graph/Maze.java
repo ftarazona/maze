@@ -76,6 +76,72 @@ public class Maze
 		}
 	}
 
+	public void displayAll()	{
+		System.out.print("  ");
+		for(int j = 0; j < width; j++)	{
+			System.out.print(j);
+		}
+		System.out.println("");
+		for(int i = 0; i < height; i++)	{
+			System.out.print(i + " ");
+			for(int j = 0; j < width; j++)	{
+				if(boxes[i][j] != null)	{
+					if(boxes[i][j].hasNoFlag())	{
+						boxes[i][j].display();
+					} else	{
+						boxes[i][j].displayFlags();
+					}
+				}
+				else	{
+					System.out.print(" ");
+				}
+			}
+			System.out.println("");
+		}
+	}
+
+
+	public void display(BoxFlag flag)	{
+		System.out.print("  ");
+		for(int j = 0; j < width; j++)	{
+			System.out.print(j);
+		}
+		System.out.println("");
+		for(int i = 0; i < height; i++)	{
+			System.out.print(i + " ");
+			for(int j = 0; j < width; j++)	{
+				if(boxes[i][j] != null)	{
+					boxes[i][j].displayFlag(flag);
+				}
+				else	{
+					System.out.print(" ");
+				}
+			}
+			System.out.println("");
+		}
+	}
+
+	public void displayFlags()	{
+		System.out.print("  ");
+		for(int j = 0; j < width; j++)	{
+			System.out.print(j);
+		}
+		System.out.println("");
+		for(int i = 0; i < height; i++)	{
+			System.out.print(i + " ");
+			for(int j = 0; j < width; j++)	{
+				if(boxes[i][j] != null && !boxes[i][j].hasNoFlag())	{
+					boxes[i][j].displayFlags();
+				}
+				else	{
+					System.out.print(" ");
+				}
+			}
+			System.out.println("");
+		}
+	}
+
+
 	/** Returns a list of all the vertices in the graph, including
 	 *  DummyBoxes.
 	 *  @return a list of all the vertices. */
@@ -163,6 +229,46 @@ public class Maze
 	public void setSelection(ArrayList<Vertex> sel, BoxFlag flag)	{
 		for(Vertex v: sel)	{
 			boxes[((Box)v).getY()][((Box)v).getX()].addFlag(flag);
+		}
+	}
+
+	public void addFlag(int x, int y, BoxFlag flag)	
+		throws MazeOutOfBoundsException	{
+		if(flag.equals(BoxFlag.BOX_START))	{
+			setRoot(x, y);
+		} else	{
+			try	{
+				boxes[y][x].addFlag(flag);
+			} catch (IndexOutOfBoundsException e)	{
+				throw new MazeOutOfBoundsException();
+			}
+		}
+	}
+
+	public boolean setRoot(int x, int y)	
+		throws MazeOutOfBoundsException	{
+		try	{
+			boxes[y][x].addFlag(BoxFlag.BOX_START);
+		} catch (IndexOutOfBoundsException e)	{
+			throw new MazeOutOfBoundsException();
+		}
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				if(i != y || j != x && boxes[j][i].hasFlag(BoxFlag.BOX_START))	{
+					boxes[i][j].remFlag(BoxFlag.BOX_START);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	public void remFlag(int x, int y, BoxFlag flag)	
+		throws MazeOutOfBoundsException	{
+		try	{
+			boxes[y][x].remFlag(flag);
+		} catch (IndexOutOfBoundsException e)	{
+			throw new MazeOutOfBoundsException();
 		}
 	}
 
