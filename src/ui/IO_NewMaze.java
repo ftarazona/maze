@@ -40,14 +40,17 @@ public class IO_NewMaze implements CommandInterface	{
 		try	{
 			type = context.boxType(args[3]);
 		} catch (IndexOutOfBoundsException e)	{
-			usage = 2;
+			type = context.boxType("null");
 		} catch (UnknownBoxTypeException e)	{
 			throw e;
 		}
 
 		if(usage == 1)	{ maze.newMaze(0, 0, context.boxType("null")); }
-		else if(usage == 2)	{ maze.newMaze(height, width, context.boxType("null")); }
 		else	{ maze.newMaze(height, width, type); }
+	}
+
+	public String description()	{
+		return "new - Creates a new maze with given dimensions.\n";
 	}
 
 	public String usage()	{

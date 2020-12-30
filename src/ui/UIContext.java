@@ -1,6 +1,7 @@
 package ui;
 
 import java.util.HashMap;
+import java.util.Collection;
 import graph.Maze;
 import graph.BoxContext;
 
@@ -17,6 +18,10 @@ public class UIContext	{
 		cmdTab.put("open", new IO_OpenMaze(maze));
 		cmdTab.put("save", new IO_SaveMaze(maze));
 		cmdTab.put("display", new DISPLAY_DisplayMaze(maze));
+		cmdTab.put("addrow", new EDIT_AddRow(maze));
+		cmdTab.put("addcol", new EDIT_AddCol(maze));
+		cmdTab.put("remrow", new EDIT_RemRow(maze));
+		cmdTab.put("remcol", new EDIT_RemCol(maze));
 	}
 	
 	public void setBoxTab()	{
@@ -45,5 +50,9 @@ public class UIContext	{
 			throw new UnknownCommandException(str);
 		}
 		return cmd;
+	}
+
+	public Collection<CommandInterface> allCommands()	{
+		return cmdTab.values();
 	}
 }

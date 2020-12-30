@@ -15,7 +15,7 @@ public class IO_OpenMaze implements CommandInterface	{
 
 	public void run(String[] args)	
 		throws UIException	{
-		if(args.length > 2)	{ throw new IncorrectUsageException(2, args.length); }
+		if(args.length == 1 || args.length > 2)	{ throw new IncorrectUsageException(2, args.length); }
 
 		FileInputStream file = null;
 		BufferedInputStream bs = null;
@@ -25,11 +25,13 @@ public class IO_OpenMaze implements CommandInterface	{
 			maze.read(bs);
 			bs.close();
 			file.close();
-		} catch (IndexOutOfBoundsException e)	{
-			throw new IncorrectUsageException(2, args.length);
 		} catch (Exception e)	{
 			throw new ReadingException(e.getMessage());
 		}
+	}
+
+	public String description()	{
+		return "open - Reads a maze from a given file.\n";
 	}
 
 	public String usage()	{

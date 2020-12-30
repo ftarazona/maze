@@ -19,6 +19,10 @@ public class DISPLAY_DisplayMaze implements CommandInterface	{
 		System.out.println("");
 	}
 
+	public String description()	{
+		return "display - Displays the maze on the selected output.\n";
+	}
+
 	public String usage()	{
 		return "display\n";
 	}

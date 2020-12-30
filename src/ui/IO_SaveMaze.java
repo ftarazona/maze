@@ -14,7 +14,7 @@ public class IO_SaveMaze implements CommandInterface	{
 
 	public void run(String[] args)	
 		throws UIException	{
-		if(args.length > 2)	{ throw new IncorrectUsageException(2, args.length); }
+		if(args.length == 1 || args.length > 2)	{ throw new IncorrectUsageException(2, args.length); }
 
 		FileOutputStream file = null;
 		BufferedOutputStream bs = null;
@@ -24,11 +24,13 @@ public class IO_SaveMaze implements CommandInterface	{
 			maze.write(bs);
 			bs.close();
 			file.close();
-		} catch (IndexOutOfBoundsException e)	{
-			throw new IncorrectUsageException(2, args.length);
 		} catch (Exception e)	{
 			throw new WritingException(e.getMessage());
 		}
+	}
+
+	public String description()	{
+		return "save - Writes the current maze in given file.\n";
 	}
 
 	public String usage()	{

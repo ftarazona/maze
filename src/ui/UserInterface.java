@@ -2,5 +2,5 @@ package ui;
 
 public interface UserInterface	{
 
-	public void run();
+	public void run(String[] args);
 }

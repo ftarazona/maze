@@ -6,4 +6,5 @@ public interface CommandInterface	{
 		throws UIException;
 
 	public String usage();
+	public String description();
 }

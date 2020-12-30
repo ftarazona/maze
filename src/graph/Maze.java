@@ -57,12 +57,19 @@ public class Maze
 
 
 	public void display()	{
+		System.out.print("  ");
+		for(int j = 0; j < width; j++)	{
+			System.out.print(j);
+		}
+		System.out.println("");
 		for(int i = 0; i < height; i++)	{
+			System.out.print(i + " ");
 			for(int j = 0; j < width; j++)	{
 				if(boxes[i][j] != null)	{
 					boxes[i][j].display();
 				}
 				else	{
+					System.out.print(" ");
 				}
 			}
 			System.out.println("");
@@ -264,7 +271,7 @@ public class Maze
 	}
 
 
-	public void addRow(int pos)	
+	public void addRow(int pos, int type)	
 		throws MazeOutOfBoundsException	{
 
 		if(pos < 0 || pos > height)	{
@@ -284,12 +291,18 @@ public class Maze
 		for(int i = pos; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
 				temp[i + 1][j] = boxes[i][j];
-				boxes[i][j].setX(j);
-				boxes[i][j].setY(i + 1);
+				if(boxes[i][j] != null)	{
+					boxes[i][j].setX(j);
+					boxes[i][j].setY(i + 1);
+				}
 			}
 		}
 		boxes = temp;
 		height++;
+		
+		for(int j = 0; j < width; j++)	{
+			addBox(j, pos, 0, type);
+		}
 	}
 
 	public void remRow(int pos)	
@@ -314,15 +327,17 @@ public class Maze
 		for(int i = pos; i < height - 1; i++)	{
 			for(int j = 0; j < width; j++)	{
 				temp[i][j] = boxes[i + 1][j];
-				boxes[i][j].setX(j);
-				boxes[i][j].setY(i - 1);
+				if(boxes[i + 1][j] != null)	{
+					boxes[i + 1][j].setX(j);
+					boxes[i + 1][j].setY(i);
+				}
 			}
 		}
 		boxes = temp;
 		height--;
 	}
 
-	public void addCol(int pos)	
+	public void addCol(int pos, int type)	
 		throws MazeOutOfBoundsException	{
 
 		if(pos < 0 || pos > width)	{
@@ -330,7 +345,7 @@ public class Maze
 		}
 
 		Box[][] temp = new Box[height][width + 1];
-
+		
 		for(int j = 0; j < pos; j++)	{
 			for(int i = 0; i < height; i++)	{
 				temp[i][j] = boxes[i][j];
@@ -342,12 +357,17 @@ public class Maze
 		for(int j = pos; j < width; j++)	{
 			for(int i = 0; i < height; i++)	{
 				temp[i][j + 1] = boxes[i][j];
-				boxes[i][j].setX(j + 1);
-				boxes[i][j].setY(i);
+				if(boxes[i][j] != null)	{
+					boxes[i][j].setX(j + 1);
+					boxes[i][j].setY(i);
+				}
 			}
 		}
 		boxes = temp;
 		width++;
+		for(int i = 0; i < height; i++)	{
+			addBox(pos, i, 0, type);
+		}
 	}
 
 	public void remCol(int pos)	
@@ -372,8 +392,10 @@ public class Maze
 		for(int j = pos; j < width - 1; j++)	{
 			for(int i = 0; i < height; i++)	{
 				temp[i][j] = boxes[i][j + 1];
-				boxes[i][j].setX(j - 1);
-				boxes[i][j].setY(i);
+				if(boxes[i][j + 1] != null)	{
+					boxes[i][j + 1].setX(j);
+					boxes[i][j + 1].setY(i);
+				}
 			}
 		}
 		boxes = temp;
