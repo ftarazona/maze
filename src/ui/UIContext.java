@@ -5,6 +5,7 @@ import java.util.Collection;
 import graph.Maze;
 import graph.BoxFlag;
 import graph.BoxContext;
+import dijkstra.*;
 
 public class UIContext	{
 	private HashMap<String, Integer> boxIDs;
@@ -14,7 +15,7 @@ public class UIContext	{
 	public UIContext()	{
 	}
 
-	public void setCommandTab(Maze maze)	{
+	public void setCommandTab(Maze maze, PiFunction pi, PreviousFunction prev)	{
 		cmdTab = new HashMap<String, CommandInterface>();
 		cmdTab.put("new", new IO_NewMaze(maze));
 		cmdTab.put("open", new IO_OpenMaze(maze));
@@ -29,9 +30,11 @@ public class UIContext	{
 		cmdTab.put("remcol", new EDIT_RemCol(maze));
 		cmdTab.put("addbox", new EDIT_AddBox(maze));
 		cmdTab.put("rembox", new EDIT_RemBox(maze));
-		cmdTab.put("addflag", new EDIT_AddFlag(maze));
-		cmdTab.put("remflag", new EDIT_RemFlag(maze));
-		cmdTab.put("setroot", new EDIT_SetRoot(maze));
+		cmdTab.put("addflag", new EDIT_AddFlag(maze, pi, prev));
+		cmdTab.put("remflag", new EDIT_RemFlag(maze, pi, prev));
+		cmdTab.put("setroot", new EDIT_SetRoot(maze, pi, prev));
+		cmdTab.put("dijkstra", new DIJKSTRA_Dijkstra(maze, pi, prev));
+		cmdTab.put("tracepath", new DIJKSTRA_TracePath(maze, pi, prev));
 	}
 	
 	public void setBoxTab()	{

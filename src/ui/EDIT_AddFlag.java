@@ -1,14 +1,19 @@
 package ui;
 
 import graph.*;
+import dijkstra.*;
 
 public class EDIT_AddFlag implements CommandInterface	{
 
 	private Maze maze;
+	private PiFunction pi;
+	private PreviousFunction prev;
 	private UIContext context;
 
-	public EDIT_AddFlag(Maze maze)	{
+	public EDIT_AddFlag(Maze maze, PiFunction pi, PreviousFunction prev)	{
 		this.maze = maze;
+		this.pi = pi;
+		this.prev = prev;
 		this.context = new UIContext();
 		context.setFlagTab();
 	}
@@ -35,6 +40,10 @@ public class EDIT_AddFlag implements CommandInterface	{
 		}
 		
 		flag = context.flag(args[3]);
+		if(flag.equals(BoxFlag.BOX_START))	{
+			pi.clear();
+			prev.clear();
+		}
 
 		try	{
 			maze.addFlag(x, y, flag);

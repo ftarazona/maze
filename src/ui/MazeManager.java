@@ -16,6 +16,8 @@ import java.io.IOException;
 public class MazeManager implements UserInterface	{
 	
 	private Maze maze;
+	private PiFunction pi;
+	private PreviousFunction prev;
 
 	private String cmd;
 	private UIContext context;
@@ -26,9 +28,11 @@ public class MazeManager implements UserInterface	{
 	public MazeManager()	{
 		cmd = new String();
 		maze = new Maze();
+		pi = new PiFunction();
+		prev = new PreviousFunction();
 		stop = false;
 		context = new UIContext();
-		context.setCommandTab(maze);
+		context.setCommandTab(maze, pi, prev);
 		context.setBoxTab();
 		out = System.out;
 		in = System.in;

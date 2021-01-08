@@ -110,7 +110,7 @@ public class Maze
 		for(int i = 0; i < height; i++)	{
 			System.out.print(i + " ");
 			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j] != null)	{
+				if(boxes[i][j] != null && boxes[i][j].hasFlag(flag))	{
 					boxes[i][j].displayFlag(flag);
 				}
 				else	{
@@ -189,6 +189,10 @@ public class Maze
 	 *  @param src and dst are the two vertices to consider.
 	 *  @return the distance between src and dst. */
 	public int distance(Vertex src, Vertex dst)	{
+		if(src == null || dst == null)	{
+			return distant;
+		}
+
 		int wsrc = ((Box)src).getPracticability();
 		int wdst = ((Box)dst).getPracticability();
 		
@@ -552,5 +556,15 @@ public class Maze
 
 		boxes[y][x] = null;
 		area--;
+	}
+
+	public Box getBox(int x, int y)
+		throws MazeOutOfBoundsException	{
+
+		if(x < 0 || x >= width || y < 0 || y >= height || boxes[y][x] == null)	{
+			throw new MazeOutOfBoundsException();
+		}
+
+		return boxes[y][x];
 	}
 }

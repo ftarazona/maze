@@ -25,6 +25,10 @@ public class PreviousFunction
 		table = new HashMap<Vertex, Vertex>();
 	}
 
+	public void clear()	{
+		table.clear();
+	}
+
 	/** Gets the parent of a given vertex. If the vertex was not
 	 *  visited yet, the value returned is the vertex itself.
 	 *  @param v is the vertex to be looked for.

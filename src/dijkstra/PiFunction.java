@@ -22,6 +22,10 @@ public class PiFunction
 		table = new HashMap<Vertex, Integer>();
 	}
 
+	public void clear()	{
+		table.clear();
+	}
+
 	/** Gets the value of the function for a given vertex. Note
 	 *  that if the given vertex is not yet in the set, OR DEFINED
 	 *  IN THE GRAPH, this method tells the vertex is distant.
