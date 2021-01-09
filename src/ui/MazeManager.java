@@ -69,8 +69,9 @@ public class MazeManager implements UserInterface	{
 	}
 
 	private void exec()	{
-		String[] args = queue.poll().toLowerCase().split(" ");
-		if(args.length == 0)	{ return; }
+		String str = queue.poll().toLowerCase();
+		if(str.isEmpty())	{ return; }
+		String[] args = str.split(" ");
 
 		if(args[0].equals("quit"))	{ quit(); }
 		else	{
