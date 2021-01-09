@@ -10,7 +10,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import fileops.IOInterface;
 import fileops.BadFormatException;
 import fileops.ReadingException;
 

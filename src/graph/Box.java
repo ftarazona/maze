@@ -5,7 +5,6 @@ import java.util.EnumSet;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
-import fileops.IOInterface;
 import fileops.BadFormatException;
 import fileops.ReadingException;
 
