@@ -3,6 +3,8 @@ package ui;
 import graph.*;
 import fileops.*;
 import dijkstra.*;
+import java.util.Queue;
+import java.util.LinkedList;
 import java.util.Scanner;
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -15,24 +17,26 @@ import java.io.IOException;
 
 public class MazeManager implements UserInterface	{
 	
+	private Queue<String> queue;
+	private boolean stop;
+	
 	private Maze maze;
 	private PiFunction pi;
 	private PreviousFunction prev;
 
-	private String cmd;
 	private UIContext context;
-	private boolean stop;
+	
 	private PrintStream out;
 	private InputStream in;
 
 	public MazeManager()	{
-		cmd = new String();
+		queue = new LinkedList<String>();
 		maze = new Maze();
 		pi = new PiFunction();
 		prev = new PreviousFunction();
 		stop = false;
 		context = new UIContext();
-		context.setCommandTab(maze, pi, prev);
+		context.setCommandTab(maze, pi, prev, queue);
 		out = System.out;
 		in = System.in;
 	}
@@ -48,46 +52,8 @@ public class MazeManager implements UserInterface	{
 	}
 
 	public void run(String[] args)	{
-		int i = 0;
-		while(i < args.length)	{
-			if(args[i].equals("--script") || args[i].equals("-s"))	{
-				i++;
-				FileReader file = null;
-				BufferedReader script = null;
-				try	{
-					file = new FileReader(args[i]);
-					script = new BufferedReader(file);
-					while((cmd = script.readLine()) != null)	{
-						exec();
-					}
-					script.close();
-					file.close();
-				} catch (IndexOutOfBoundsException e)	{
-					System.out.println(usage());
-					return;
-				} catch (Exception e)	{
-					System.out.println("An error occured while loading the specified script : " + e.getMessage());
-					System.out.println("Cancelling...");
-					try	{
-						maze.newMaze(0, 0, UIContext.boxType("null"));
-					} catch (Exception f)	{
-						System.out.println("Could not access context : " + f.getMessage());
-					}
-				} finally	{
-					try	{
-						script.close();
-						file.close();
-					} catch (Exception e)	{
-						System.out.println("An error occured while closing the script : " + e.getMessage());
-					}
-				}
-			}
-			i++;
-		}
-		cmd = "";
-
 		while(!stop)	{
-			if(!cmd.isEmpty())	{
+			if(!queue.isEmpty())	{
 				exec();
 			} else	{
 				getCmd();
@@ -98,12 +64,11 @@ public class MazeManager implements UserInterface	{
 	private void getCmd()	{
 		print(">>> ");
 		Scanner scanner = new Scanner(in);
-		cmd = scanner.nextLine();
+		queue.offer(scanner.nextLine());
 	}
 
 	private void exec()	{
-		String[] args = cmd.toLowerCase().split(" ");
-		cmd = "";
+		String[] args = queue.poll().toLowerCase().split(" ");
 
 		if(args[0].equals("quit"))	{ quit(); }
 		else if(args[0].equals("help") || args[0].equals("list"))	{ help(); }
@@ -131,40 +96,16 @@ public class MazeManager implements UserInterface	{
 		stop = true;
 	}
 
-	private void help()	{
-		println("\nHere is some help.\nType \"usage <command>\" for further information.\n");
-		try	{
-			print(context.command("new").description());
-			print(context.command("open").description());
-			print(context.command("save").description());
-			print(context.command("display").description());
-			print(context.command("displayflag").description());
-			print(context.command("displayflags").description());
-			print(context.command("displayall").description());
-			print(context.command("addrow").description());
-			print(context.command("addcol").description());
-			print(context.command("remrow").description());
-			print(context.command("remcol").description());
-			print(context.command("addbox").description());
-			print(context.command("rembox").description());
-			print(context.command("addflag").description());
-			print(context.command("remflag").description());
-			print(context.command("setroot").description());
-		} catch	(UnknownCommandException e)	{
-			println(e.getMessage());
-		}
-
-		println("");
-	}
-
 	private void usage(String command)	{
-		println("");
 		try	{
-			print(context.command(command).usage());
+			print(context.usage(command));
 		} catch (UnknownCommandException e)	{
 			println(e.getMessage());
 		}
-		println("");
+	}
+
+	private void help()	{
+		print(UIContext.help());
 	}
 
 	private void print(String str)	{

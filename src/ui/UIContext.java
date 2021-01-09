@@ -1,5 +1,6 @@
 package ui;
 
+import java.util.Queue;
 import java.util.HashMap;
 import java.util.Collection;
 import graph.Maze;
@@ -8,11 +9,37 @@ import graph.MazeContext;
 import dijkstra.*;
 
 public class UIContext	{
+	private static String[] cmdLst = {
+		"script",
+		"new", 
+		"open", 
+		"save",
+		"display", 
+		"displayflag", 
+		"displayflags", 
+		"displayall",
+		"addrow", 
+		"addcol", 
+		"remrow",
+		"remcol",
+		"addbox",
+		"rembox",
+		"addflag",
+		"remflag",
+		"setroot",
+		"dijkstra",
+		"tracepath"
+	};
+
 	private static HashMap<String, CommandInterface> cmdTab;
 
-	public void setCommandTab(Maze maze, PiFunction pi, PreviousFunction prev)	{
+	public void setCommandTab(Maze maze, PiFunction pi, PreviousFunction prev, Queue<String> queue)	{
 
 		cmdTab = new HashMap<String, CommandInterface>();
+		
+		cmdTab.put("script",
+			new UI_LoadScript(maze, queue));
+
 		cmdTab.put("new", 
 			new IO_NewMaze(maze));
 		cmdTab.put("open",
@@ -71,10 +98,6 @@ public class UIContext	{
 		return cmd;
 	}
 
-	public Collection<CommandInterface> allCommands()	{
-		return cmdTab.values();
-	}
-
 	public static BoxFlag flag(String str)
 		throws UnknownFlagException	{
 		BoxFlag flag = MazeContext.getFlag(str);
@@ -82,5 +105,27 @@ public class UIContext	{
 			throw new UnknownFlagException(str);
 		}
 		return flag;
+	}
+
+	public String usage(String str)
+		throws UnknownCommandException	{
+		String ret = "\n";
+		ret = ret.concat(command(str).usage());
+		ret = ret.concat("\n");
+
+		return ret;
+	}
+
+	public static String help()	{
+		String ret = 	"\nHere is some help." +
+				"\nType \"usage <command>\" " +
+				"for further information.\n\n";
+
+		for(int i = 0; i < cmdLst.length; i++)	{
+			ret = ret.concat(cmdTab.get(cmdLst[i]).description());
+		}
+		ret = ret.concat("\n");
+
+		return ret;
 	}
 }
