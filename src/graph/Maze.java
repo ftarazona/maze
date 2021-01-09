@@ -199,7 +199,7 @@ public class Maze
 
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j] == null && boxes[i][j].hasFlag(flag))	{
+				if(boxes[i][j] != null && boxes[i][j].hasFlag(flag))	{
 					ret.add((Vertex)boxes[i][j]);
 				}
 			}
