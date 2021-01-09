@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import fileops.IOInterface;
 import fileops.BadFormatException;
 import fileops.ReadingException;
@@ -146,22 +147,6 @@ public abstract class Box
 		this.flags.clear();
 	}
 
-	public void displayFlag(BoxFlag flag)	{
-		if(hasFlag(flag))	{
-			System.out.print("X");
-		}
-	}
-
-	public void displayFlags()	{
-		if(hasFlag(BoxFlag.BOX_START))	{
-			System.out.print("S");
-		} else if(hasFlag(BoxFlag.BOX_END))	{
-			System.out.print("E");
-		} else if(hasFlag(BoxFlag.BOX_MARKED))	{
-			System.out.print("X");
-		} else	{}
-	}
-
 	/** Writes the coordinates and the flags of the box in an
 	 *  output stream.
 	 *  @param out is the output stream in which the values are
@@ -182,5 +167,5 @@ public abstract class Box
 	public abstract void write(OutputStream out)
 		throws IOException;
 
-	public abstract void display();
+	public abstract void display(PrintStream out);
 }

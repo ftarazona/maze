@@ -2,11 +2,11 @@ package ui;
 
 import graph.Maze;
 
-public class DISPLAY_DisplayFlags implements CommandInterface	{
+public class DISPLAY_HideFlags implements CommandInterface	{
 
 	private Maze maze;
 
-	public DISPLAY_DisplayFlags(Maze maze)	{
+	public DISPLAY_HideFlags(Maze maze)	{
 		this.maze = maze;
 	}
 
@@ -14,16 +14,14 @@ public class DISPLAY_DisplayFlags implements CommandInterface	{
 		throws UIException	{
 		if(args.length != 1)	{ throw new IncorrectUsageException(1, args.length); }
 
-		System.out.println("");
-		maze.displayFlags();
-		System.out.println("");
+		maze.showAllFlags();
 	}
 
 	public String description()	{
-		return "displayflags - Displays the flagged boxes of the maze.\n";
+		return "hideflags - Displays the flagged boxes of the maze.\n";
 	}
 
 	public String usage()	{
-		return "displayflags\n";
+		return "hideflags\n";
 	}
 }
