@@ -3,6 +3,7 @@ package ui;
 import java.util.Queue;
 import java.util.HashMap;
 import java.util.Collection;
+import java.io.PrintStream;
 import graph.Maze;
 import graph.BoxFlag;
 import graph.MazeContext;
@@ -10,14 +11,17 @@ import dijkstra.*;
 
 public class UIContext	{
 	private static String[] cmdLst = {
+		"help",
+		"usage",
 		"script",
 		"new", 
 		"open", 
 		"save",
 		"display", 
-		"displayflag", 
-		"displayflags", 
-		"displayall",
+		"show", 
+		"showflags", 
+		"hide",
+		"hideflags",
 		"addrow", 
 		"addcol", 
 		"remrow",
@@ -31,14 +35,19 @@ public class UIContext	{
 		"tracepath"
 	};
 
-	private static HashMap<String, CommandInterface> cmdTab;
+	private HashMap<String, CommandInterface> cmdTab;
 
-	public void setCommandTab(Maze maze, PiFunction pi, PreviousFunction prev, Queue<String> queue)	{
+	public void setCommandTab(Maze maze, PiFunction pi, PreviousFunction prev, Queue<String> queue, PrintStream ostream)	{
 
 		cmdTab = new HashMap<String, CommandInterface>();
 		
+		cmdTab.put("help",
+			new INFO_Help(this, ostream));
+		cmdTab.put("usage",
+			new INFO_Usage(this, ostream));
+		
 		cmdTab.put("script",
-			new UI_LoadScript(maze, queue));
+			new UI_LoadScript(queue));
 
 		cmdTab.put("new", 
 			new IO_NewMaze(maze));
@@ -48,13 +57,15 @@ public class UIContext	{
 			new IO_SaveMaze(maze));
 
 		cmdTab.put("display", 
-			new DISPLAY_DisplayMaze(maze));
-		cmdTab.put("displayflag", 
-			new DISPLAY_DisplayFlag(maze));
-		cmdTab.put("displayflags", 
-			new DISPLAY_DisplayFlags(maze));
-		cmdTab.put("displayall", 
-			new DISPLAY_DisplayAll(maze));
+			new DISPLAY_DisplayMaze(maze, ostream));
+		cmdTab.put("show", 
+			new DISPLAY_ShowFlag(maze));
+		cmdTab.put("showflags", 
+			new DISPLAY_ShowFlags(maze));
+		cmdTab.put("hide", 
+			new DISPLAY_HideFlag(maze));
+		cmdTab.put("hideflags",
+			new DISPLAY_HideFlags(maze));
 
 		cmdTab.put("addrow", 
 			new EDIT_AddRow(maze));
@@ -116,7 +127,7 @@ public class UIContext	{
 		return ret;
 	}
 
-	public static String help()	{
+	public String help()	{
 		String ret = 	"\nHere is some help." +
 				"\nType \"usage <command>\" " +
 				"for further information.\n\n";

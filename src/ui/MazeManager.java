@@ -19,26 +19,28 @@ public class MazeManager implements UserInterface	{
 	
 	private Queue<String> queue;
 	private boolean stop;
-	
+	private boolean prompt;
+
 	private Maze maze;
 	private PiFunction pi;
 	private PreviousFunction prev;
 
+	private PrintStream out;
+	private Scanner scanner;
+
 	private UIContext context;
 	
-	private PrintStream out;
-	private InputStream in;
-
 	public MazeManager()	{
-		queue = new LinkedList<String>();
-		maze = new Maze();
-		pi = new PiFunction();
-		prev = new PreviousFunction();
-		stop = false;
-		context = new UIContext();
-		context.setCommandTab(maze, pi, prev, queue);
-		out = System.out;
-		in = System.in;
+		queue 		= new LinkedList<String>();
+		stop 		= false;
+		prompt		= true;
+		maze 		= new Maze();
+		pi 		= new PiFunction();
+		prev 		= new PreviousFunction();
+		out 		= System.out;
+		scanner 	= new Scanner(System.in);
+		context 	= new UIContext();
+		context.setCommandTab(maze, pi, prev, queue, out);
 	}
 
 	private String usage()	{
@@ -62,17 +64,16 @@ public class MazeManager implements UserInterface	{
 	}
 
 	private void getCmd()	{
-		print(">>> ");
-		Scanner scanner = new Scanner(in);
+		if(prompt)	{ print(">>> "); }
 		queue.offer(scanner.nextLine());
 	}
 
 	private void exec()	{
-		String[] args = queue.poll().toLowerCase().split(" ");
+		String str = queue.poll().toLowerCase();
+		if(str.isEmpty())	{ return; }
+		String[] args = str.split(" ");
 
 		if(args[0].equals("quit"))	{ quit(); }
-		else if(args[0].equals("help") || args[0].equals("list"))	{ help(); }
-		else if(args[0].equals("usage"))	{ usage(args[1]); }
 		else	{
 			CommandInterface command = null;
 			try	{
@@ -94,18 +95,6 @@ public class MazeManager implements UserInterface	{
 
 	private void quit()	{
 		stop = true;
-	}
-
-	private void usage(String command)	{
-		try	{
-			print(context.usage(command));
-		} catch (UnknownCommandException e)	{
-			println(e.getMessage());
-		}
-	}
-
-	private void help()	{
-		print(UIContext.help());
 	}
 
 	private void print(String str)	{

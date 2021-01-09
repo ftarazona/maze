@@ -2,6 +2,8 @@ package graph;
 
 import java.util.Arrays;
 import java.util.ArrayList;
+import java.util.EnumSet;
+import java.io.PrintStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.FileInputStream;
@@ -21,13 +23,20 @@ public class Maze
 	private int height;
 	private int area;
 
+	EnumSet<BoxFlag> showFlag;
+
 	/** Constructs an empty maze */
 	public Maze()	{
+		boxes = new Box[0][0];
+		width = 0;
+		height = 0;
+		area = 0;
+		showFlag = EnumSet.noneOf(BoxFlag.class);
 	}
 
 	public Maze(int height, int width, int type)	
 		throws InvalidBoxArgumentsException	{
-		this();
+		showFlag = EnumSet.noneOf(BoxFlag.class);
 		newMaze(height, width, type);
 	}
 
@@ -59,89 +68,57 @@ public class Maze
 		this.height = boxes.length;
 	}
 
-
-	public void display()	{
-		System.out.print("  ");
-		for(int j = 0; j < width; j++)	{
-			System.out.print(j);
-		}
-		System.out.println("");
-		for(int i = 0; i < height; i++)	{
-			System.out.print(i + " ");
-			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j] != null)	{
-					boxes[i][j].display();
-				}
-				else	{
-					System.out.print(" ");
-				}
-			}
-			System.out.println("");
-		}
+	public void show(BoxFlag flag)	{ 
+		showFlag.add(flag);
 	}
 
-	public void displayAll()	{
-		System.out.print("  ");
-		for(int j = 0; j < width; j++)	{
-			System.out.print(j);
-		}
-		System.out.println("");
-		for(int i = 0; i < height; i++)	{
-			System.out.print(i + " ");
-			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j] != null)	{
-					if(boxes[i][j].hasNoFlag())	{
-						boxes[i][j].display();
-					} else	{
-						boxes[i][j].displayFlags();
-					}
-				}
-				else	{
-					System.out.print(" ");
-				}
-			}
-			System.out.println("");
-		}
+	public void hide(BoxFlag flag)	{
+		showFlag.remove(flag);
 	}
 
-
-	public void display(BoxFlag flag)	{
-		System.out.print("  ");
-		for(int j = 0; j < width; j++)	{
-			System.out.print(j);
-		}
-		System.out.println("");
-		for(int i = 0; i < height; i++)	{
-			System.out.print(i + " ");
-			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j] != null && boxes[i][j].hasFlag(flag))	{
-					boxes[i][j].displayFlag(flag);
-				}
-				else	{
-					System.out.print(" ");
-				}
-			}
-			System.out.println("");
-		}
+	public void showAllFlags()	{
+		showFlag = EnumSet.allOf(BoxFlag.class);
 	}
 
-	public void displayFlags()	{
-		System.out.print("  ");
+	public void hideAllFlags()	{
+		showFlag = EnumSet.noneOf(BoxFlag.class);
+	}
+
+	private void displayBox(PrintStream out, int x, int y)	{
+		Box box = boxes[y][x];
+		if(box == null)	{ out.print(" "); return; }
+
+		boolean start = 
+			showFlag.contains(BoxFlag.BOX_START) &&
+			box.hasFlag(BoxFlag.BOX_START);
+		boolean end =
+			showFlag.contains(BoxFlag.BOX_END) &&
+			box.hasFlag(BoxFlag.BOX_END);
+		boolean marked =
+			showFlag.contains(BoxFlag.BOX_MARKED) &&
+			box.hasFlag(BoxFlag.BOX_MARKED);
+		
+		if(start)	{ out.print("S"); }
+		else if(end)	{ out.print("E"); }
+		else if(marked)	{ out.print("X"); }
+		else		{ box.display(out); }
+	}
+
+	public void display(PrintStream out)	{
+		out.print("\n  ");
 		for(int j = 0; j < width; j++)	{
-			System.out.print(j);
+			out.print(j % 10);
+			if(j % 10 == 9)	{ out.print(" "); }
 		}
-		System.out.println("");
+		out.print("\n");
 		for(int i = 0; i < height; i++)	{
-			System.out.print(i + " ");
+			out.print(i % 10 + " ");
 			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j] != null && !boxes[i][j].hasNoFlag())	{
-					boxes[i][j].displayFlags();
-				}
-				else	{
-					System.out.print(" ");
-				}
+				displayBox(out, j, i);
+				if(j % 10 == 9)	{ out.print(" "); }
 			}
-			System.out.println("");
+			out.print("\n");
+			if(i % 10 == 9)	{ out.print("\n"); }
 		}
 	}
 

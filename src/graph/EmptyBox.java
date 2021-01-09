@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import fileops.BadFormatException;
 import fileops.ReadingException;
 
@@ -32,7 +33,7 @@ public class EmptyBox extends Box	{
 		writeGeneralData(out);
 	}
 
-	public void display()	{
-		System.out.print("O");
+	public void display(PrintStream out)	{
+		out.print("O");
 	}
 }

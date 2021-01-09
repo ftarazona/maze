@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
+import java.io.PrintStream;
 import fileops.BadFormatException;
 import fileops.ReadingException;
 
@@ -37,7 +38,7 @@ public class WaterBox extends Box	{
 		out.write(deep ? 1 : 0);
 	}
 
-	public void display()	{
-		System.out.print("~");
+	public void display(PrintStream out)	{
+		out.print("~");
 	}
 }
