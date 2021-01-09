@@ -33,7 +33,6 @@ public class MazeManager implements UserInterface	{
 		stop = false;
 		context = new UIContext();
 		context.setCommandTab(maze, pi, prev);
-		context.setBoxTab();
 		out = System.out;
 		in = System.in;
 	}
@@ -70,7 +69,7 @@ public class MazeManager implements UserInterface	{
 					System.out.println("An error occured while loading the specified script : " + e.getMessage());
 					System.out.println("Cancelling...");
 					try	{
-						maze.newMaze(0, 0, context.boxType("null"));
+						maze.newMaze(0, 0, UIContext.boxType("null"));
 					} catch (Exception f)	{
 						System.out.println("Could not access context : " + f.getMessage());
 					}

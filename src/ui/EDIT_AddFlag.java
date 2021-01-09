@@ -8,14 +8,11 @@ public class EDIT_AddFlag implements CommandInterface	{
 	private Maze maze;
 	private PiFunction pi;
 	private PreviousFunction prev;
-	private UIContext context;
 
 	public EDIT_AddFlag(Maze maze, PiFunction pi, PreviousFunction prev)	{
 		this.maze = maze;
 		this.pi = pi;
 		this.prev = prev;
-		this.context = new UIContext();
-		context.setFlagTab();
 	}
 
 	public void run(String[] args)	
@@ -39,7 +36,7 @@ public class EDIT_AddFlag implements CommandInterface	{
 			throw new InvalidArgumentsException(args[2], 2);
 		}
 		
-		flag = context.flag(args[3]);
+		flag = UIContext.flag(args[3]);
 		if(flag.equals(BoxFlag.BOX_START))	{
 			pi.clear();
 			prev.clear();

@@ -3,5 +3,13 @@ package ui;
 public class UIException extends Exception	{
 
 	public static final long serialVersionUID = 202012301430L;
-	public UIException()	{}
+	private final String msg;
+
+	public UIException()	{ msg = new String(); }
+
+	public UIException(String str)	{
+		msg = str;
+	}
+
+	public String getMessage()	{ return msg; }
 }

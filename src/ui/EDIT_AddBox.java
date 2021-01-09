@@ -5,48 +5,53 @@ import graph.*;
 public class EDIT_AddBox implements CommandInterface	{
 
 	private Maze maze;
-	private UIContext context;
 
 	public EDIT_AddBox(Maze maze)	{
 		this.maze = maze;
-		context = new UIContext();
-		context.setBoxTab();
 	}
 
 	public void run(String[] args)
 		throws UIException	{
 		
-		if(args.length < 4 || args.length > 5)	{ throw new IncorrectUsageException(5, args.length); }
+		if(args.length < MazeContext.MIN_ARGS)	{ 
+			throw new IncorrectUsageException(MazeContext.MIN_ARGS, args.length); 
+		}
 
-		int x = 0, y = 0, z = 0, type = context.boxType("null");
+		int boxID = MazeContext.NULL_ID;
+		int[] boxArgs = new int[args.length - 1];
+
+		for(int i = 1; i <= 3; i++)	{
+		try	{
+			boxArgs[i - 1] = Integer.parseInt(args[i]);
+		} catch (NumberFormatException e)	{
+			throw new InvalidArgumentsException(args[i-1], i);
+		}
+		}
 
 		try	{
-			x = Integer.parseInt(args[1]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[1], 1);
-		}
-		try	{
-			y = Integer.parseInt(args[2]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[2], 2);
-		}
-		try	{
-			z = Integer.parseInt(args[3]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[3], 3);
-		}
-		try	{
-			type = context.boxType(args[4]);
+			boxID = UIContext.boxType(args[4]);
 		} catch (IndexOutOfBoundsException e)	{
-			type = context.boxType("null");
+			boxID = MazeContext.NULL_ID;
 		} catch (UnknownBoxTypeException e)	{
 			throw e;
 		}
 
+		boxArgs[3] = 0;
+		for(int i = 5; i < args.length; i++)	{
 		try	{
-			maze.addBox(x, y, z, type);
+			boxArgs[i - 1] = Integer.parseInt(args[i]);
+		} catch (NumberFormatException e)	{
+			throw new InvalidArgumentsException(args[i-1], i);
+		}
+		}
+
+
+		try	{
+			maze.addBox(boxID, boxArgs);
 		} catch (MazeOutOfBoundsException e)	{
-			throw new UnreachablePositionException(x, y);
+			throw new UnreachablePositionException(boxArgs[0], boxArgs[1]);
+		} catch (InvalidBoxArgumentsException e)	{
+			throw new UIException("An internal error occured while adding a box.");
 		}
 	}
 

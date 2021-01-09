@@ -15,7 +15,7 @@ import fileops.BadFormatException;
 import fileops.ReadingException;
 
 public class Maze
-	implements Graph, IOInterface	{
+	implements Graph	{
 
 	private Box[][] boxes;
 	private int width;
@@ -26,12 +26,14 @@ public class Maze
 	public Maze()	{
 	}
 
-	public Maze(int height, int width, int type)	{
+	public Maze(int height, int width, int type)	
+		throws InvalidBoxArgumentsException	{
 		this();
 		newMaze(height, width, type);
 	}
 
-	public void newMaze(int height, int width, int type)	{
+	public void newMaze(int height, int width, int boxID)	
+		throws InvalidBoxArgumentsException	{
 		boxes = new Box[height][width];
 		this.height = height;
 		this.width = width;
@@ -40,7 +42,10 @@ public class Maze
 			for(int j = 0; j < width; j++)	{
 				try	{
 					boxes[i][j] = null;
-					addBox(j, i, 0, type);
+					int[] args = new int[MazeContext.getNbArgs(boxID)];
+					args[0] = j;
+					args[1] = i;
+					addBox(boxID, args);
 				} catch (MazeOutOfBoundsException e) {}
 			}
 		}
@@ -303,6 +308,7 @@ public class Maze
 			for(int j = 0; j < width; j++)	{
 				if(boxes[i][j] != null)	{
 					boxes[i][j].write(out);
+					out.write(255);
 				}
 			}
 		}
@@ -335,49 +341,59 @@ public class Maze
 		}
 	}
 
+	private Box readBox(InputStream in)
+		throws IOException, BadFormatException	{
+		ArrayList<Integer> input = new ArrayList<Integer>();
+
+		int c;
+		do	{
+			c = in.read();
+			input.add(Integer.valueOf(c));
+		} while(c != 255 && c != -1);
+
+		try	{
+			int boxID = input.get(0);
+			int[] args = new int[input.size() - 1];
+			for(int i = 1; i < input.size() - 1; i++)	{
+				args[i] = input.get(i);
+			}
+			
+			Box box = MazeContext.newBox(boxID, args);
+			return box;
+		} catch(IndexOutOfBoundsException e)	{
+			throw new BadFormatException(1, 0);
+		} catch(InvalidBoxArgumentsException e)	{
+			throw new BadFormatException(e.getExpected(), e.getReceived());
+		}
+	}
+
 	/** Reads a graph from an input stream.
 	 *  @param in is the input stream to be read.
 	 *  @throws IOException if an I/O error occurs. */
 	public void read(InputStream in)	
-		throws IOException, BadFormatException, ReadingException	{
-		ArrayList<Box> boxList = new ArrayList<Box>();
-		int c = in.read();
+		throws IOException, BadFormatException	{
 
-		while(c != -1)	{
-			Box newBox = null;
-			switch(c)	{
-				case BoxContext.WALL_ID:
-					newBox = new WallBox();
-					break;
-				case BoxContext.EMPTY_ID:
-					newBox = new EmptyBox();
-					break;
-				case BoxContext.WATER_ID:
-					newBox = new WaterBox();
-					break;
-				case BoxContext.BRIDGE_ID:
-					newBox = new BridgeBox();
-					break;
-				case BoxContext.STAIRS_ID:
-					newBox = new StairsBox();
-					break;
-				default:
-					while(in.read() != 255 && in.read() != -1);
-					break;
-			}
-			if(newBox != null)	{
-				try	{
-					newBox.read(in);
-					boxList.add(newBox);
-				} catch (Exception e)	{
-					System.out.println(e.getMessage());
-					e.printStackTrace();
-				}
-			}
-			c = in.read();
+		ArrayList<Box> boxList = new ArrayList<Box>();
+		Box box = readBox(in);
+		int xMax = -1, yMax = -1;
+		
+		while(box != null)	{
+			if(box.getX() > xMax)	{ xMax = box.getX(); }
+			if(box.getY() > yMax)	{ yMax = box.getY(); }
+			boxList.add(box);
+			box = readBox(in);
 		}
 
-		convertBoxList(boxList);
+		width = xMax + 1;
+		height = yMax + 1;
+		boxes = new Box[height][width];
+
+		for(Box b : boxList)	{
+			if(boxes[b.getY()][b.getX()] == null)	{
+				area++;
+			}
+			boxes[b.getY()][b.getX()] = b;
+		}
 	}
 
 
@@ -411,7 +427,12 @@ public class Maze
 		height++;
 		
 		for(int j = 0; j < width; j++)	{
-			addBox(j, pos, 0, type);
+			int[] args = new int[MazeContext.getNbArgs(type)];
+			args[0] = j;
+			args[1] = pos;
+			try	{
+				addBox(type, args);
+			} catch(Exception e)	{}
 		}
 	}
 
@@ -476,7 +497,12 @@ public class Maze
 		boxes = temp;
 		width++;
 		for(int i = 0; i < height; i++)	{
-			addBox(pos, i, 0, type);
+			int[] args = new int[MazeContext.getNbArgs(type)];
+			args[0] = pos;
+			args[1] = i;
+			try	{
+				addBox(type, args);
+			} catch(Exception e)	{}
 		}
 	}
 
@@ -513,38 +539,24 @@ public class Maze
 
 	}
 
-	public void addBox(int x, int y, int z, int type)
-		throws MazeOutOfBoundsException	{
+	public void addBox(int type, int[] args)
+		throws MazeOutOfBoundsException, InvalidBoxArgumentsException	{
+
+		if(args.length < 2)	{
+			throw new InvalidBoxArgumentsException(2, args.length);
+		}
+		int x = args[0];
+		int y = args[1];
 
 		if(x < 0 || x >= width || y < 0 || y >= height)	{
 			throw new MazeOutOfBoundsException();
 		}
 
-		if(boxes[y][x] == null && type != BoxContext.NULL_ID)	{
+		if(boxes[y][x] == null && type != MazeContext.NULL_ID)	{
 			area++;
 		}
 
-		Box box = null;
-		switch (type)	{
-			case BoxContext.WALL_ID:
-				box = new WallBox(x, y, z);
-				break;
-			case BoxContext.EMPTY_ID:
-				box = new EmptyBox(x, y, z);
-				break;
-			case BoxContext.WATER_ID:
-				box = new WaterBox(x, y, z, 0);
-				break;
-			case BoxContext.BRIDGE_ID:
-				box = new BridgeBox(x, y, z);
-				break;
-			case BoxContext.STAIRS_ID:
-				box = new StairsBox(x, y, z, 0);
-				break;
-			default: break;
-		}
-		
-		boxes[y][x] = box;
+		boxes[y][x] = MazeContext.newBox(type, args);
 	}
 
 	public void remBox(int x, int y)	

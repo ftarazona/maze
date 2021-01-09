@@ -12,7 +12,7 @@ import fileops.ReadingException;
 /** This abstract class implements a graph's vertex. It provides
  *  general features such as coordinates or flags. */
 public abstract class Box
-	implements Vertex, IOInterface	{
+	implements Vertex	{
 
 	/** An object counter used to ensure each object gets a unique
 	 *  ID. */
@@ -23,25 +23,23 @@ public abstract class Box
 	private int z;
 	private EnumSet<BoxFlag> flags;
 	private final int id;
-	protected final BoxContext context;
 
-	/** Constructs a Box with coordinates (0, 0, 0) and no flag.
-	 *  This box however should not be used unless a call to 
-	 *  IO method read has been processed successfully. */
-	public Box()	{
-		context = new BoxContext();
-		this.id = nextID;
-		nextID++;
-		this.flags = EnumSet.noneOf(BoxFlag.class);
-	}
 
 	/** Constructs a Box with given coordinates and no flag.
 	 *  @param x, y, z are the coordinates of the Box. */
-	public Box(int x, int y, int z)	{
-		this();
-		this.x = x;
-		this.y = y;
-		this.z = z;
+	public Box(int[] args)	
+		throws InvalidBoxArgumentsException	{
+
+		if(args.length < 4)	{
+			throw new InvalidBoxArgumentsException(3, args.length);
+		}
+
+		this.x = args[0];
+		this.y = args[1];
+		this.z = args[2];
+		setFlags(args[3]);
+		this.id = nextID;
+		nextID++;
 	}
 
 	/** Returns the ID of the box.
@@ -176,27 +174,6 @@ public abstract class Box
 		out.write(y);
 		out.write(z);
 		out.write(BoxFlag.BoxFlagsToInt(flags));
-		out.write(255);
-	}
-
-	/** Reads the parameters of a box from an input stream, stops
-	 *  when the value 255 or -1 is read.
-	 *  @param in is the input stream containing the parameters of
-	 *  the box.
-	 *  @return a list of parameters.
-	 *  @throws IOException if an I/O error occurs. */
-	protected ArrayList<Integer> readRawData(InputStream in)
-		throws IOException	{
-
-		ArrayList<Integer> data = new ArrayList<Integer>();
-		int i = in.read();
-
-		while(i != 255 && i != -1)	{
-			data.add(Integer.valueOf(i));
-			i = in.read();
-		}
-
-		return data;
 	}
 
 	/** Writes all the parameters of the box in an output stream.
@@ -204,16 +181,6 @@ public abstract class Box
 	 *  @throws IOException if an I/O error occurs. */
 	public abstract void write(OutputStream out)
 		throws IOException;
-
-	/** Reads the box from an input stream.
-	 *  @param in is the input stream to be read.
-	 *  @throws IOException is an I/O error occurs.
-	 *  @throws BadFormatException if the number of parameters
-	 *  given is incorrect.
-	 *  @throws ReadingException if a parameter has an incorrect
-	 *  value. */
-	public abstract void read(InputStream in)
-		throws IOException, BadFormatException, ReadingException;
 
 	public abstract void display();
 }

@@ -5,12 +5,9 @@ import graph.*;
 public class EDIT_AddCol implements CommandInterface	{
 	
 	private Maze maze;
-	private final UIContext context;
 
 	public EDIT_AddCol(Maze maze)	{
 		this.maze = maze;
-		this.context = new UIContext();
-		context.setBoxTab();
 	}
 
 	public void run(String[] args)	
@@ -18,7 +15,7 @@ public class EDIT_AddCol implements CommandInterface	{
 
 		if(args.length == 1 || args.length > 3)	{ throw new IncorrectUsageException(3, args.length); }
 
-		int pos = 0, type = context.boxType("null");
+		int pos = 0, type = UIContext.boxType("null");
 
 		try	{
 			pos = Integer.parseInt(args[1]);
@@ -27,9 +24,9 @@ public class EDIT_AddCol implements CommandInterface	{
 		}
 
 		try	{
-			type = context.boxType(args[2]);
+			type = UIContext.boxType(args[2]);
 		} catch (IndexOutOfBoundsException e)	{
-			type = context.boxType("null");
+			type = UIContext.boxType("null");
 		} catch (UnknownBoxTypeException e)	{
 			throw e;
 		}

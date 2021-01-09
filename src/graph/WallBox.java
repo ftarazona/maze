@@ -10,15 +10,15 @@ import fileops.ReadingException;
 
 public class WallBox extends Box	{
 
-	/** Constructs a WallBox at coordinates (0, 0, 0) and no flag.
-	 *  This box however should not be used unless a call to IO
-	 *  method read has been processed succesfully. */
-	public WallBox()	{}
-
 	/** Constructs a WallBox with given coordinates and no flag.
 	 *  @param x, y, z are the coordinates of the WallBox. */
-	public WallBox(int x, int y, int z)	{
-		super(x, y, z);
+	public WallBox(int[] args)	
+		throws InvalidBoxArgumentsException	{
+		super(args);
+		int expects = MazeContext.getNbArgs(MazeContext.WALL_ID);
+		if(args.length != expects)	{
+			throw new InvalidBoxArgumentsException(expects, args.length);
+		}
 	}
 
 	public int getPracticability()	{
@@ -28,22 +28,8 @@ public class WallBox extends Box	{
 	public void write(OutputStream out)	
 		throws IOException	{
 
-		out.write(BoxContext.WALL_ID);
+		out.write(MazeContext.WALL_ID);
 		writeGeneralData(out);
-	}
-
-	public void read(InputStream in)
-		throws IOException, BadFormatException, ReadingException	{
-		ArrayList<Integer> data = readRawData(in);
-		
-		if(data.size() != 4)	{
-			throw new BadFormatException(data.size(), 4);
-		}
-		
-		setX(data.get(0));
-		setY(data.get(1));
-		setZ(data.get(2));
-		setFlags(data.get(3));
 	}
 
 	public void display()	{
