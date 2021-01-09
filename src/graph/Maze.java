@@ -28,12 +28,16 @@ public class Maze
 
 	/** Constructs an empty maze */
 	public Maze()	{
+		boxes = new Box[0][0];
+		width = 0;
+		height = 0;
+		area = 0;
 		showFlag = EnumSet.noneOf(BoxFlag.class);
 	}
 
 	public Maze(int height, int width, int type)	
 		throws InvalidBoxArgumentsException	{
-		this();
+		showFlag = EnumSet.noneOf(BoxFlag.class);
 		newMaze(height, width, type);
 	}
 

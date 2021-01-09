@@ -47,7 +47,7 @@ public class UIContext	{
 			new INFO_Usage(this, ostream));
 		
 		cmdTab.put("script",
-			new UI_LoadScript(maze, queue));
+			new UI_LoadScript(queue));
 
 		cmdTab.put("new", 
 			new IO_NewMaze(maze));

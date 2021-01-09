@@ -7,12 +7,10 @@ import graph.*;
 
 public class UI_LoadScript implements CommandInterface	{
 
-	private Maze maze;
 	private Queue<String> queue;
 
-	public UI_LoadScript(Maze maze, Queue<String> queue)	{
-		this.maze 	= maze;
-		this.queue 	= queue;
+	public UI_LoadScript(Queue<String> queue)	{
+		this.queue = queue;
 	}
 
 	public String description()	{
