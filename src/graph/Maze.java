@@ -223,7 +223,7 @@ public class Maze
 
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j].hasFlag(flag))	{
+				if(boxes[i][j] == null && boxes[i][j].hasFlag(flag))	{
 					ret.add((Vertex)boxes[i][j]);
 				}
 			}
@@ -263,7 +263,7 @@ public class Maze
 		}
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				if(i != y || j != x && boxes[j][i].hasFlag(BoxFlag.BOX_START))	{
+				if(i != y || j != x && boxes[i][j].hasFlag(BoxFlag.BOX_START))	{
 					boxes[i][j].remFlag(BoxFlag.BOX_START);
 					return true;
 				}
