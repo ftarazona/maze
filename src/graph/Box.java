@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import fileops.IOInterface;
 import fileops.BadFormatException;
 import fileops.ReadingException;
 

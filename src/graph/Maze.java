@@ -12,7 +12,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import fileops.IOInterface;
 import fileops.BadFormatException;
 import fileops.ReadingException;
 
@@ -148,22 +147,20 @@ public class Maze
 	public ArrayList<Vertex> getSuccessors(Vertex v)	{
 		ArrayList<Vertex> ret = new ArrayList<Vertex>(4);
 		Box b = (Box) v;
+		Box l = null, r = null, u = null, d = null;
 		int x = b.getX();
 		int y = b.getY();
 
-		if(x > 0 && boxes[y][x - 1] != null)	{
-			ret.add((Vertex)boxes[y][x - 1]);
-		}
-		if(y > 0 && boxes[y - 1][x] != null)	{
-			ret.add((Vertex)boxes[y - 1][x]);
-		}
-		if(x + 1 < width && boxes[y][x + 1] != null)	{
-			ret.add((Vertex)boxes[y][x + 1]);
-		}
-		if(y + 1 < height && boxes[y + 1][x] != null)	{
-			ret.add((Vertex)boxes[y + 1][x]);
-		}
+		if(x > 0)		{ l = boxes[y][x - 1]; }
+		if(y > 0)		{ u = boxes[y - 1][x]; }
+		if(x + 1 < width)	{ r = boxes[y][x + 1]; }
+		if(y + 1 < height)	{ d = boxes[y + 1][x]; }
 
+		if(distance(b, l) < distant)	{ ret.add(l); }
+		if(distance(b, u) < distant)	{ ret.add(u); }
+		if(distance(b, r) < distant)	{ ret.add(r); }
+		if(distance(b, d) < distant)	{ ret.add(d); }
+		
 		return ret;
 	}
 
@@ -200,7 +197,7 @@ public class Maze
 
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j].hasFlag(flag))	{
+				if(boxes[i][j] != null && boxes[i][j].hasFlag(flag))	{
 					ret.add((Vertex)boxes[i][j]);
 				}
 			}
@@ -240,7 +237,7 @@ public class Maze
 		}
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				if(i != y || j != x && boxes[j][i].hasFlag(BoxFlag.BOX_START))	{
+				if((i != y || j != x) && boxes[i][j] != null &&  boxes[i][j].hasFlag(BoxFlag.BOX_START))	{
 					boxes[i][j].remFlag(BoxFlag.BOX_START);
 					return true;
 				}
