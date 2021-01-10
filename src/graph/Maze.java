@@ -327,9 +327,9 @@ public class Maze
 
 		try	{
 			int boxID = input.get(0);
-			int[] args = new int[input.size() - 1];
+			int[] args = new int[input.size() - 2];
 			for(int i = 1; i < input.size() - 1; i++)	{
-				args[i] = input.get(i);
+				args[i - 1] = input.get(i);
 			}
 			
 			Box box = MazeContext.newBox(boxID, args);

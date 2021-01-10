@@ -40,7 +40,8 @@ public class EDIT_SetRoot implements CommandInterface	{
 				System.out.println("WARNING: new root.");
 				pi.clear();
 				prev.clear();
-				maze.
+				maze.clearAll();
+				maze.setRoot(x, y);
 			}
 		} catch (MazeOutOfBoundsException e)	{
 			throw new UnreachablePositionException(x, y);

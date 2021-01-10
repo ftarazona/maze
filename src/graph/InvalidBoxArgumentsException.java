@@ -6,7 +6,7 @@ public class InvalidBoxArgumentsException extends Exception	{
 	private int expected;
 	private int received;
 
-	public InvalidBoxArgumentsException(int expected, int received)	{
+	public InvalidBoxArgumentsException(int received, int expected)	{
 		this.expected = expected;
 		this.received = received;
 	}
@@ -20,6 +20,6 @@ public class InvalidBoxArgumentsException extends Exception	{
 	}
 
 	public String getMessage()	{
-		return String.format("Received %d arguments, %d expected.", expected, received);
+		return String.format("Box received %d arguments, %d expected.", expected, received);
 	}
 }
