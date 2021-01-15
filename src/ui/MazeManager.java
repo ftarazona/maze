@@ -1,6 +1,6 @@
 package ui;
 
-import graph.*;
+import maze.*;
 import dijkstra.*;
 import java.util.Queue;
 import java.util.LinkedList;

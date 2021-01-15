@@ -1,7 +1,7 @@
 package ui;
 
 import dijkstra.*;
-import graph.*;
+import maze.*;
 
 public class DIJKSTRA_Dijkstra implements CommandInterface	{
 

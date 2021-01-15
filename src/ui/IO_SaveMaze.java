@@ -1,5 +1,5 @@
 package ui;
-import graph.*;
+import maze.*;
 import java.io.IOException;
 import java.io.FileOutputStream;
 import java.io.BufferedOutputStream;

@@ -1,6 +1,6 @@
 package ui;
 
-import graph.*;
+import maze.*;
 
 public class EDIT_RemBox implements CommandInterface	{
 

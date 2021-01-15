@@ -1,7 +1,7 @@
 package ui;
 
 import java.io.PrintStream;
-import graph.MazeException;
+import maze.MazeException;
 
 public class INFO_Help implements CommandInterface	{
 

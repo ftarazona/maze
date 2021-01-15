@@ -1,6 +1,6 @@
 package ui;
 
-import graph.*;
+import maze.*;
 import dijkstra.*;
 
 public class EDIT_SetRoot implements CommandInterface	{

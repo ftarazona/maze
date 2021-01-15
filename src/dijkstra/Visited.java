@@ -1,6 +1,6 @@
 package dijkstra;
   
-import graph.Vertex;
+import maze.Vertex;
 import java.util.HashSet;
 
 /** The class Visited implements a unordered set of vertices which can

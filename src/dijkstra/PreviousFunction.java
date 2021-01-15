@@ -2,9 +2,9 @@ package dijkstra;
 
 import java.util.Arrays;
 import java.util.ArrayList;
-import graph.Vertex;
-import graph.Graph;
-import graph.Box;
+import maze.Vertex;
+import maze.Graph;
+import maze.Box;
 import java.util.HashMap;
 
 /** This class implements a function from the set of the visited

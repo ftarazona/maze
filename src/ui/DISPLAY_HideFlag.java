@@ -1,8 +1,8 @@
 package ui;
 
-import graph.InterfaceableMaze;
-import graph.Maze;
-import graph.MazeException;
+import maze.InterfaceableMaze;
+import maze.Maze;
+import maze.MazeException;
 
 public class DISPLAY_HideFlag implements CommandInterface	{
 

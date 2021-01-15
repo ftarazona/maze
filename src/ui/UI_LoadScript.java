@@ -3,7 +3,7 @@ package ui;
 import java.util.Queue;
 import java.util.Scanner;
 import java.io.FileInputStream;
-import graph.*;
+import maze.*;
 
 public class UI_LoadScript implements CommandInterface	{
 

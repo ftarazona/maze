@@ -1,7 +1,7 @@
 package ui;
 
 import dijkstra.*;
-import graph.*;
+import maze.*;
 import java.util.ArrayList;
 
 public class DIJKSTRA_TracePath implements CommandInterface	{

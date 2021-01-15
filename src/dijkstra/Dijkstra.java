@@ -1,8 +1,8 @@
 package dijkstra;
 
 import java.util.ArrayList;
-import graph.Vertex;
-import graph.Graph;
+import maze.Vertex;
+import maze.Graph;
 
 /** The Dijkstra algorithm is applied to a graph given a vertex called
  *  root. Its output is a tree giving minimal paths from the root to

@@ -1,6 +1,6 @@
 package dijkstra;
 
-import graph.Vertex;
+import maze.Vertex;
 
 /** An ASet is an unordered set of vertices used in the Dijkstra 
  *  algorithm to keep track of the already visited vertices.

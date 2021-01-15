@@ -1,7 +1,7 @@
 package ui;
 
 import java.io.IOException;
-import graph.*;
+import maze.*;
 
 public class IO_NewMaze implements CommandInterface	{
 	

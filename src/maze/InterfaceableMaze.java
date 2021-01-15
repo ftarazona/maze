@@ -1,4 +1,4 @@
-package graph;
+package maze;
 
 import java.util.ArrayList;
 import java.io.PrintStream;

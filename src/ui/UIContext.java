@@ -4,9 +4,9 @@ import java.util.Queue;
 import java.util.HashMap;
 import java.util.Collection;
 import java.io.PrintStream;
-import graph.InterfaceableMaze;
-import graph.BoxFlag;
-import graph.MazeContext;
+import maze.InterfaceableMaze;
+import maze.BoxFlag;
+import maze.MazeContext;
 import dijkstra.*;
 
 public class UIContext	{

@@ -1,7 +1,7 @@
 package dijkstra;
 
-import graph.Vertex;
-import graph.Graph;
+import maze.Vertex;
+import maze.Graph;
 import java.util.HashMap;
 
 /** This class implements a function from the set of the graph's
