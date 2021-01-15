@@ -1,13 +1,17 @@
 package ui;
 
-import java.util.Queue;
 import java.util.HashMap;
-import java.util.Collection;
+import java.util.Queue;
+
 import java.io.PrintStream;
-import maze.InterfaceableMaze;
+
+import dijkstra.Pi;
+import dijkstra.Previous;
+
 import maze.BoxFlag;
+import maze.InterfaceableMaze;
 import maze.MazeContext;
-import dijkstra.*;
+
 
 public class UIContext	{
 	private static String[] cmdLst = {
@@ -44,7 +48,7 @@ public class UIContext	{
 
 	private HashMap<String, CommandInterface> cmdTab;
 
-	public void setCommandTab(InterfaceableMaze maze, PiFunction pi, PreviousFunction prev, Queue<String> queue, PrintStream ostream)	{
+	public void setCommandTab(InterfaceableMaze maze, Pi pi, Previous prev, Queue<String> queue, PrintStream ostream)	{
 
 		cmdTab = new HashMap<String, CommandInterface>();
 		

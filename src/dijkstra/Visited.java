@@ -1,7 +1,9 @@
 package dijkstra;
   
-import maze.Vertex;
 import java.util.HashSet;
+
+import maze.Vertex;
+
 
 /** The class Visited implements a unordered set of vertices which can
  *  only increase in size.

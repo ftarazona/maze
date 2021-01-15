@@ -1,9 +1,12 @@
 package ui;
 
-import maze.*;
-import java.io.IOException;
-import java.io.FileInputStream;
 import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
+
+import maze.InterfaceableMaze;
+import maze.MazeException;
+
 
 public class IO_OpenMaze implements CommandInterface	{
 
@@ -12,6 +15,15 @@ public class IO_OpenMaze implements CommandInterface	{
 	public IO_OpenMaze(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
+
+	public String description()	{
+		return "open - Reads a maze from a given file.\n";
+	}
+
+	public String usage()	{
+		return "open <maze filename>\n";
+	}
+
 
 	public void run(String[] args)	
 		throws UIException, MazeException	{
@@ -28,13 +40,5 @@ public class IO_OpenMaze implements CommandInterface	{
 		} catch (IOException e)	{
 			throw new UIException(e.getMessage());
 		}
-	}
-
-	public String description()	{
-		return "open - Reads a maze from a given file.\n";
-	}
-
-	public String usage()	{
-		return "open <maze filename>\n";
 	}
 }

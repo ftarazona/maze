@@ -1,7 +1,11 @@
 package ui;
 
-import maze.*;
-import dijkstra.*;
+import dijkstra.Pi;
+import dijkstra.Previous;
+
+import maze.InterfaceableMaze;
+import maze.MazeException;
+
 
 public class EDIT_SetRoot implements CommandInterface	{
 
@@ -14,6 +18,15 @@ public class EDIT_SetRoot implements CommandInterface	{
 		this.pi = pi;
 		this.prev = prev;
 	}
+
+	public String description()	{
+		return "setroot - Sets the position of the root\n";
+	}
+
+	public String usage()	{
+		return	"setroot <x> <y>\n";
+	}
+
 
 	public void run(String[] args)	
 		throws UIException, MazeException	{
@@ -40,13 +53,5 @@ public class EDIT_SetRoot implements CommandInterface	{
 			pi.clear();
 			prev.clear();
 		}
-	}
-
-	public String description()	{
-		return "setroot - Sets the position of the root\n";
-	}
-
-	public String usage()	{
-		return	"setroot <x> <y>\n";
 	}
 }

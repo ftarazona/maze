@@ -1,17 +1,13 @@
 package maze;
 
-import java.util.Arrays;
+import java.io.InputStream;
+import java.io.PrintStream;
+import java.io.OutputStream;
+import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.EnumSet;
-import java.io.PrintStream;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+
 
 public class Maze
 	implements Graph, InterfaceableMaze	{
@@ -247,6 +243,16 @@ public class Maze
 				throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
 			}
 		}
+	}
+
+	public Vertex getRoot()	{
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				if(boxes[i][j] != null && boxes[i][j].hasFlag(BoxFlag.BOX_START))	{ return boxes[i][j]; }
+			}
+		}
+
+		return null;
 	}
 
 	public boolean setRoot(int x, int y)	

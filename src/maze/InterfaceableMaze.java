@@ -1,8 +1,12 @@
 package maze;
 
-import java.util.ArrayList;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PrintStream;
-import java.io.*;
+import java.io.IOException;
+
+import java.util.ArrayList;
+
 
 public interface InterfaceableMaze extends Graph	{
 
@@ -32,6 +36,7 @@ public interface InterfaceableMaze extends Graph	{
 		throws MazeOutOfBoundsException;
 	public void remFlag(int x, int y, BoxFlag flag)
 		throws MazeOutOfBoundsException;
+	public Vertex getRoot();
 	public void remRoot();
 	public boolean setRoot(int x, int y)
 		throws MazeOutOfBoundsException;

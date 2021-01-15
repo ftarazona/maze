@@ -2,7 +2,9 @@ package maze;
 
 import java.util.HashMap;
 
+
 public class MazeContext	{
+
 	public static final int NULL_ID 	= 0;
 	static final int NULL_ARGS	= 3;
 	static final int WALL_ID 	= 'W';

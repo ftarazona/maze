@@ -1,7 +1,11 @@
 package ui;
 
-import maze.*;
-import dijkstra.*;
+import dijkstra.Pi;
+import dijkstra.Previous;
+
+import maze.InterfaceableMaze;
+import maze.MazeException;
+
 
 public class EDIT_RemRoot implements CommandInterface	{
 
@@ -15,6 +19,15 @@ public class EDIT_RemRoot implements CommandInterface	{
 		this.prev = prev;
 	}
 
+	public String description()	{
+		return "remroot - Removes a potential root\n";
+	}
+
+	public String usage()	{
+		return	"remroot\n";
+	}
+
+
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 
@@ -25,13 +38,5 @@ public class EDIT_RemRoot implements CommandInterface	{
 		maze.remRoot();
 		pi.clear();
 		prev.clear();
-	}
-
-	public String description()	{
-		return "remroot - Removes a potential root\n";
-	}
-
-	public String usage()	{
-		return	"remroot\n";
 	}
 }

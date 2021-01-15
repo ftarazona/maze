@@ -1,18 +1,21 @@
 package ui;
 
-import maze.*;
-import dijkstra.*;
+import java.util.ArrayDeque;
 import java.util.Queue;
-import java.util.LinkedList;
 import java.util.Scanner;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileOutputStream;
+
 import java.io.PrintStream;
-import java.io.InputStream;
-import java.io.FileInputStream;
-import java.io.OutputStream;
 import java.io.IOException;
+
+import dijkstra.Pi;
+import dijkstra.PiFunction;
+import dijkstra.Previous;
+import dijkstra.PreviousFunction;
+
+import maze.InterfaceableMaze;
+import maze.Maze;
+import maze.MazeException;
+
 
 public class MazeManager implements UserInterface	{
 	
@@ -21,8 +24,8 @@ public class MazeManager implements UserInterface	{
 	private boolean prompt;
 
 	private InterfaceableMaze maze;
-	private PiFunction pi;
-	private PreviousFunction prev;
+	private Pi pi;
+	private Previous prev;
 
 	private PrintStream out;
 	private Scanner scanner;
@@ -30,7 +33,7 @@ public class MazeManager implements UserInterface	{
 	private UIContext context;
 	
 	public MazeManager()	{
-		queue 		= new LinkedList<String>();
+		queue 		= new ArrayDeque<String>();
 		stop 		= false;
 		prompt		= true;
 		maze 		= new Maze();

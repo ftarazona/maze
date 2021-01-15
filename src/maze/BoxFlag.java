@@ -3,6 +3,7 @@ package maze;
 import java.util.EnumSet;
 
 public enum BoxFlag	{
+
 	BOX_START,
 	BOX_END,
 	BOX_MARKED;

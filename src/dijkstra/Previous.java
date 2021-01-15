@@ -1,8 +1,10 @@
 package dijkstra;
 
 import java.util.ArrayList;
-import maze.Vertex;
+
 import maze.Graph;
+import maze.Vertex;
+
 
 /** A Previous function keeps track, for each vertex, its parent in
  *  the tree built by the Dijkstra algorithm.

@@ -1,6 +1,8 @@
 package ui;
 
-import maze.*;
+import maze.InterfaceableMaze;
+import maze.MazeException;
+
 
 public class EDIT_RemBox implements CommandInterface	{
 
@@ -9,6 +11,15 @@ public class EDIT_RemBox implements CommandInterface	{
 	public EDIT_RemBox(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
+
+	public String description()	{
+		return "rembox - Removes a box from the maze.\n";
+	}
+
+	public String usage()	{
+		return "rembox <x> <y>\n";
+	}
+
 
 	public void run(String[] args)	
 		throws UIException, MazeException	{
@@ -28,13 +39,5 @@ public class EDIT_RemBox implements CommandInterface	{
 		}
 
 		maze.remBox(x, y);
-	}
-
-	public String description()	{
-		return "rembox - Removes a box from the maze.\n";
-	}
-
-	public String usage()	{
-		return "rembox <x> <y>\n";
 	}
 }

@@ -1,8 +1,10 @@
 package dijkstra;
 
+import java.util.HashMap;
+
 import maze.Vertex;
 import maze.Graph;
-import java.util.HashMap;
+
 
 /** This class implements a function from the set of the graph's
  *  vertices to the integers. For each vertex in the graph, it

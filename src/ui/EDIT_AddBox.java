@@ -1,6 +1,9 @@
 package ui;
 
-import maze.*;
+import maze.InterfaceableMaze;
+import maze.MazeContext;
+import maze.MazeException;
+
 
 public class EDIT_AddBox implements CommandInterface	{
 
@@ -9,6 +12,16 @@ public class EDIT_AddBox implements CommandInterface	{
 	public EDIT_AddBox(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
+
+	public String description()	{
+		return "addbox - Adds or replaces a box of the maze.\n";
+	}
+
+	public String usage()	{
+		return	"1. addbox <x> <y> <z> (empty)\n" +
+			"2. addbox <x> <y> <z> <type>\n";
+	}
+
 
 	public void run(String[] args)
 		throws UIException, MazeException	{
@@ -44,14 +57,5 @@ public class EDIT_AddBox implements CommandInterface	{
 		}
 
 		maze.addBox(boxType, boxArgs);
-	}
-
-	public String description()	{
-		return "addbox - Adds or replaces a box of the maze.\n";
-	}
-
-	public String usage()	{
-		return	"1. addbox <x> <y> <z> (empty)\n" +
-			"2. addbox <x> <y> <z> <type>\n";
 	}
 }

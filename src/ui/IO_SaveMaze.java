@@ -1,8 +1,12 @@
 package ui;
-import maze.*;
-import java.io.IOException;
-import java.io.FileOutputStream;
+
 import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
+import maze.InterfaceableMaze;
+import maze.MazeException;
+
 
 public class IO_SaveMaze implements CommandInterface	{
 
@@ -11,6 +15,15 @@ public class IO_SaveMaze implements CommandInterface	{
 	public IO_SaveMaze(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
+
+	public String description()	{
+		return "save - Writes the current maze in given file.\n";
+	}
+
+	public String usage()	{
+		return "save <filename>\n";
+	}
+
 
 	public void run(String[] args)	
 		throws UIException, MazeException	{
@@ -27,13 +40,5 @@ public class IO_SaveMaze implements CommandInterface	{
 		} catch (IOException e)	{
 			throw new UIException(e.getMessage());
 		}
-	}
-
-	public String description()	{
-		return "save - Writes the current maze in given file.\n";
-	}
-
-	public String usage()	{
-		return "save <filename>\n";
 	}
 }

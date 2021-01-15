@@ -1,7 +1,10 @@
 package ui;
 
-import maze.*;
-import dijkstra.*;
+import dijkstra.Pi;
+import dijkstra.Previous;
+
+import maze.InterfaceableMaze;
+
 
 public class EDIT_Clear implements CommandInterface	{
 
@@ -15,21 +18,20 @@ public class EDIT_Clear implements CommandInterface	{
 		this.prev	= prev;
 	}
 
-	public void run(String[] args)	
-		throws UIException, MazeException	{
-
-		if(args.length != 1)	{
-			throw new IncorrectUsageException(args.length, 1);
-		}
-		
-		maze.clear();
-	}
-
 	public String description()	{
 		return "clear - Removes all flags\n";
 	}
 
 	public String usage()	{
 		return	"clear\n";
+	}
+
+
+	public void run(String[] args)	
+		throws UIException	{
+
+		if(args.length != 1)	{
+			throw new IncorrectUsageException(args.length, 1);
+		}
 	}
 }

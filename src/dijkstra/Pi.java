@@ -2,6 +2,7 @@ package dijkstra;
 
 import maze.Vertex;
 
+
 /** A Pi function keeps track of the minimal distance between 
  *  a vertex and the root considering paths in a given ASet when
  *  processing the Dijkstra algorithm.

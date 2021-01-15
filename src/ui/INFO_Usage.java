@@ -1,7 +1,7 @@
 package ui;
 
 import java.io.PrintStream;
-import maze.MazeException;
+
 
 public class INFO_Usage implements CommandInterface	{
 
@@ -22,7 +22,7 @@ public class INFO_Usage implements CommandInterface	{
 	}
 
 	public void run(String[] args)	
-		throws UIException, MazeException	{
+		throws UIException	{
 
 		if(args.length != 2)	{
 			throw new IncorrectUsageException(2, args.length);

@@ -1,7 +1,12 @@
 package ui;
 
-import maze.*;
-import dijkstra.*;
+import dijkstra.Pi;
+import dijkstra.Previous;
+
+import maze.BoxFlag;
+import maze.InterfaceableMaze;
+import maze.MazeException;
+
 
 public class EDIT_RemFlag implements CommandInterface	{
 
@@ -15,8 +20,17 @@ public class EDIT_RemFlag implements CommandInterface	{
 		this.prev = prev;
 	}
 
+	public String description()	{
+		return "remflag - Removes a flag.\n";
+	}
+
+	public String usage()	{
+		return	"remflag <x> <y> <flag>\n";
+	}
+
+
 	public void run(String[] args)	
-		throws UIException	{
+		throws UIException, MazeException	{
 
 		if(args.length != 4)	{
 			throw new IncorrectUsageException(4, args.length);
@@ -42,18 +56,6 @@ public class EDIT_RemFlag implements CommandInterface	{
 			prev.clear();
 		}
 
-		try	{
-			maze.remFlag(x, y, flag);
-		} catch (MazeOutOfBoundsException e)	{
-			throw new UnreachablePositionException(x, y);
-		}
-	}
-
-	public String description()	{
-		return "remflag - Removes a flag.\n";
-	}
-
-	public String usage()	{
-		return	"remflag <x> <y> <flag>\n";
+		maze.remFlag(x, y, flag);
 	}
 }

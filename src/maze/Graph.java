@@ -2,6 +2,7 @@ package maze;
 
 import java.util.ArrayList;
 
+
 /** A graph is an ordered set of vertices, linked by distances to one
  *  another.
  */

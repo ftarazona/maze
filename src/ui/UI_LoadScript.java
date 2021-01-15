@@ -2,8 +2,11 @@ package ui;
 
 import java.util.Queue;
 import java.util.Scanner;
+
 import java.io.FileInputStream;
-import maze.*;
+
+import maze.InterfaceableMaze;
+
 
 public class UI_LoadScript implements CommandInterface	{
 
@@ -21,8 +24,9 @@ public class UI_LoadScript implements CommandInterface	{
 		return "script <filename>\n";
 	}
 
+	
 	public void run(String[] args)
-		throws UIException, MazeException	{
+		throws UIException	{
 
 		if(args.length != 2)	{
 			throw new IncorrectUsageException(args.length, 4);

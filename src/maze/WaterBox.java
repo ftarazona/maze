@@ -1,10 +1,8 @@
 package maze;
 
-import java.util.ArrayList;
-import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.IOException;
 import java.io.PrintStream;
+import java.io.IOException;
 
 public class WaterBox extends Box	{
 

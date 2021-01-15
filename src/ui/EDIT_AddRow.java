@@ -1,6 +1,9 @@
 package ui;
 
-import maze.*;
+import maze.InterfaceableMaze;
+import maze.MazeContext;
+import maze.MazeException;
+
 
 public class EDIT_AddRow implements CommandInterface	{
 	
@@ -9,6 +12,16 @@ public class EDIT_AddRow implements CommandInterface	{
 	public EDIT_AddRow(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
+	
+	public String description()	{
+		return "addrow - Adds a row to the maze.\n";
+	}
+
+	public String usage()	{
+		return	"1. addrow <pos>\n" +
+			"2. addrow <pos> <type>\n";
+	}
+
 
 	public void run(String[] args)	
 		throws UIException, MazeException	{
@@ -30,14 +43,5 @@ public class EDIT_AddRow implements CommandInterface	{
 		}
 
 		maze.addRow(pos, type);
-	}
-	
-	public String description()	{
-		return "addrow - Adds a row to the maze.\n";
-	}
-
-	public String usage()	{
-		return	"1. addrow <pos>\n" +
-			"2. addrow <pos> <type>\n";
 	}
 }

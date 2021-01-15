@@ -1,11 +1,11 @@
 package dijkstra;
 
-import java.util.Arrays;
 import java.util.ArrayList;
-import maze.Vertex;
-import maze.Graph;
-import maze.Box;
 import java.util.HashMap;
+
+import maze.Graph;
+import maze.Vertex;
+
 
 /** This class implements a function from the set of the visited
  *  vertices to itself. For each visited vertex, it returns its 

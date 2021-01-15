@@ -1,8 +1,15 @@
 package ui;
 
-import dijkstra.*;
-import maze.*;
 import java.util.ArrayList;
+
+import dijkstra.Pi;
+import dijkstra.Previous;
+
+import maze.BoxFlag;
+import maze.InterfaceableMaze;
+import maze.Vertex;
+import maze.MazeException;
+
 
 public class DIJKSTRA_TracePath implements CommandInterface	{
 
@@ -14,6 +21,14 @@ public class DIJKSTRA_TracePath implements CommandInterface	{
 		this.maze = maze;
 		this.pi = pi;
 		this.prev = prev;
+	}
+
+	public String description()	{
+		return "tracepath - Traces minimal path to a given box in the maze.\n";
+	}
+
+	public String usage()	{
+		return "tracepath <x> <y>\n";
 	}
 
 	public void run(String[] args)	
@@ -37,13 +52,5 @@ public class DIJKSTRA_TracePath implements CommandInterface	{
 		
 		path = prev.getFullPath(maze.getBox(x, y));
 		maze.setSelection(path, BoxFlag.BOX_MARKED);
-	}
-
-	public String usage()	{
-		return "tracepath <x> <y>\n";
-	}
-
-	public String description()	{
-		return "tracepath - Traces minimal path to a given box in the maze.\n";
 	}
 }

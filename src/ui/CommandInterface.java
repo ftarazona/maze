@@ -1,6 +1,6 @@
 package ui;
 
-import maze.*;
+import maze.MazeException;
 
 public interface CommandInterface	{
 

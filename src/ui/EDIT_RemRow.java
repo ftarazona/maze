@@ -1,6 +1,8 @@
 package ui;
 
-import maze.*;
+import maze.InterfaceableMaze;
+import maze.MazeException;
+
 
 public class EDIT_RemRow implements CommandInterface	{
 
@@ -9,6 +11,15 @@ public class EDIT_RemRow implements CommandInterface	{
 	public EDIT_RemRow(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
+
+	public String description()	{
+		return "remrow - Removes a row to the maze.\n";
+	}
+
+	public String usage()	{
+		return	"remrow <pos>\n";
+	}
+
 
 	public void run(String[] args)
 		throws UIException, MazeException	{
@@ -24,13 +35,5 @@ public class EDIT_RemRow implements CommandInterface	{
 		}
 
 		maze.remRow(pos);
-	}
-
-	public String description()	{
-		return "remrow - Removes a row to the maze.\n";
-	}
-
-	public String usage()	{
-		return	"remrow <pos>\n";
 	}
 }
