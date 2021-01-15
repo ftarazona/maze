@@ -33,13 +33,13 @@ public interface InterfaceableMaze extends Graph	{
 	public void clearSelection(ArrayList<Vertex> sel, BoxFlag flag);
 	public void clear();
 	public void addFlag(int x, int y, BoxFlag flag)
-		throws MazeOutOfBoundsException;
+		throws MazeOutOfBoundsException, NullBoxException;
 	public void remFlag(int x, int y, BoxFlag flag)
-		throws MazeOutOfBoundsException;
+		throws MazeOutOfBoundsException, NullBoxException;
 	public Vertex getRoot();
 	public void remRoot();
 	public boolean setRoot(int x, int y)
-		throws MazeOutOfBoundsException;
+		throws MazeOutOfBoundsException, NullBoxException;
 
 	public void addRow(int pos, int boxType)
 		throws MazeOutOfBoundsException, UnexpectedBoxTypeException;

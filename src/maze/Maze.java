@@ -18,6 +18,8 @@ public class Maze
 	private int area;
 
 	private boolean opened;
+	private boolean hasRoot;
+	private int xRoot, yRoot;
 
 	EnumSet<BoxFlag> showFlag;
 
@@ -28,6 +30,7 @@ public class Maze
 		height = 0;
 		area = 0;
 		opened = false;
+		hasRoot = false;
 		showFlag = EnumSet.noneOf(BoxFlag.class);
 	}
 
@@ -65,6 +68,8 @@ public class Maze
 		this.boxes = boxes;
 		this.width = boxes[0].length;
 		this.height = boxes.length;
+		opened = true;
+		hasRoot = false;
 	}
 
 	public boolean isOpened()	{ return opened; }
@@ -74,6 +79,7 @@ public class Maze
 		height = 0;
 		area = 0;
 		opened = false;
+		hasRoot = false;
 		showFlag = EnumSet.noneOf(BoxFlag.class);
 	}
 
@@ -233,7 +239,7 @@ public class Maze
 	}
 
 	public void addFlag(int x, int y, BoxFlag flag)	
-		throws MazeOutOfBoundsException	{
+		throws MazeOutOfBoundsException, NullBoxException	{
 		if(flag.equals(BoxFlag.BOX_START))	{
 			setRoot(x, y);
 		} else	{
@@ -241,54 +247,53 @@ public class Maze
 				boxes[y][x].addFlag(flag);
 			} catch (IndexOutOfBoundsException e)	{
 				throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
+			} catch (NullPointerException e)	{
+				throw new NullBoxException();
 			}
 		}
 	}
 
 	public Vertex getRoot()	{
-		for(int i = 0; i < height; i++)	{
-			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j] != null && boxes[i][j].hasFlag(BoxFlag.BOX_START))	{ return boxes[i][j]; }
-			}
-		}
-
-		return null;
+		if(hasRoot)	{ return boxes[yRoot][xRoot]; }
+		else		{ return null; }
 	}
 
 	public boolean setRoot(int x, int y)	
-		throws MazeOutOfBoundsException	{
+		throws MazeOutOfBoundsException, NullBoxException	{
 		try	{
 			boxes[y][x].addFlag(BoxFlag.BOX_START);
 		} catch (IndexOutOfBoundsException e)	{
 			throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
+		} catch (NullPointerException e)	{
+			throw new NullBoxException();
 		}
-		for(int i = 0; i < height; i++)	{
-			for(int j = 0; j < width; j++)	{
-				if((i != y || j != x) && boxes[i][j] != null &&  boxes[i][j].hasFlag(BoxFlag.BOX_START))	{
-					boxes[i][j].remFlag(BoxFlag.BOX_START);
-					return true;
-				}
-			}
+
+		if(hasRoot)	{
+			boxes[yRoot][xRoot].remFlag(BoxFlag.BOX_START);
+			return true;
 		}
+
 		return false;
 	}
 
 	public void remRoot()	{
-		for(int i = 0; i < height; i++)	{
-			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j] != null && boxes[i][j].hasFlag(BoxFlag.BOX_START))	{
-					boxes[i][j].remFlag(BoxFlag.BOX_START);
-				}
-			}
+		if(hasRoot && boxes[yRoot][xRoot] != null)	{
+			boxes[yRoot][xRoot].remFlag(BoxFlag.BOX_START);
 		}
+		hasRoot = false;
 	}
 
 	public void remFlag(int x, int y, BoxFlag flag)	
-		throws MazeOutOfBoundsException	{
+		throws MazeOutOfBoundsException, NullBoxException	{
 		try	{
 			boxes[y][x].remFlag(flag);
+			if(flag.equals(BoxFlag.BOX_START))	{
+				hasRoot = false;
+			}
 		} catch (IndexOutOfBoundsException e)	{
 			throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
+		} catch (NullPointerException e)	{
+			throw new NullBoxException();
 		}
 	}
 
@@ -307,6 +312,7 @@ public class Maze
 				}
 			}
 		}
+		hasRoot = false;
 	}
 
 	/** Writes the graph in an output stream.
@@ -369,6 +375,11 @@ public class Maze
 				throw new ReadingException(String.format("Maze : Could not parse given stream : box %d : %s", iBox, e.getMessage()));
 			}
 
+			if(box.hasFlag(BoxFlag.BOX_START) && !hasRoot)	{
+				hasRoot = true;
+				xRoot = box.getX();
+				yRoot = box.getY();
+			}
 			if(box.getX() > xMax)	{ xMax = box.getX(); }
 			if(box.getY() > yMax)	{ yMax = box.getY(); }
 			boxList.add(box);
@@ -446,6 +457,9 @@ public class Maze
 			if(boxes[pos][j] == null)	{
 				area--;
 			}
+			if(boxes[pos][j].hasFlag(BoxFlag.BOX_START))	{
+				hasRoot = false;
+			}
 		}
 		for(int i = pos; i < height - 1; i++)	{
 			for(int j = 0; j < width; j++)	{
@@ -516,6 +530,9 @@ public class Maze
 			if(boxes[i][pos] == null)	{
 				area--;
 			}
+			if(boxes[i][pos].hasFlag(BoxFlag.BOX_START))	{
+				hasRoot = false;
+			}
 		}
 		for(int j = pos; j < width - 1; j++)	{
 			for(int i = 0; i < height; i++)	{
@@ -558,8 +575,11 @@ public class Maze
 			throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
 		}
 
+		if(boxes[y][x] != null)	{ area--; }
+		if(boxes[y][x].hasFlag(BoxFlag.BOX_START))	{
+			hasRoot = false;
+		}
 		boxes[y][x] = null;
-		area--;
 	}
 
 	public Vertex getBox(int x, int y)
