@@ -5,11 +5,11 @@ import dijkstra.*;
 
 public class EDIT_SetRoot implements CommandInterface	{
 
-	private Maze maze;
-	private PiFunction pi;
-	private PreviousFunction prev;
+	private InterfaceableMaze maze;
+	private Pi pi;
+	private Previous prev;
 
-	public EDIT_SetRoot(Maze maze, PiFunction pi, PreviousFunction prev)	{
+	public EDIT_SetRoot(InterfaceableMaze maze, Pi pi, Previous prev)	{
 		this.maze = maze;
 		this.pi = pi;
 		this.prev = prev;
@@ -39,8 +39,6 @@ public class EDIT_SetRoot implements CommandInterface	{
 			System.out.println("WARNING: new root.");
 			pi.clear();
 			prev.clear();
-			maze.clear();
-			maze.setRoot(x, y);
 		}
 	}
 

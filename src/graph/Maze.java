@@ -267,6 +267,16 @@ public class Maze
 		return false;
 	}
 
+	public void remRoot()	{
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				if(boxes[i][j] != null && boxes[i][j].hasFlag(BoxFlag.BOX_START))	{
+					boxes[i][j].remFlag(BoxFlag.BOX_START);
+				}
+			}
+		}
+	}
+
 	public void remFlag(int x, int y, BoxFlag flag)	
 		throws MazeOutOfBoundsException	{
 		try	{

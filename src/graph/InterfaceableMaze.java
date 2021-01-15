@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.io.PrintStream;
 import java.io.*;
 
-public interface InterfaceableMaze	{
+public interface InterfaceableMaze extends Graph	{
 
 	public void newMaze(int height, int width, int boxType)
 		throws UnexpectedBoxTypeException;
@@ -32,6 +32,7 @@ public interface InterfaceableMaze	{
 		throws MazeOutOfBoundsException;
 	public void remFlag(int x, int y, BoxFlag flag)
 		throws MazeOutOfBoundsException;
+	public void remRoot();
 	public boolean setRoot(int x, int y)
 		throws MazeOutOfBoundsException;
 

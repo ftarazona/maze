@@ -6,9 +6,9 @@ import java.io.BufferedOutputStream;
 
 public class IO_SaveMaze implements CommandInterface	{
 
-	private Maze maze;
+	private InterfaceableMaze maze;
 
-	public IO_SaveMaze(Maze maze)	{
+	public IO_SaveMaze(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
 

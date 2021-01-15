@@ -5,9 +5,9 @@ import graph.*;
 
 public class IO_NewMaze implements CommandInterface	{
 	
-	private Maze maze;
+	private InterfaceableMaze maze;
 
-	public IO_NewMaze(Maze maze)	{
+	public IO_NewMaze(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
 

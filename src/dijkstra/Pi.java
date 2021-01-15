@@ -20,4 +20,6 @@ public interface Pi	{
 	    the ASet used by algorithm.
 	 */
 	public int get(Vertex vertex);
+
+	public void clear();
 }

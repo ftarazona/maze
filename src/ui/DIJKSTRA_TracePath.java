@@ -6,11 +6,11 @@ import java.util.ArrayList;
 
 public class DIJKSTRA_TracePath implements CommandInterface	{
 
-	private Maze maze;
-	private PiFunction pi;
-	private PreviousFunction prev;
+	private InterfaceableMaze maze;
+	private Pi pi;
+	private Previous prev;
 
-	public DIJKSTRA_TracePath(Maze maze, PiFunction pi, PreviousFunction prev)	{
+	public DIJKSTRA_TracePath(InterfaceableMaze maze, Pi pi, Previous prev)	{
 		this.maze = maze;
 		this.pi = pi;
 		this.prev = prev;

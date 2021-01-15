@@ -20,7 +20,7 @@ public class MazeManager implements UserInterface	{
 	private boolean stop;
 	private boolean prompt;
 
-	private Maze maze;
+	private InterfaceableMaze maze;
 	private PiFunction pi;
 	private PreviousFunction prev;
 

@@ -4,7 +4,7 @@ import java.util.Queue;
 import java.util.HashMap;
 import java.util.Collection;
 import java.io.PrintStream;
-import graph.Maze;
+import graph.InterfaceableMaze;
 import graph.BoxFlag;
 import graph.MazeContext;
 import dijkstra.*;
@@ -13,15 +13,19 @@ public class UIContext	{
 	private static String[] cmdLst = {
 		"help",
 		"usage",
+
 		"script",
+
 		"new", 
 		"open", 
 		"save",
+
 		"display", 
 		"show", 
 		"showflags", 
 		"hide",
 		"hideflags",
+
 		"addrow", 
 		"addcol", 
 		"remrow",
@@ -30,14 +34,17 @@ public class UIContext	{
 		"rembox",
 		"addflag",
 		"remflag",
+		"clear",
 		"setroot",
+		"remroot",
+
 		"dijkstra",
 		"tracepath"
 	};
 
 	private HashMap<String, CommandInterface> cmdTab;
 
-	public void setCommandTab(Maze maze, PiFunction pi, PreviousFunction prev, Queue<String> queue, PrintStream ostream)	{
+	public void setCommandTab(InterfaceableMaze maze, PiFunction pi, PreviousFunction prev, Queue<String> queue, PrintStream ostream)	{
 
 		cmdTab = new HashMap<String, CommandInterface>();
 		
@@ -83,8 +90,13 @@ public class UIContext	{
 			new EDIT_AddFlag(maze, pi, prev));
 		cmdTab.put("remflag", 
 			new EDIT_RemFlag(maze, pi, prev));
+		cmdTab.put("clear",
+			new EDIT_Clear(maze, pi, prev));
 		cmdTab.put("setroot", 
 			new EDIT_SetRoot(maze, pi, prev));
+		cmdTab.put("remroot",
+			new EDIT_RemRoot(maze, pi, prev));
+
 		cmdTab.put("dijkstra", 
 			new DIJKSTRA_Dijkstra(maze, pi, prev));
 		cmdTab.put("tracepath", 

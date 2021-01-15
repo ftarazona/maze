@@ -7,9 +7,9 @@ import java.io.BufferedInputStream;
 
 public class IO_OpenMaze implements CommandInterface	{
 
-	private Maze maze;
+	private InterfaceableMaze maze;
 
-	public IO_OpenMaze(Maze maze)	{
+	public IO_OpenMaze(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
 

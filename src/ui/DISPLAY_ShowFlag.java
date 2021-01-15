@@ -1,13 +1,14 @@
 package ui;
 
+import graph.InterfaceableMaze;
 import graph.Maze;
 import graph.MazeException;
 
 public class DISPLAY_ShowFlag implements CommandInterface	{
 
-	private Maze maze;
+	private InterfaceableMaze maze;
 
-	public DISPLAY_ShowFlag(Maze maze)	{
+	public DISPLAY_ShowFlag(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
 

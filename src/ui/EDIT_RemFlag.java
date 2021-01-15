@@ -5,11 +5,11 @@ import dijkstra.*;
 
 public class EDIT_RemFlag implements CommandInterface	{
 
-	private Maze maze;
-	private PiFunction pi;
-	private PreviousFunction prev;
+	private InterfaceableMaze maze;
+	private Pi pi;
+	private Previous prev;
 
-	public EDIT_RemFlag(Maze maze, PiFunction pi, PreviousFunction prev)	{
+	public EDIT_RemFlag(InterfaceableMaze maze, Pi pi, Previous prev)	{
 		this.maze = maze;
 		this.pi = pi;
 		this.prev = prev;

@@ -5,11 +5,11 @@ import graph.*;
 
 public class DIJKSTRA_Dijkstra implements CommandInterface	{
 
-	private Maze maze;
-	private PiFunction pi;
-	private PreviousFunction prev;
+	private InterfaceableMaze maze;
+	private Pi pi;
+	private Previous prev;
 
-	public DIJKSTRA_Dijkstra(Maze maze, PiFunction pi, PreviousFunction prev)	{
+	public DIJKSTRA_Dijkstra(InterfaceableMaze maze, Pi pi, Previous prev)	{
 		this.maze = maze;
 		this.pi = pi;
 		this.prev = prev;

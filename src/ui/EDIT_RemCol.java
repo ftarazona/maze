@@ -4,9 +4,9 @@ import graph.*;
 
 public class EDIT_RemCol implements CommandInterface	{
 
-	private Maze maze;
+	private InterfaceableMaze maze;
 	
-	public EDIT_RemCol(Maze maze)	{
+	public EDIT_RemCol(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
 

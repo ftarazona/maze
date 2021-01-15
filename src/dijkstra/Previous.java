@@ -30,4 +30,6 @@ public interface Previous	{
 	    minimal.
 	 */
 	public ArrayList<Vertex> getFullPath(Vertex cur);
+
+	public void clear();
 }
