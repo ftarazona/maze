@@ -16,7 +16,7 @@ import fileops.BadFormatException;
 import fileops.ReadingException;
 
 public class Maze
-	implements Graph	{
+	implements Graph, InterfaceableMaze	{
 
 	private Box[][] boxes;
 	private int width;
@@ -189,6 +189,14 @@ public class Maze
 		return area;
 	}
 
+	public int getHeight()	{
+		return height;
+	}
+
+	public int getWidth()	{
+		return width;
+	}
+
 	/** Returns a list of vertices carrying a given flag.
 	 *  @param flag is the flag to be looked for.
 	 *  @return a list of vertices carrying the flag. */
@@ -262,7 +270,7 @@ public class Maze
 	}
 
 	/** Clears all the flags of every vertex in the graph. */
-	public void clearAll()	{
+	public void clear()	{
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
 				if(boxes[i][j] != null)	{
@@ -544,7 +552,7 @@ public class Maze
 		area--;
 	}
 
-	public Box getBox(int x, int y)
+	public Vertex getBox(int x, int y)
 		throws MazeOutOfBoundsException	{
 
 		if(x < 0 || x >= width || y < 0 || y >= height || boxes[y][x] == null)	{
