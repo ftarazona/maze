@@ -1,7 +1,7 @@
 package ui;
 
 import graph.*;
-import fileops.*;
+import java.io.IOException;
 import java.io.FileInputStream;
 import java.io.BufferedInputStream;
 
@@ -14,8 +14,8 @@ public class IO_OpenMaze implements CommandInterface	{
 	}
 
 	public void run(String[] args)	
-		throws UIException	{
-		if(args.length == 1 || args.length > 2)	{ throw new IncorrectUsageException(2, args.length); }
+		throws UIException, MazeException	{
+		if(args.length != 2)	{ throw new IncorrectUsageException(args.length, 2); }
 
 		FileInputStream file = null;
 		BufferedInputStream bs = null;
@@ -25,8 +25,8 @@ public class IO_OpenMaze implements CommandInterface	{
 			maze.read(bs);
 			bs.close();
 			file.close();
-		} catch (Exception e)	{
-			throw new ReadingException(e.getMessage());
+		} catch (IOException e)	{
+			throw new UIException(e.getMessage());
 		}
 	}
 

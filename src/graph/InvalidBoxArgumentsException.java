@@ -1,14 +1,14 @@
 package graph;
 
-public class InvalidBoxArgumentsException extends Exception	{
+public class InvalidBoxArgumentsException extends MazeException	{
 
-	public static final long serialVersionUID = 202101090118L;
+	public static final long serialVersionUID = 202101151553L;
 	private int expected;
 	private int received;
 
 	public InvalidBoxArgumentsException(int received, int expected)	{
-		this.expected = expected;
 		this.received = received;
+		this.expected = expected;
 	}
 
 	public int getExpected()	{
@@ -19,7 +19,8 @@ public class InvalidBoxArgumentsException extends Exception	{
 		return received;
 	}
 
+	@Override
 	public String getMessage()	{
-		return String.format("Box received %d arguments, %d expected.", expected, received);
+		return String.format("Maze : Box constructor received %d arguments, %d expected at least.", received, expected);
 	}
 }

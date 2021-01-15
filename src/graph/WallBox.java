@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import fileops.BadFormatException;
-import fileops.ReadingException;
 
 public class WallBox extends Box	{
 
@@ -15,9 +13,8 @@ public class WallBox extends Box	{
 	public WallBox(int[] args)	
 		throws InvalidBoxArgumentsException	{
 		super(args);
-		int expects = MazeContext.getNbArgs(MazeContext.WALL_ID);
-		if(args.length != expects)	{
-			throw new InvalidBoxArgumentsException(expects, args.length);
+		if(args.length != MazeContext.WALL_ARGS)	{
+			throw new InvalidBoxArgumentsException(args.length, MazeContext.WALL_ARGS);
 		}
 	}
 

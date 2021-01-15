@@ -1,8 +1,8 @@
-package fileops;
+package graph;
 
-public class BadFormatException extends Exception	{
+public class BadFormatException extends MazeException	{
 
-	public static final long serialVersionUID = 202012301431L;
+	public static final long serialVersionUID = 202101151616L;
 	private int expected;
 	private int received;
 
@@ -20,6 +20,6 @@ public class BadFormatException extends Exception	{
 	}
 
 	public String getMessage()	{
-		return String.format("Received %d arguments, %d expected.", expected, received);
+		return String.format("Maze : Received %d arguments, %d expected.", expected, received);
 	}
 }

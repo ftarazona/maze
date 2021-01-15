@@ -11,9 +11,9 @@ public class EDIT_RemRow implements CommandInterface	{
 	}
 
 	public void run(String[] args)
-		throws UIException	{
+		throws UIException, MazeException	{
 
-		if(args.length == 1 || args.length > 2)	{ throw new IncorrectUsageException(2, args.length); }
+		if(args.length != 2)	{ throw new IncorrectUsageException(args.length, 2); }
 
 		int pos = 0;
 
@@ -23,11 +23,7 @@ public class EDIT_RemRow implements CommandInterface	{
 			throw new InvalidArgumentsException(args[1], 1);
 		}
 
-		try	{
-			maze.remRow(pos);
-		} catch (MazeOutOfBoundsException e)	{
-			throw new UnreachablePositionException(0, pos);
-		}
+		maze.remRow(pos);
 	}
 
 	public String description()	{

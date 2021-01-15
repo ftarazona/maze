@@ -1,5 +1,6 @@
 package ui;
 
+import java.io.IOException;
 import graph.*;
 
 public class IO_NewMaze implements CommandInterface	{
@@ -11,12 +12,12 @@ public class IO_NewMaze implements CommandInterface	{
 	}
 
 	public void run(String[] args)	
-		throws UIException	{
+		throws UIException, MazeException	{
 		
-		if(args.length == 1 || args.length > 4)	{ throw new IncorrectUsageException(4, args.length); }
+		if(args.length == 1 || args.length > 4)	{ throw new IncorrectUsageException(args.length, 4); }
 
 		int usage = 3;
-		int width = 0, height = 0, type = UIContext.boxType("null");
+		int width = 0, height = 0, type;
 
 		try	{
 			height = Integer.parseInt(args[1]);
@@ -34,17 +35,11 @@ public class IO_NewMaze implements CommandInterface	{
 		try	{
 			type = UIContext.boxType(args[3]);
 		} catch (IndexOutOfBoundsException e)	{
-			type = UIContext.boxType("null");
-		} catch (UnknownBoxTypeException e)	{
-			throw e;
+			type = MazeContext.NULL_ID;
 		}
 
-		try	{
-			if(usage == 1)	{ maze.newMaze(0, 0, UIContext.boxType("null")); }
-			else	{ maze.newMaze(height, width, type); }
-		} catch (InvalidBoxArgumentsException e)	{
-			throw new UIException("Internal error while build maze.");
-		}
+		if(usage == 1)	{ maze.newMaze(0, 0, UIContext.boxType("null")); }
+		else	{ maze.newMaze(height, width, type); }
 	}
 
 	public String description()	{

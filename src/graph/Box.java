@@ -6,8 +6,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import fileops.BadFormatException;
-import fileops.ReadingException;
 
 /** This abstract class implements a graph's vertex. It provides
  *  general features such as coordinates or flags. */
@@ -31,7 +29,7 @@ public abstract class Box
 		throws InvalidBoxArgumentsException	{
 
 		if(args.length < 4)	{
-			throw new InvalidBoxArgumentsException(3, args.length);
+			throw new InvalidBoxArgumentsException(args.length, MazeContext.NULL_ARGS);
 		}
 
 		this.x = args[0];

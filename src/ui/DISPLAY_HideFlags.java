@@ -1,6 +1,7 @@
 package ui;
 
 import graph.Maze;
+import graph.MazeException;
 
 public class DISPLAY_HideFlags implements CommandInterface	{
 
@@ -11,10 +12,10 @@ public class DISPLAY_HideFlags implements CommandInterface	{
 	}
 
 	public void run(String[] args)	
-		throws UIException	{
+		throws UIException, MazeException	{
 		if(args.length != 1)	{ throw new IncorrectUsageException(1, args.length); }
 
-		maze.showAllFlags();
+		maze.hideAllFlags();
 	}
 
 	public String description()	{

@@ -93,11 +93,11 @@ public class UIContext	{
 	
 	public static int boxType(String str)	
 		throws UnknownBoxTypeException	{
-		Integer boxID = MazeContext.getBoxID(str);
-		if(boxID == null)	{
+		Integer boxType = MazeContext.getBoxType(str);
+		if(boxType == null)	{
 			throw new UnknownBoxTypeException(str);
 		}
-		return boxID.intValue();
+		return boxType.intValue();
 	}
 
 	public CommandInterface command(String str)

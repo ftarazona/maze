@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import fileops.BadFormatException;
-import fileops.ReadingException;
 
 public class StairsBox extends Box	{
 
@@ -21,9 +19,8 @@ public class StairsBox extends Box	{
 	public StairsBox(int[] args)	
 		throws InvalidBoxArgumentsException	{
 		super(args);
-		int expects = MazeContext.getNbArgs(MazeContext.WALL_ID);
-		if(args.length != expects)	{
-			throw new InvalidBoxArgumentsException(expects, args.length);
+		if(args.length != MazeContext.STAIRS_ARGS)	{
+			throw new InvalidBoxArgumentsException(args.length, MazeContext.STAIRS_ARGS);
 		}
 		this.dir = args[3] == 0 ? UP_DOWN : LEFT_RIGHT;
 	}

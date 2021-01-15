@@ -16,7 +16,7 @@ public class DIJKSTRA_Dijkstra implements CommandInterface	{
 	}
 
 	public void run(String[] args)	
-		throws UIException	{
+		throws UIException, MazeException	{
 		
 		Vertex root = null;
 		try	{

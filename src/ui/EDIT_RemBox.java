@@ -11,8 +11,8 @@ public class EDIT_RemBox implements CommandInterface	{
 	}
 
 	public void run(String[] args)	
-		throws UIException	{
-		if(args.length != 3)	{ throw new IncorrectUsageException(3, args.length); }
+		throws UIException, MazeException	{
+		if(args.length != 3)	{ throw new IncorrectUsageException(args.length, 3); }
 
 		int x = 0, y = 0;
 
@@ -27,11 +27,7 @@ public class EDIT_RemBox implements CommandInterface	{
 			throw new InvalidArgumentsException(args[2], 2);
 		}
 
-		try	{
-			maze.remBox(x, y);
-		} catch (MazeOutOfBoundsException e)	{
-			throw new UnreachablePositionException(x, y);
-		}
+		maze.remBox(x, y);
 	}
 
 	public String description()	{

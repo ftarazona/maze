@@ -11,48 +11,39 @@ public class EDIT_AddBox implements CommandInterface	{
 	}
 
 	public void run(String[] args)
-		throws UIException	{
+		throws UIException, MazeException	{
 		
 		if(args.length < MazeContext.MIN_ARGS)	{ 
-			throw new IncorrectUsageException(MazeContext.MIN_ARGS, args.length); 
+			throw new IncorrectUsageException(args.length, MazeContext.MIN_ARGS); 
 		}
 
-		int boxID = MazeContext.NULL_ID;
+		int boxType;
 		int[] boxArgs = new int[args.length - 1];
 
 		for(int i = 1; i <= 3; i++)	{
-		try	{
-			boxArgs[i - 1] = Integer.parseInt(args[i]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[i-1], i);
-		}
+			try	{
+				boxArgs[i - 1] = Integer.parseInt(args[i]);
+			} catch (NumberFormatException e)	{
+				throw new InvalidArgumentsException(args[i], i);
+			}
 		}
 
 		try	{
-			boxID = UIContext.boxType(args[4]);
+			boxType = UIContext.boxType(args[4]);
 		} catch (IndexOutOfBoundsException e)	{
-			boxID = MazeContext.NULL_ID;
-		} catch (UnknownBoxTypeException e)	{
-			throw e;
+			boxType = MazeContext.NULL_ID;
 		}
 
 		boxArgs[3] = 0;
 		for(int i = 5; i < args.length; i++)	{
-		try	{
-			boxArgs[i - 1] = Integer.parseInt(args[i]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[i-1], i);
-		}
+			try	{
+				boxArgs[i - 1] = Integer.parseInt(args[i]);
+			} catch (NumberFormatException e)	{
+				throw new InvalidArgumentsException(args[i], i);
+			}
 		}
 
-
-		try	{
-			maze.addBox(boxID, boxArgs);
-		} catch (MazeOutOfBoundsException e)	{
-			throw new UnreachablePositionException(boxArgs[0], boxArgs[1]);
-		} catch (InvalidBoxArgumentsException e)	{
-			throw new UIException("An internal error occured while adding a box.");
-		}
+		maze.addBox(boxType, boxArgs);
 	}
 
 	public String description()	{

@@ -5,8 +5,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
-import fileops.BadFormatException;
-import fileops.ReadingException;
 
 public class WaterBox extends Box	{
 
@@ -19,9 +17,8 @@ public class WaterBox extends Box	{
 		throws InvalidBoxArgumentsException	{
 
 		super(args);
-		int expects = MazeContext.getNbArgs(MazeContext.WALL_ID);
-		if(args.length == expects)	{
-			throw new InvalidBoxArgumentsException(expects, args.length);
+		if(args.length != MazeContext.WATER_ARGS)	{
+			throw new InvalidBoxArgumentsException(args.length, MazeContext.WATER_ARGS);
 		}
 		deep = args[3] != 0;
 	}

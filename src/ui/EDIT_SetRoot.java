@@ -16,10 +16,10 @@ public class EDIT_SetRoot implements CommandInterface	{
 	}
 
 	public void run(String[] args)	
-		throws UIException	{
+		throws UIException, MazeException	{
 
 		if(args.length != 3)	{
-			throw new IncorrectUsageException(3, args.length);
+			throw new IncorrectUsageException(args.length, 3);
 		}
 
 		int x = 0, y = 0;
@@ -35,16 +35,12 @@ public class EDIT_SetRoot implements CommandInterface	{
 			throw new InvalidArgumentsException(args[2], 2);
 		}
 		
-		try	{
-			if(maze.setRoot(x, y))	{
-				System.out.println("WARNING: new root.");
-				pi.clear();
-				prev.clear();
-				maze.clearAll();
-				maze.setRoot(x, y);
-			}
-		} catch (MazeOutOfBoundsException e)	{
-			throw new UnreachablePositionException(x, y);
+		if(maze.setRoot(x, y))	{
+			System.out.println("WARNING: new root.");
+			pi.clear();
+			prev.clear();
+			maze.clear();
+			maze.setRoot(x, y);
 		}
 	}
 

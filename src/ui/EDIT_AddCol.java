@@ -11,11 +11,11 @@ public class EDIT_AddCol implements CommandInterface	{
 	}
 
 	public void run(String[] args)	
-		throws UIException	{
+		throws UIException, MazeException	{
 
-		if(args.length == 1 || args.length > 3)	{ throw new IncorrectUsageException(3, args.length); }
+		if(args.length == 1 || args.length > 3)	{ throw new IncorrectUsageException(args.length, 3); }
 
-		int pos = 0, type = UIContext.boxType("null");
+		int pos = 0, type;
 
 		try	{
 			pos = Integer.parseInt(args[1]);
@@ -26,16 +26,10 @@ public class EDIT_AddCol implements CommandInterface	{
 		try	{
 			type = UIContext.boxType(args[2]);
 		} catch (IndexOutOfBoundsException e)	{
-			type = UIContext.boxType("null");
-		} catch (UnknownBoxTypeException e)	{
-			throw e;
+			type = MazeContext.NULL_ID;
 		}
 
-		try	{
-			maze.addCol(pos, type);
-		} catch (MazeOutOfBoundsException e)	{
-			throw new UnreachablePositionException(pos, 0);
-		}
+		maze.addCol(pos, type);
 	}
 
 	public String description()	{

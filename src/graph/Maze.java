@@ -12,8 +12,6 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import fileops.BadFormatException;
-import fileops.ReadingException;
 
 public class Maze
 	implements Graph, InterfaceableMaze	{
@@ -23,6 +21,8 @@ public class Maze
 	private int height;
 	private int area;
 
+	private boolean opened;
+
 	EnumSet<BoxFlag> showFlag;
 
 	/** Constructs an empty maze */
@@ -31,17 +31,18 @@ public class Maze
 		width = 0;
 		height = 0;
 		area = 0;
+		opened = false;
 		showFlag = EnumSet.noneOf(BoxFlag.class);
 	}
 
 	public Maze(int height, int width, int type)	
-		throws InvalidBoxArgumentsException	{
+		throws UnexpectedBoxTypeException	{
 		showFlag = EnumSet.noneOf(BoxFlag.class);
 		newMaze(height, width, type);
 	}
 
-	public void newMaze(int height, int width, int boxID)	
-		throws InvalidBoxArgumentsException	{
+	public void newMaze(int height, int width, int boxType)	
+		throws UnexpectedBoxTypeException	{
 		boxes = new Box[height][width];
 		this.height = height;
 		this.width = width;
@@ -50,13 +51,15 @@ public class Maze
 			for(int j = 0; j < width; j++)	{
 				try	{
 					boxes[i][j] = null;
-					int[] args = new int[MazeContext.getNbArgs(boxID)];
+					int[] args = new int[MazeContext.getNbArgs(boxType)];
 					args[0] = j;
 					args[1] = i;
-					addBox(boxID, args);
-				} catch (MazeOutOfBoundsException e) {}
+					addBox(boxType, args);
+				} catch (MazeException e) {}
 			}
 		}
+
+		opened = true;
 	}
 
 	/** Constructs a maze from a matrix of boxes.
@@ -66,6 +69,16 @@ public class Maze
 		this.boxes = boxes;
 		this.width = boxes[0].length;
 		this.height = boxes.length;
+	}
+
+	public boolean isOpened()	{ return opened; }
+	public void close()	{
+		boxes = new Box[0][0];
+		width = 0;
+		height = 0;
+		area = 0;
+		opened = false;
+		showFlag = EnumSet.noneOf(BoxFlag.class);
 	}
 
 	public void show(BoxFlag flag)	{ 
@@ -231,7 +244,7 @@ public class Maze
 			try	{
 				boxes[y][x].addFlag(flag);
 			} catch (IndexOutOfBoundsException e)	{
-				throw new MazeOutOfBoundsException();
+				throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
 			}
 		}
 	}
@@ -241,7 +254,7 @@ public class Maze
 		try	{
 			boxes[y][x].addFlag(BoxFlag.BOX_START);
 		} catch (IndexOutOfBoundsException e)	{
-			throw new MazeOutOfBoundsException();
+			throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
 		}
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
@@ -259,7 +272,7 @@ public class Maze
 		try	{
 			boxes[y][x].remFlag(flag);
 		} catch (IndexOutOfBoundsException e)	{
-			throw new MazeOutOfBoundsException();
+			throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
 		}
 	}
 
@@ -296,75 +309,54 @@ public class Maze
 		}
 	}
 
-	/** Converts a box list to a matrix, determines the size of it
-	 *  from the coordinates of the vertices.
-	 *  @param boxList is the list of vertices to be converted. */
-	private void convertBoxList(ArrayList<Box> boxList)	{
-		int maxX = 0, maxY = 0;
-
-		for(Box b: boxList)	{
-			if(b.getX() > maxX)	{ maxX = b.getX(); }
-			if(b.getY() > maxY)	{ maxY = b.getY(); }
-		}
-
-		width = maxX + 1;
-		height = maxY + 1;
-		boxes = new Box[height][width];
-
-		for(int i = 0; i < height; i++)	{
-			for(int j = 0; j < width; j++)	{
-				boxes[i][j] = null;
-			}
-		}
-
-		for(Box b: boxList)	{
-			boxes[b.getY()][b.getX()] = b;
-			area++;
-		}
-	}
 
 	private Box readBox(InputStream in)
-		throws IOException, BadFormatException	{
+		throws IOException, MazeOutOfBoundsException, UnexpectedBoxTypeException, InvalidBoxArgumentsException	{
 		ArrayList<Integer> input = new ArrayList<Integer>();
 
-		int c;
+		int c, boxType;
 		do	{
 			c = in.read();
 			input.add(Integer.valueOf(c));
 		} while(c != 255 && c != -1);
 
 		try	{
-			int boxID = input.get(0);
-			int[] args = new int[input.size() - 2];
-			for(int i = 1; i < input.size() - 1; i++)	{
-				args[i - 1] = input.get(i);
-			}
-			
-			Box box = MazeContext.newBox(boxID, args);
-			return box;
+			boxType = input.get(0);
 		} catch(IndexOutOfBoundsException e)	{
-			throw new BadFormatException(1, 0);
-		} catch(InvalidBoxArgumentsException e)	{
-			throw new BadFormatException(e.getExpected(), e.getReceived());
+			throw new UnexpectedBoxTypeException();
 		}
+	
+		int[] args = new int[input.size() - 2];
+		for(int i = 1; i < input.size() - 1; i++)	{
+			args[i - 1] = input.get(i);
+		}
+		
+		Box box = MazeContext.newBox(boxType, args);
+		return box;
 	}
 
 	/** Reads a graph from an input stream.
 	 *  @param in is the input stream to be read.
 	 *  @throws IOException if an I/O error occurs. */
 	public void read(InputStream in)	
-		throws IOException, BadFormatException	{
+		throws IOException, ReadingException	{
 
 		ArrayList<Box> boxList = new ArrayList<Box>();
-		Box box = readBox(in);
-		int xMax = -1, yMax = -1;
-		
-		while(box != null)	{
+		int xMax = -1, yMax = -1, iBox = 0;
+		Box box = null;
+
+		do	{
+			try	{
+				box = readBox(in);
+				iBox++;
+			} catch (MazeException e)	{
+				throw new ReadingException(String.format("Maze : Could not parse given stream : box %d : %s", iBox, e.getMessage()));
+			}
+
 			if(box.getX() > xMax)	{ xMax = box.getX(); }
 			if(box.getY() > yMax)	{ yMax = box.getY(); }
 			boxList.add(box);
-			box = readBox(in);
-		}
+		} while(box != null);
 
 		width = xMax + 1;
 		height = yMax + 1;
@@ -376,14 +368,16 @@ public class Maze
 			}
 			boxes[b.getY()][b.getX()] = b;
 		}
+
+		opened = true;
 	}
 
 
 	public void addRow(int pos, int type)	
-		throws MazeOutOfBoundsException	{
+		throws MazeOutOfBoundsException, UnexpectedBoxTypeException	{
 
 		if(pos < 0 || pos > height)	{
-			throw new MazeOutOfBoundsException();
+			throw new MazeOutOfBoundsException(0, pos, width, height);
 		}
 
 		Box[][] temp = new Box[height + 1][width];
@@ -422,7 +416,7 @@ public class Maze
 		throws MazeOutOfBoundsException	{
 
 		if(pos < 0 || pos >= height)	{
-			throw new MazeOutOfBoundsException();
+			throw new MazeOutOfBoundsException(0, pos, width - 1, height - 1);
 		}
 
 		Box[][] temp = new Box[height - 1][width];
@@ -451,10 +445,10 @@ public class Maze
 	}
 
 	public void addCol(int pos, int type)	
-		throws MazeOutOfBoundsException	{
+		throws MazeOutOfBoundsException, UnexpectedBoxTypeException	{
 
 		if(pos < 0 || pos > width)	{
-			throw new MazeOutOfBoundsException();
+			throw new MazeOutOfBoundsException(pos, 0, width, height);
 		}
 
 		Box[][] temp = new Box[height][width + 1];
@@ -492,7 +486,7 @@ public class Maze
 		throws MazeOutOfBoundsException	{
 
 		if(pos < 0 || pos >= width)	{
-			throw new MazeOutOfBoundsException();
+			throw new MazeOutOfBoundsException(pos, 0, width - 1, height - 1);
 		}
 
 		Box[][] temp = new Box[height][width - 1];
@@ -522,16 +516,16 @@ public class Maze
 	}
 
 	public void addBox(int type, int[] args)
-		throws MazeOutOfBoundsException, InvalidBoxArgumentsException	{
+		throws MazeOutOfBoundsException, UnexpectedBoxTypeException, InvalidBoxArgumentsException	{
 
-		if(args.length < 2)	{
-			throw new InvalidBoxArgumentsException(2, args.length);
+		if(args.length < MazeContext.MIN_ARGS)	{
+			throw new InvalidBoxArgumentsException(2, MazeContext.MIN_ARGS);
 		}
 		int x = args[0];
 		int y = args[1];
 
 		if(x < 0 || x >= width || y < 0 || y >= height)	{
-			throw new MazeOutOfBoundsException();
+			throw new MazeOutOfBoundsException(x, y, width, height);
 		}
 
 		if(boxes[y][x] == null && type != MazeContext.NULL_ID)	{
@@ -545,7 +539,7 @@ public class Maze
 		throws MazeOutOfBoundsException	{
 
 		if(x < 0 || x >= width || y < 0 || y >= height)	{
-			throw new MazeOutOfBoundsException();
+			throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
 		}
 
 		boxes[y][x] = null;
@@ -556,7 +550,7 @@ public class Maze
 		throws MazeOutOfBoundsException	{
 
 		if(x < 0 || x >= width || y < 0 || y >= height || boxes[y][x] == null)	{
-			throw new MazeOutOfBoundsException();
+			throw new MazeOutOfBoundsException(x, y, width, height);
 		}
 
 		return boxes[y][x];

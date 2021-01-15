@@ -1,6 +1,7 @@
 package ui;
 
 import java.io.PrintStream;
+import graph.MazeException;
 
 public class INFO_Usage implements CommandInterface	{
 
@@ -21,7 +22,7 @@ public class INFO_Usage implements CommandInterface	{
 	}
 
 	public void run(String[] args)	
-		throws UIException	{
+		throws UIException, MazeException	{
 
 		if(args.length != 2)	{
 			throw new IncorrectUsageException(2, args.length);

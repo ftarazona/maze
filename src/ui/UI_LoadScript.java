@@ -22,10 +22,10 @@ public class UI_LoadScript implements CommandInterface	{
 	}
 
 	public void run(String[] args)
-		throws UIException	{
+		throws UIException, MazeException	{
 
 		if(args.length != 2)	{
-			throw new IncorrectUsageException(4, args.length);
+			throw new IncorrectUsageException(args.length, 4);
 		}
 
 		try	{
@@ -34,7 +34,7 @@ public class UI_LoadScript implements CommandInterface	{
 				queue.offer(scanner.nextLine());
 			}
 		} catch(Exception e)	{
-			throw new ScriptLoadingException(args[1]);
+			throw new UIException(e.getMessage());
 		}
 	}
 }

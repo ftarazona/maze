@@ -17,9 +17,9 @@ public class DIJKSTRA_TracePath implements CommandInterface	{
 	}
 
 	public void run(String[] args)	
-		throws UIException	{
+		throws UIException, MazeException	{
 
-		if(args.length != 3)	{ throw new IncorrectUsageException(3, args.length); }
+		if(args.length != 3)	{ throw new IncorrectUsageException(args.length, 3); }
 
 		int x = 0, y = 0;
 		ArrayList<Vertex> path = new ArrayList<Vertex>();
@@ -34,12 +34,8 @@ public class DIJKSTRA_TracePath implements CommandInterface	{
 		} catch (NumberFormatException e)	{
 			throw new InvalidArgumentsException(args[2], 2);
 		}
-		try	{
-			path = prev.getFullPath(maze.getBox(x, y));
-		} catch (MazeOutOfBoundsException e)	{
-			throw new UnreachablePositionException(x, y);
-		}
-
+		
+		path = prev.getFullPath(maze.getBox(x, y));
 		maze.setSelection(path, BoxFlag.BOX_MARKED);
 	}
 
