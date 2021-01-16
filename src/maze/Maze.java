@@ -337,11 +337,13 @@ public class Maze
 		throws IOException, MazeOutOfBoundsException, UnexpectedBoxTypeException, InvalidBoxArgumentsException	{
 		ArrayList<Integer> input = new ArrayList<Integer>();
 
-		int c, boxType;
-		do	{
-			c = in.read();
+		int c = in.read(), boxType;
+		if(c == -1)	{ return null; }
+
+		while(c != 255 && c!= -1)	{
 			input.add(Integer.valueOf(c));
-		} while(c != 255 && c != -1);
+			c = in.read();
+		}
 
 		try	{
 			boxType = input.get(0);
@@ -349,7 +351,7 @@ public class Maze
 			throw new UnexpectedBoxTypeException();
 		}
 	
-		int[] args = new int[input.size() - 2];
+		int[] args = new int[input.size() - 1];
 		for(int i = 1; i < input.size() - 1; i++)	{
 			args[i - 1] = input.get(i);
 		}
@@ -368,14 +370,14 @@ public class Maze
 		int xMax = -1, yMax = -1, iBox = 0;
 		Box box = null;
 
-		do	{
-			try	{
-				box = readBox(in);
-				iBox++;
-			} catch (MazeException e)	{
-				throw new ReadingException(String.format("Maze : Could not parse given stream : box %d : %s", iBox, e.getMessage()));
-			}
+		try	{
+			box = readBox(in);
+			iBox++;
+		} catch (MazeException e)	{
+			new ReadingException(iBox, e.getMessage());
+		}
 
+		while(box != null)	{
 			if(box.hasFlag(BoxFlag.BOX_START) && !hasRoot)	{
 				hasRoot = true;
 				xRoot = box.getX();
@@ -384,7 +386,14 @@ public class Maze
 			if(box.getX() > xMax)	{ xMax = box.getX(); }
 			if(box.getY() > yMax)	{ yMax = box.getY(); }
 			boxList.add(box);
-		} while(box != null);
+
+			try	{
+				box = readBox(in);
+				iBox++;
+			} catch (MazeException e)	{
+				throw new ReadingException(iBox, e.getMessage());
+			}
+		}
 
 		width = xMax + 1;
 		height = yMax + 1;

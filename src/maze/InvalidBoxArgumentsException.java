@@ -21,6 +21,6 @@ public class InvalidBoxArgumentsException extends MazeException	{
 
 	@Override
 	public String getMessage()	{
-		return String.format("Maze : Box constructor received %d arguments, %d expected at least.", received, expected);
+		return String.format("Box constructor received %d arguments, %d expected at least.", received, expected);
 	}
 }

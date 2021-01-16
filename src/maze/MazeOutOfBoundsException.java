@@ -22,6 +22,6 @@ public class MazeOutOfBoundsException extends MazeException	{
 
 	@Override
 	public String getMessage()	{
-		return String.format("Maze : Could not reach coordinates (%d, %d). Valid coordinates for this maze are between (0, 0) and (%d, %d).", x, y, xMax, yMax);
+		return String.format("Could not reach coordinates (%d, %d). Valid coordinates for this maze are between (0, 0) and (%d, %d).", x, y, xMax, yMax);
 	}
 }

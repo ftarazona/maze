@@ -87,7 +87,7 @@ public class MazeManager implements UserInterface	{
 			} catch (UIException e)	{
 				println(e.getMessage());
 			} catch (MazeException e)	{
-				println(e.getMessage());
+				println("Maze : " + e.getMessage());
 			} catch (Exception e)	{
 				println("An internal error occured : ");
 				println(e.getMessage());

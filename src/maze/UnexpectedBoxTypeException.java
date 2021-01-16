@@ -11,10 +11,10 @@ public class UnexpectedBoxTypeException extends MazeException	{
 	@Override
 	public String getMessage()	{
 		if(boxType == 255)	{
-			return "Maze : no box type found.\n";
+			return "No box type found.\n";
 		}
 		else	{
-			return String.format("Maze : unexpected box type %d.\n", boxType);
+			return String.format("Unexpected box type %d.\n", boxType);
 		}
 	}
 }
