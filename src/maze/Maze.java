@@ -273,6 +273,7 @@ public class Maze
 			return true;
 		}
 
+		hasRoot = true;
 		return false;
 	}
 
