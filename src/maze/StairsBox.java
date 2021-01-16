@@ -22,6 +22,7 @@ public class StairsBox extends Box	{
 			throw new InvalidBoxArgumentsException(args.length, MazeContext.STAIRS_ARGS);
 		}
 		this.dir = args[3] == 0 ? UP_DOWN : LEFT_RIGHT;
+		drawid = dir == UP_DOWN ? MazeContext.STAIRS_SPRITE_UP : MazeContext.STAIRS_SPRITE_LEFT;
 	}
 
 	public int getPracticability()	{

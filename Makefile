@@ -1,7 +1,7 @@
 JC = javac
 LD = jar
 
-PACKAGES = dijkstra maze ui
+PACKAGES = dijkstra maze ui graphics
 
 DIRS = $(foreach PACKAGE, $(PACKAGES), src/$(PACKAGE)) $(foreach SRC, src, $(SRC))
 SRC = $(foreach DIR, $(DIRS), $(wildcard $(DIR)/*.java))

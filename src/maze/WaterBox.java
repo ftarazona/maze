@@ -19,6 +19,7 @@ public class WaterBox extends Box	{
 			throw new InvalidBoxArgumentsException(args.length, MazeContext.WATER_ARGS);
 		}
 		deep = args[3] != 0;
+		drawid = deep ? MazeContext.WATER_SPRITE_DEEP : MazeContext.WATER_SPRITE_SHALLOW;
 	}
 
 	public int getPracticability()	{

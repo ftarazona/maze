@@ -591,4 +591,17 @@ public class Maze
 
 		return boxes[y][x];
 	}
+
+	public int[][] drawIDs()	{
+		int[][] IDs = new int[height][width];
+
+		for(int y = 0; y < height; y++)	{
+			for(int x = 0; x < width; x++)	{
+				if(boxes[x][y] == null)	{ IDs[x][y] = -1; }
+				else	{ IDs[x][y] = boxes[x][y].drawID(); }
+			}
+		}
+
+		return IDs;
+	}
 }

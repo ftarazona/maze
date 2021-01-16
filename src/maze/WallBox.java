@@ -14,6 +14,7 @@ public class WallBox extends Box	{
 		if(args.length != MazeContext.WALL_ARGS)	{
 			throw new InvalidBoxArgumentsException(args.length, MazeContext.WALL_ARGS);
 		}
+		drawid = MazeContext.WALL_SPRITE;
 	}
 
 	public int getPracticability()	{

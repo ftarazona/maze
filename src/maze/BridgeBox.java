@@ -15,6 +15,7 @@ public class BridgeBox extends Box	{
 		if(args.length != MazeContext.BRIDGE_ARGS)	{
 			throw new InvalidBoxArgumentsException(args.length, MazeContext.BRIDGE_ARGS);
 		}
+		drawid = MazeContext.BRIDGE_SPRITE;
 	}
 
 	public int getPracticability()	{

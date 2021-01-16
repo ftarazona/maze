@@ -15,6 +15,7 @@ public class EmptyBox extends Box	{
 		if(args.length != MazeContext.EMPTY_ARGS)	{
 			throw new InvalidBoxArgumentsException(args.length, MazeContext.EMPTY_ARGS);
 		}
+		drawid = MazeContext.EMPTY_SPRITE;
 	}
 
 	public int getPracticability()	{

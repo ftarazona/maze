@@ -55,4 +55,7 @@ public interface InterfaceableMaze extends Graph	{
 		throws MazeOutOfBoundsException;
 	public Vertex getBox(int x, int y)
 		throws MazeOutOfBoundsException;
+	
+
+	public int[][] drawIDs();
 }

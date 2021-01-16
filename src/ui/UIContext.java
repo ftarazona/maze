@@ -29,6 +29,7 @@ public class UIContext	{
 		"showflags", 
 		"hide",
 		"hideflags",
+		"draw",
 
 		"addrow", 
 		"addcol", 
@@ -77,6 +78,8 @@ public class UIContext	{
 			new DISPLAY_HideFlag(maze));
 		cmdTab.put("hideflags",
 			new DISPLAY_HideFlags(maze));
+		cmdTab.put("draw",
+			new DISPLAY_DrawMaze(maze));
 
 		cmdTab.put("addrow", 
 			new EDIT_AddRow(maze));

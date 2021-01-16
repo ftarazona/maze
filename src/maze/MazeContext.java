@@ -6,17 +6,30 @@ import java.util.HashMap;
 public class MazeContext	{
 
 	public static final int NULL_ID 	= 0;
-	static final int NULL_ARGS	= 3;
-	static final int WALL_ID 	= 'W';
-	static final int WALL_ARGS 	= 4;
-	static final int EMPTY_ID 	= 'E';
-	static final int EMPTY_ARGS 	= 4;
-	static final int WATER_ID 	= 'O';
-	static final int WATER_ARGS 	= 5;
-	static final int STAIRS_ID 	= 'S';
-	static final int STAIRS_ARGS 	= 5;
-	static final int BRIDGE_ID 	= 'B';
-	static final int BRIDGE_ARGS 	= 4;
+	static final int NULL_ARGS		= 3;
+	static final int NULL_SPRITE		= -1;
+
+	static final int WALL_ID 		= 'W';
+	static final int WALL_ARGS 		= 4;
+	static final int WALL_SPRITE		= 3;
+
+	static final int EMPTY_ID 		= 'E';
+	static final int EMPTY_ARGS 		= 4;
+	static final int EMPTY_SPRITE		= 0;
+
+	static final int WATER_ID 		= 'O';
+	static final int WATER_ARGS 		= 5;
+	static final int WATER_SPRITE_DEEP	= 1;
+	static final int WATER_SPRITE_SHALLOW	= 1;
+
+	static final int STAIRS_ID 		= 'S';
+	static final int STAIRS_ARGS 		= 5;
+	static final int STAIRS_SPRITE_UP	= -1;
+	static final int STAIRS_SPRITE_LEFT	= -1;
+
+	static final int BRIDGE_ID 		= 'B';
+	static final int BRIDGE_ARGS 		= 4;
+	static final int BRIDGE_SPRITE		= -1;
 
 	public static final int MIN_ARGS	= 3;
 	public static final int MAX_ARGS	= 5;

@@ -21,6 +21,7 @@ public abstract class Box
 	private int z;
 	private EnumSet<BoxFlag> flags;
 	private final int id;
+	protected int drawid;
 
 
 	/** Constructs a Box with given coordinates and no flag.
@@ -165,4 +166,5 @@ public abstract class Box
 		throws IOException;
 
 	public abstract void display(PrintStream out);
+	public int drawID()	{ return drawid; }
 }
