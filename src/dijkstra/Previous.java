@@ -13,25 +13,25 @@ import maze.Vertex;
 public interface Previous	{
 
 	/** Sets the parent for a given vertex. 
-	 *  @param cur is the current vertex.
-	 *  @param prev is the parent found for @param cur by the
-	    algorithm.
+	 *  @param current current vertex to be recorded.
+	 *  @param previous parent found by the algorithm.
 	 */
-	public void set(Vertex cur, Vertex prev);
+	public void set(Vertex current, Vertex previous);
 
 	/** Gets the parent of a given vertex. 
-	 *  @param cur is the vertex to be looked for.
-	 *  @return the parent of @param cur in the current tree.
+	 *  @param current vertex to be searched.
+	 *  @return The parent in the current tree.
 	 */
-	public Vertex get(Vertex cur);
+	public Vertex get(Vertex current);
 
 	/** Gets the full path from root. 
-	 *  @param cur is the vertex to which the path must go.
+	 *  @param current vertex to which the path must go.
 	 *  @return an ordered list of adjacent vertices, starting 
 	    by the root and ending by cur's parent which length is
 	    minimal.
 	 */
-	public ArrayList<Vertex> getFullPath(Vertex cur);
+	public ArrayList<Vertex> getFullPath(Vertex current);
 
+	/** Clears the values of the functions. */
 	public void clear();
 }

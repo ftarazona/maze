@@ -89,7 +89,7 @@ public class MazeManager implements UserInterface	{
 			} catch (MazeException e)	{
 				println("Maze : " + e.getMessage());
 			} catch (Exception e)	{
-				println("An internal error occured : ");
+				println("An unreported error occured : ");
 				println(e.getMessage());
 				e.printStackTrace();
 				println("Please report this bug to florian.tarazona@telecom-paris.fr");
