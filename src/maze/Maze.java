@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.EnumSet;
 
 
+/** Implements the InterfaceableMaze and Graph interfaces. */
 public class Maze
 	implements Graph, InterfaceableMaze	{
 
@@ -23,7 +24,12 @@ public class Maze
 
 	EnumSet<BoxFlag> showFlag;
 
-	/** Constructs an empty maze */
+
+/* **************************************************************** */
+/* ************* Constructors, loaders and savers ***************** */
+/* **************************************************************** */	
+	/** Constructs an empty maze with null dimensions.
+	 *  The new maze is not opened. */
 	public Maze()	{
 		boxes = new Box[0][0];
 		width = 0;
@@ -34,12 +40,21 @@ public class Maze
 		showFlag = EnumSet.noneOf(BoxFlag.class);
 	}
 
+	/** Constructs a new maze with given dimensions and box type.
+	 *  The maze is considered opened.
+	 *  @param height height of the new maze.
+	 *  @param width width of the new maze.
+	 *  @param type box type to fill with.
+	 *  @throws UnexpectedBoxTypeException if type does not match
+	 *  any. */
 	public Maze(int height, int width, int type)	
 		throws UnexpectedBoxTypeException	{
 		showFlag = EnumSet.noneOf(BoxFlag.class);
 		newMaze(height, width, type);
 	}
 
+	/** Creates a new maze without invoking constructor.
+	 *  This method effectively opens the maze. */
 	public void newMaze(int height, int width, int boxType)	
 		throws UnexpectedBoxTypeException	{
 		boxes = new Box[height][width];
@@ -72,279 +87,30 @@ public class Maze
 		hasRoot = false;
 	}
 
-	public boolean isOpened()	{ return opened; }
-	public void close()	{
-		boxes = new Box[0][0];
-		width = 0;
-		height = 0;
-		area = 0;
-		opened = false;
-		hasRoot = false;
-		showFlag = EnumSet.noneOf(BoxFlag.class);
-	}
 
-	public void show(BoxFlag flag)	{ 
-		showFlag.add(flag);
-	}
-
-	public void hide(BoxFlag flag)	{
-		showFlag.remove(flag);
-	}
-
-	public void showAllFlags()	{
-		showFlag = EnumSet.allOf(BoxFlag.class);
-	}
-
-	public void hideAllFlags()	{
-		showFlag = EnumSet.noneOf(BoxFlag.class);
-	}
-
-	private void displayBox(PrintStream out, int x, int y)	{
-		Box box = boxes[y][x];
-		if(box == null)	{ out.print(" "); return; }
-
-		boolean start = 
-			showFlag.contains(BoxFlag.BOX_START) &&
-			box.hasFlag(BoxFlag.BOX_START);
-		boolean end =
-			showFlag.contains(BoxFlag.BOX_END) &&
-			box.hasFlag(BoxFlag.BOX_END);
-		boolean marked =
-			showFlag.contains(BoxFlag.BOX_MARKED) &&
-			box.hasFlag(BoxFlag.BOX_MARKED);
-		
-		if(start)	{ out.print("S"); }
-		else if(end)	{ out.print("E"); }
-		else if(marked)	{ out.print("X"); }
-		else		{ box.display(out); }
-	}
-
-	public void display(PrintStream out)	{
-		out.print("\n  ");
-		for(int j = 0; j < width; j++)	{
-			out.print(j % 10);
-			if(j % 10 == 9)	{ out.print(" "); }
-		}
-		out.print("\n");
-		for(int i = 0; i < height; i++)	{
-			out.print(i % 10 + " ");
-			for(int j = 0; j < width; j++)	{
-				displayBox(out, j, i);
-				if(j % 10 == 9)	{ out.print(" "); }
-			}
-			out.print("\n");
-			if(i % 10 == 9)	{ out.print("\n"); }
-		}
-	}
-
-
-	/** Returns a list of all the vertices in the graph, including
-	 *  DummyBoxes.
-	 *  @return a list of all the vertices. */
-	public ArrayList<Vertex> getVertices()	{
-		ArrayList<Vertex> ret = new ArrayList<Vertex>(width * height);
-
-		for(int i = 0; i < height; i++)	{
-			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j] != null)	{
-					ret.add((Vertex)boxes[i][j]);	
-				}
-			}
-		}
-
-		return ret;
-	}
-
-	/** Returns a list of the successors of a given vertex, 
-	 *  including DummyBoxes.
-	 *  @param v is the parent vertex.
-	 *  @return a list of the successors of parent. */
-	public ArrayList<Vertex> getSuccessors(Vertex v)	{
-		ArrayList<Vertex> ret = new ArrayList<Vertex>(4);
-		Box b = (Box) v;
-		Box l = null, r = null, u = null, d = null;
-		int x = b.getX();
-		int y = b.getY();
-
-		if(x > 0)		{ l = boxes[y][x - 1]; }
-		if(y > 0)		{ u = boxes[y - 1][x]; }
-		if(x + 1 < width)	{ r = boxes[y][x + 1]; }
-		if(y + 1 < height)	{ d = boxes[y + 1][x]; }
-
-		if(distance(b, l) < distant)	{ ret.add(l); }
-		if(distance(b, u) < distant)	{ ret.add(u); }
-		if(distance(b, r) < distant)	{ ret.add(r); }
-		if(distance(b, d) < distant)	{ ret.add(d); }
-		
-		return ret;
-	}
-
-	/** Returns the distance between two vertices.
-	 *  @param src and dst are the two vertices to consider.
-	 *  @return the distance between src and dst. */
-	public int distance(Vertex src, Vertex dst)	{
-		if(src == null || dst == null)	{
-			return distant;
-		}
-
-		int wsrc = ((Box)src).getPracticability();
-		int wdst = ((Box)dst).getPracticability();
-		
-		if(wsrc == distant || wdst == distant)	{
-			return distant;
-		}
-		else	{
-			return wsrc + wdst;
-		}
-	}
-
-	/** Returns the area of the maze, DummyBoxes excluded. 
-	 *  @return the number of boxes in the graph. */
-	public int size()	{
-		return area;
-	}
-
-	public int getHeight()	{
-		return height;
-	}
-
-	public int getWidth()	{
-		return width;
-	}
-
-	/** Returns a list of vertices carrying a given flag.
-	 *  @param flag is the flag to be looked for.
-	 *  @return a list of vertices carrying the flag. */
-	public ArrayList<Vertex> getSelection(BoxFlag flag)	{
-		ArrayList<Vertex> ret = new ArrayList<Vertex>();
-
-		for(int i = 0; i < height; i++)	{
-			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j] != null && boxes[i][j].hasFlag(flag))	{
-					ret.add((Vertex)boxes[i][j]);
-				}
-			}
-		}
-
-		return ret;
-	}
-
-	/** Gives all the vertices in the list the given flag.
-	 *  @param sel is a list of the vertices to flag.
-	 *  @param flag is the flag to be added. */
-	public void setSelection(ArrayList<Vertex> sel, BoxFlag flag)	{
-		for(Vertex v: sel)	{
-			boxes[((Box)v).getY()][((Box)v).getX()].addFlag(flag);
-		}
-	}
-
-	public void addFlag(int x, int y, BoxFlag flag)	
-		throws MazeOutOfBoundsException, NullBoxException	{
-		if(flag.equals(BoxFlag.BOX_START))	{
-			setRoot(x, y);
-		} else	{
-			try	{
-				boxes[y][x].addFlag(flag);
-			} catch (IndexOutOfBoundsException e)	{
-				throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
-			} catch (NullPointerException e)	{
-				throw new NullBoxException();
-			}
-		}
-	}
-
-	public Vertex getRoot()	{
-		if(hasRoot)	{ return boxes[yRoot][xRoot]; }
-		else		{ return null; }
-	}
-
-	public boolean setRoot(int x, int y)	
-		throws MazeOutOfBoundsException, NullBoxException	{
-		try	{
-			boxes[y][x].addFlag(BoxFlag.BOX_START);
-		} catch (IndexOutOfBoundsException e)	{
-			throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
-		} catch (NullPointerException e)	{
-			throw new NullBoxException();
-		}
-
-		if(hasRoot)	{
-			boxes[yRoot][xRoot].remFlag(BoxFlag.BOX_START);
-			return true;
-		}
-
-		hasRoot = true;
-		return false;
-	}
-
-	public void remRoot()	{
-		if(hasRoot && boxes[yRoot][xRoot] != null)	{
-			boxes[yRoot][xRoot].remFlag(BoxFlag.BOX_START);
-		}
-		hasRoot = false;
-	}
-
-	public void remFlag(int x, int y, BoxFlag flag)	
-		throws MazeOutOfBoundsException, NullBoxException	{
-		try	{
-			boxes[y][x].remFlag(flag);
-			if(flag.equals(BoxFlag.BOX_START))	{
-				hasRoot = false;
-			}
-		} catch (IndexOutOfBoundsException e)	{
-			throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
-		} catch (NullPointerException e)	{
-			throw new NullBoxException();
-		}
-	}
-
-	public void clearSelection(ArrayList<Vertex> sel, BoxFlag flag)	{
-		for(Vertex v: sel)	{
-			boxes[((Box)v).getY()][((Box)v).getX()].remFlag(flag);
-		}
-	}
-
-	/** Clears all the flags of every vertex in the graph. */
-	public void clear()	{
-		for(int i = 0; i < height; i++)	{
-			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j] != null)	{
-					boxes[i][j].clearFlags();
-				}
-			}
-		}
-		hasRoot = false;
-	}
-
-	/** Writes the graph in an output stream.
-	 *  @param out is the output stream to be written.
-	 *  @throws IOException if an I/O error occurs. */
-	public void write(OutputStream out)	
-		throws IOException	{
-
-		for(int i = 0; i < height; i++)	{
-			for(int j = 0; j < width; j++)	{
-				if(boxes[i][j] != null)	{
-					boxes[i][j].write(out);
-					out.write(255);
-				}
-			}
-		}
-	}
-
-
+	/** Auxiliary method reading a box from an input stream.
+	 *  It stops when it reads characters 255 or reaches EOF.
+	 *  @param in input stream to be read.
+	 *  @return The box read from in.
+	 *  @throws IOException if an I/O error occurs.
+	 *  @throws UnexpectedBoxTypeException if no box type is
+	 *  available or box type does not match any.
+	 *  @throws InvalidBoxArgumentsException if number of
+	 *  arguments given is incorrect. */
 	private Box readBox(InputStream in)
-		throws IOException, MazeOutOfBoundsException, UnexpectedBoxTypeException, InvalidBoxArgumentsException	{
+		throws IOException, UnexpectedBoxTypeException, InvalidBoxArgumentsException	{
 		ArrayList<Integer> input = new ArrayList<Integer>();
 
 		int c = in.read(), boxType;
 		if(c == -1)	{ return null; }
 
+		//While not reaching a stop signal
 		while(c != 255 && c!= -1)	{
 			input.add(Integer.valueOf(c));
 			c = in.read();
 		}
 
+		//No box type may be found
 		try	{
 			boxType = input.get(0);
 		} catch(IndexOutOfBoundsException e)	{
@@ -360,16 +126,25 @@ public class Maze
 		return box;
 	}
 
-	/** Reads a graph from an input stream.
-	 *  @param in is the input stream to be read.
-	 *  @throws IOException if an I/O error occurs. */
+	/** Reads a new maze from a given input stream.
+	 *  The stream, typically a file stream, shall fit with a
+	 *  correct format. Boxes are read one after another, each
+	 *  separated by integer value 255. Each box must be described
+	 *  as follows : box_type x y z flags required_args.
+	 *  It effecively opens the maze.
+	 */
 	public void read(InputStream in)	
 		throws IOException, ReadingException	{
 
 		ArrayList<Box> boxList = new ArrayList<Box>();
-		int xMax = -1, yMax = -1, iBox = 0;
+
+		//Recording max values of X and Y to convert more
+		// quickly.
+		int xMax = -1, yMax = -1;
+		int iBox = 0;
 		Box box = null;
 
+		//A first reading is necessary to enter the while loop
 		try	{
 			box = readBox(in);
 			iBox++;
@@ -395,6 +170,7 @@ public class Maze
 			}
 		}
 
+		//Now converting the list of boxes to a matrix.
 		width = xMax + 1;
 		height = yMax + 1;
 		boxes = new Box[height][width];
@@ -409,6 +185,290 @@ public class Maze
 		opened = true;
 	}
 
+	public void write(OutputStream out)	
+		throws IOException	{
+
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				if(boxes[i][j] != null)	{
+					boxes[i][j].write(out);
+					out.write(255);
+				}
+			}
+		}
+	}
+
+	public boolean isOpened()	{ return opened; }
+
+	public void close()	{
+		boxes = new Box[0][0];
+		width = 0;
+		height = 0;
+		area = 0;
+		opened = false;
+		hasRoot = false;
+		showFlag = EnumSet.noneOf(BoxFlag.class);
+	}
+
+
+/* **************************************************************** */
+/* ********************** Dimension Getters *********************** */
+/* **************************************************************** */
+
+	public int size()	{
+		return area;
+	}
+
+	public int getHeight()	{
+		return height;
+	}
+
+	public int getWidth()	{
+		return width;
+	}
+
+
+/* **************************************************************** */
+/* ******************* Display methods and options **************** */
+/* **************************************************************** */
+
+	public void show(BoxFlag flag)	{ 
+		showFlag.add(flag);
+	}
+
+	public void hide(BoxFlag flag)	{
+		showFlag.remove(flag);
+	}
+
+	public void showAllFlags()	{
+		showFlag = EnumSet.allOf(BoxFlag.class);
+	}
+
+	public void hideAllFlags()	{
+		showFlag = EnumSet.noneOf(BoxFlag.class);
+	}
+
+	/** Auxiliary method for displaying a box.
+	 *  First the method checks whether flags have to be
+	 *  displayed. If none, it calls the display method of box. */
+	private void displayBox(PrintStream out, int x, int y)	{
+		Box box = boxes[y][x];
+		if(box == null)	{ out.print(" "); return; }
+
+		boolean start = 
+			showFlag.contains(BoxFlag.BOX_START) &&
+			box.hasFlag(BoxFlag.BOX_START);
+		boolean end =
+			showFlag.contains(BoxFlag.BOX_END) &&
+			box.hasFlag(BoxFlag.BOX_END);
+		boolean marked =
+			showFlag.contains(BoxFlag.BOX_MARKED) &&
+			box.hasFlag(BoxFlag.BOX_MARKED);
+		
+		if(start)	{ out.print("S"); }
+		else if(end)	{ out.print("E"); }
+		else if(marked)	{ out.print("X"); }
+		else		{ box.display(out); }
+	}
+
+	/** Displays the maze in a given output stream.
+	 *  The method adds coordinates up to 9, then it cycles.
+	 *  If some flags are to display, rules of priority are as
+	 *  follow, from highest to least priority :
+	 *  BOX_START, BOX_END, BOX_MARKED. */
+	public void display(PrintStream out)	{
+		out.print("\n  ");
+		for(int j = 0; j < width; j++)	{
+			out.print(j % 10);
+			if(j % 10 == 9)	{ out.print(" "); }
+		}
+		out.print("\n");
+		for(int i = 0; i < height; i++)	{
+			out.print(i % 10 + " ");
+			for(int j = 0; j < width; j++)	{
+				displayBox(out, j, i);
+				if(j % 10 == 9)	{ out.print(" "); }
+			}
+			out.print("\n");
+			if(i % 10 == 9)	{ out.print("\n"); }
+		}
+	}
+
+
+/* **************************************************************** */
+/* ****************** Dijkstra useful methods ********************* */
+/* **************************************************************** */
+
+	public ArrayList<Vertex> getVertices()	{
+		ArrayList<Vertex> ret = new ArrayList<Vertex>(width * height);
+
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				if(boxes[i][j] != null)	{
+					ret.add((Vertex)boxes[i][j]);	
+				}
+			}
+		}
+
+		return ret;
+	}
+
+	/** Returns a list of the successors of vertex.
+	 *  It only returns boxes that are not distant and directly
+	 *  adjacent (up to four directions). */
+	public ArrayList<Vertex> getSuccessors(Vertex vertex)	{
+		ArrayList<Vertex> ret = new ArrayList<Vertex>(4);
+		Box b = (Box) vertex;
+		Box l = null, r = null, u = null, d = null;
+		int x = b.getX();
+		int y = b.getY();
+
+		if(x > 0)		{ l = boxes[y][x - 1]; }
+		if(y > 0)		{ u = boxes[y - 1][x]; }
+		if(x + 1 < width)	{ r = boxes[y][x + 1]; }
+		if(y + 1 < height)	{ d = boxes[y + 1][x]; }
+
+		if(distance(b, l) < distant)	{ ret.add(l); }
+		if(distance(b, u) < distant)	{ ret.add(u); }
+		if(distance(b, r) < distant)	{ ret.add(r); }
+		if(distance(b, d) < distant)	{ ret.add(d); }
+		
+		return ret;
+	}
+
+	/** Returns the distance between two vertices.
+	 *  The distance between two boxes is defined as the sum
+	 *  of their practicabilities, with conventions :
+	 *  null is distant, distant + anything = distant. */
+	public int distance(Vertex src, Vertex dst)	{
+		if(src == null || dst == null)	{
+			return distant;
+		}
+
+		int wsrc = ((Box)src).getPracticability();
+		int wdst = ((Box)dst).getPracticability();
+		
+		if(wsrc == distant || wdst == distant)	{
+			return distant;
+		}
+		else	{
+			return wsrc + wdst;
+		}
+	}
+
+
+/* **************************************************************** */
+/* ******************** Flag Editing Methods ********************** */
+/* **************************************************************** */
+
+	public ArrayList<Vertex> getSelection(BoxFlag flag)	{
+		ArrayList<Vertex> ret = new ArrayList<Vertex>();
+
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				if(boxes[i][j] != null && boxes[i][j].hasFlag(flag))	{
+					ret.add((Vertex)boxes[i][j]);
+				}
+			}
+		}
+
+		return ret;
+	}
+
+	public void setSelection(ArrayList<Vertex> sel, BoxFlag flag)	{
+		for(Vertex v: sel)	{
+			boxes[((Box)v).getY()][((Box)v).getX()].addFlag(flag);
+		}
+	}
+
+	public void clearSelection(ArrayList<Vertex> sel, BoxFlag flag)	{
+		for(Vertex v: sel)	{
+			boxes[((Box)v).getY()][((Box)v).getX()].remFlag(flag);
+		}
+	}
+
+	public void clear()	{
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				if(boxes[i][j] != null)	{
+					boxes[i][j].clearFlags();
+				}
+			}
+		}
+		hasRoot = false;
+	}
+
+	/** Adds a flag to a box.
+	 *  If the given flag is BOX_START, the method makes a call to
+	 *  setRoot, so that it takes care of root management. */
+	public void addFlag(int x, int y, BoxFlag flag)	
+		throws MazeOutOfBoundsException, NullBoxException	{
+		if(flag.equals(BoxFlag.BOX_START))	{
+			setRoot(x, y);
+		} else	{
+			try	{
+				boxes[y][x].addFlag(flag);
+			} catch (IndexOutOfBoundsException e)	{
+				throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
+			} catch (NullPointerException e)	{
+				throw new NullBoxException();
+			}
+		}
+	}
+
+	/** Removes a flag from a box.
+	 *  If it removes the root, hasRoot is modified. */
+	public void remFlag(int x, int y, BoxFlag flag)	
+		throws MazeOutOfBoundsException, NullBoxException	{
+		try	{
+			boxes[y][x].remFlag(flag);
+			if(flag.equals(BoxFlag.BOX_START) && x == xRoot && y == yRoot)	{
+				hasRoot = false;
+			}
+		} catch (IndexOutOfBoundsException e)	{
+			throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
+		} catch (NullPointerException e)	{
+			throw new NullBoxException();
+		}
+	}
+
+	public Vertex getRoot()	{
+		if(hasRoot)	{ return boxes[yRoot][xRoot]; }
+		else		{ return null; }
+	}
+
+	public boolean setRoot(int x, int y)	
+		throws MazeOutOfBoundsException, NullBoxException	{
+		try	{
+			boxes[y][x].addFlag(BoxFlag.BOX_START);
+		} catch (IndexOutOfBoundsException e)	{
+			throw new MazeOutOfBoundsException(x, y, width - 1, height - 1);
+		} catch (NullPointerException e)	{
+			throw new NullBoxException();
+		}
+
+		if(hasRoot)	{
+			boxes[yRoot][xRoot].remFlag(BoxFlag.BOX_START);
+			return true;
+		}
+
+		yRoot = y;
+		xRoot = x;
+		hasRoot = true;
+		return false;
+	}
+
+	public void remRoot()	{
+		if(hasRoot && boxes[yRoot][xRoot] != null)	{
+			boxes[yRoot][xRoot].remFlag(BoxFlag.BOX_START);
+		}
+		hasRoot = false;
+	}
+
+
+/* **************************************************************** */
+/* ************************ Editing methods *********************** */
+/* **************************************************************** */
 
 	public void addRow(int pos, int type)	
 		throws MazeOutOfBoundsException, UnexpectedBoxTypeException	{
@@ -601,6 +661,11 @@ public class Maze
 
 		return boxes[y][x];
 	}
+
+
+/* **************************************************************** */
+/* ************************ Drawing methods *********************** */
+/* **************************************************************** */
 
 	public int[][] drawIDs()	{
 		int[][] IDs = new int[height][width];

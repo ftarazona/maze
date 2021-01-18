@@ -13,15 +13,22 @@ public interface Graph	{
 	 *  distance. */
 	public final static int distant = Integer.MAX_VALUE;
 
-	/** @return a list of all the vertices. */
+	/** Returns a list of all the vertices.
+	 *  @return A list of all the vertices. */
 	public ArrayList<Vertex> getVertices();
 
-	/** @return a list of the successors of the vertex  @param v. */
-	public ArrayList<Vertex> getSuccessors(Vertex v);
+	/** Returns a list of the successors of vertex.
+	 *  @param vertex origin vertex.
+	 *  @return A list of the successors of vertex.*/
+	public ArrayList<Vertex> getSuccessors(Vertex vertex);
 
-	/** @return the distance from @param src to @param dst. */
+	/** Returns the distance between two vertices.
+	 *  @param src First vertex.
+	 *  @param dst Second vertex.
+	 *  @return The distance from src to dst. */
 	public int distance(Vertex src, Vertex dst);
 
-	/** @return the number of vertices in the graph. */
+	/** Returns the number of vertices in the graph.
+	 *  @return The number of vertices in the graph. */
 	public int size();
 }

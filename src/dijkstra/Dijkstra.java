@@ -12,6 +12,9 @@ import maze.Vertex;
 public class Dijkstra	{
 
 	/** Processes the Dijkstra algorithm.
+	 *   The Pi and Previous functions must be
+	 *   created before the method is called and are modified 
+	 *   when running the algorithm.
 	 *  @param graph the graph containing the vertices and
 	 *   the distance between each couple.
 	 *  @param root the vertex of the graph which will be used
@@ -19,10 +22,7 @@ public class Dijkstra	{
 	 *  @param a an empty set of vertices used to keep track of
 	 *   which vertex has been visited.
 	 *  @param pi an empty Pi function.
-	 *  @param prev an empty Previous function.
-	 *  @return None. The Pi and Previous functions must be
-	 *   created before the method is called and are modified 
-	 *   when running the algorithm. */
+	 *  @param prev an empty Previous function. */
 	public static void dijkstra(Graph graph, Vertex root, ASet a, Pi pi, Previous prev)	{
 		ArrayList<Vertex> vertices = graph.getVertices();
 		Vertex piv = root;

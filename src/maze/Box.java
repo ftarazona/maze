@@ -25,7 +25,10 @@ public abstract class Box
 
 
 	/** Constructs a Box with given coordinates and no flag.
-	 *  @param x, y, z are the coordinates of the Box. */
+	 *  @param args an array of integers containing at least the
+	 *  coordinates and flags the box is initialized with.
+	 *  @throws InvalidBoxArgumentsException if args does not
+	 *  provide minimal information required. */
 	public Box(int[] args)	
 		throws InvalidBoxArgumentsException	{
 
@@ -48,7 +51,7 @@ public abstract class Box
 	}
 
 	/** Returns the X coordinate.
-	 *  @return the X coordinate. */
+	 *  @return The X coordinate. */
 	public int getX()	{
 		return x;
 	}
@@ -92,50 +95,54 @@ public abstract class Box
 		return z >= 0;
 	}
 
-	/** Returns the practicability of the box, i.e. the weight
-	 *  to be applied in the graph.
-	 *  @return the practicability of the box. */
+	/** Returns the practicability of the box.
+	 *  @return The practicability of the box. */
 	public abstract int getPracticability();
 
-	/** Returns the flags as an integer.
-	 *  @return the flags of the box. */
+	/** Returns the set of flags carried by the box.
+	 *  @return The set of flags carried by the box. */
 	public EnumSet<BoxFlag> getFlags()	{
 		return flags;
 	}
 
 	/** Indicates whether the box carries a given flag.
-	 *  @param flag is the flag to be looked for.
+	 *  @param flag is the flag to be checked.
 	 *  @return true if the box carries the flag, false otherwise.
 	 *  If the flag is invalid, returns false. */
 	public boolean hasFlag(BoxFlag flag)	{
 		return flags.contains(flag);
 	}
 
+	/** Indicates whether the box carries any flag.
+	 *  @return true if the box carries at least one flag, false
+	 *  otherwise. */
 	public boolean hasNoFlag()	{
 		return flags.isEmpty();
 	}
 
 	/** Sets the flags to a given value. There is no guarantee for
 	 *  the value of flags to be under MAX_FLAG.
-	 *  @param flags is the new value. */
+	 *  @param flags new flags to be carried. */
 	public void setFlags(EnumSet<BoxFlag> flags)	{
 		this.flags = flags;
 	}
 
+	/** Sets the flags to a given value. 
+	 *  If value contains bits not corresponding to any flag, it
+	 *  is ignored.
+	 *  @param value new integer value of flags to be carried. */
 	public void setFlags(int value)	{
 		this.flags = BoxFlag.IntToBoxFlags(value);
 	}
 
-	/** Adds a flag to the box. The method does not guarantee the
-	 *  new value of flags is under MAX_FLAG.
-	 *  @param flag is the flag to be added. It should contain
-	 *  only one 1 in its binary form. */
+	/** Adds a flag to the box.
+	 *  @param flag flag to be added. */
 	public void addFlag(BoxFlag flag)	{
 		flags.add(flag);
 	}
 
-	/** Removes a flag to the box if it is carried.
-	 *  @param flag is the flag to be removed. */
+	/** Removes a flag to the box.
+	 *  @param flag flag to be removed. */
 	public void remFlag(BoxFlag flag)	{
 		flags.remove(flag);
 	}
@@ -147,8 +154,7 @@ public abstract class Box
 
 	/** Writes the coordinates and the flags of the box in an
 	 *  output stream.
-	 *  @param out is the output stream in which the values are
-	 *  written.
+	 *  @param out output stream in which the values are written.
 	 *  @throws IOException if an I/O error occurs. */
 	protected void writeGeneralData(OutputStream out)	
 		throws IOException	{
@@ -160,11 +166,16 @@ public abstract class Box
 	}
 
 	/** Writes all the parameters of the box in an output stream.
-	 *  @param out is the output stream to be written.
+	 *  @param out output stream to be written.
 	 *  @throws IOException if an I/O error occurs. */
 	public abstract void write(OutputStream out)
 		throws IOException;
 
+	/** Displays the box in an output stream.
+	 *  @param out output stream to be written. */
 	public abstract void display(PrintStream out);
+
+	/** Returns the ID used for drawing the box in a tiled map.
+	 *  @return The drawing ID of the box. */
 	public int drawID()	{ return drawid; }
 }
