@@ -8,12 +8,15 @@ import maze.InterfaceableMaze;
 import maze.MazeException;
 
 
+/** AddFlag adds a flag to a given box in maze. */
 public class EDIT_AddFlag implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 	private Pi pi;
 	private Previous prev;
 
+	/** Construcs the command with specified maze, pi and previous
+	 *  functions. */
 	public EDIT_AddFlag(InterfaceableMaze maze, Pi pi, Previous prev)	{
 		this.maze = maze;
 		this.pi = pi;
@@ -29,6 +32,12 @@ public class EDIT_AddFlag implements CommandInterface	{
 	}
 
 
+	/** @throws InvalidArgumentsException if an integer value can
+	 *  not be read.
+	 *  @throws UnknownFlagException if the flag given does
+	 *  not match any.
+	 *  @throws MazeException if an error occured in Maze class,
+	 *  such as trying to reach out of bounds coordinates. */
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 

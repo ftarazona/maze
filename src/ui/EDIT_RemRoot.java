@@ -7,12 +7,15 @@ import maze.InterfaceableMaze;
 import maze.MazeException;
 
 
+/** RemRoot removes the current root in maze. */ 
 public class EDIT_RemRoot implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 	private Pi pi;
 	private Previous prev;
 
+	/** Constructs the command with specified maze, pi, previous
+	 *  functions. */
 	public EDIT_RemRoot(InterfaceableMaze maze, Pi pi, Previous prev)	{
 		this.maze = maze;
 		this.pi = pi;

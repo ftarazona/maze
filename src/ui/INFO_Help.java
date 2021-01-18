@@ -3,11 +3,14 @@ package ui;
 import java.io.PrintStream;
 
 
+/** Help displays descriptions of all known commands. */
 public class INFO_Help implements CommandInterface	{
 
 	private UIContext context;
 	private PrintStream out;
 
+	/** Constructs the command with specified context and output
+	 *  strem. */
 	public INFO_Help(UIContext context, PrintStream out)	{
 		this.context = context;
 		this.out = out;

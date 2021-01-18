@@ -4,10 +4,12 @@ import maze.InterfaceableMaze;
 import maze.MazeException;
 
 
+/** ShowFlags requires maze to show all flags when displaying. */
 public class DISPLAY_ShowFlags implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 
+	/** Constructs the command with specified maze. */
 	public DISPLAY_ShowFlags(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}

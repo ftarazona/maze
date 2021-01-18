@@ -8,10 +8,12 @@ import maze.InterfaceableMaze;
 import maze.MazeException;
 
 
+/** OpenMaze reads a maze from an input stream, typically a file. */
 public class IO_OpenMaze implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 
+	/** Constructs the command with specified maze. */
 	public IO_OpenMaze(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
@@ -25,6 +27,8 @@ public class IO_OpenMaze implements CommandInterface	{
 	}
 
 
+	/** @throws IOException if an I/O error occured.
+	 *  @throws MazeException if the file can not be parsed. */
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 		if(args.length != 2)	{ throw new IncorrectUsageException(args.length, 2); }

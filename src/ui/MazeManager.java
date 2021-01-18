@@ -17,6 +17,7 @@ import maze.Maze;
 import maze.MazeException;
 
 
+/** Implementation of a user interface */
 public class MazeManager implements UserInterface	{
 	
 	private Queue<String> queue;
@@ -32,6 +33,7 @@ public class MazeManager implements UserInterface	{
 
 	private UIContext context;
 	
+	/** Constructs a new MazeManager. */
 	public MazeManager()	{
 		queue 		= new ArrayDeque<String>();
 		stop 		= false;
@@ -47,12 +49,7 @@ public class MazeManager implements UserInterface	{
 
 	private String usage()	{
 		return 	"          Usage of MazeManager         " +
-			"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~" +
-			" -s (--script) - Specify a script to be" +
-			"   loaded before the user input.\n" +
-			" -o (--out) - Specify an output stream.\n" +
-			" -i (--in) - Specify an input stream   " +
-			"   for the user input.\n";
+			"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
 	}
 
 	public void run(String[] args)	{
@@ -65,6 +62,8 @@ public class MazeManager implements UserInterface	{
 		}
 	}
 
+	//MazeManager uses a system of queue, allowing one to load
+	//a script the same way it enters command one by one.
 	private void getCmd()	{
 		if(prompt)	{ print(">>> "); }
 		queue.offer(scanner.nextLine());
