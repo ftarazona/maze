@@ -15,7 +15,7 @@ $(EXE): $(CLASS)
 	$(LD) -c -f $(EXE).jar -m $(MF) $?
 
 $(CLASS):
-	@$(JC) -Xlint $(SRC)
+	@$(JC) $(SRC)
 
 clean:
 	find . -type f | grep ".class$$" | xargs $(RM)

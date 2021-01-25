@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import maze.InterfaceableMaze;
 
-import graphics.TileMap;
+import graphics.MazeApp;
 
 
 public class DISPLAY_DrawMaze implements CommandInterface	{
@@ -32,8 +32,8 @@ public class DISPLAY_DrawMaze implements CommandInterface	{
 		}
 
 		try	{
-			TileMap.drawMaze(maze);
-		} catch (IOException e)	{
+			MazeApp.drawMaze(maze);
+		} catch (Exception e)	{
 			throw new UIException(e.getMessage());
 		}
 	}

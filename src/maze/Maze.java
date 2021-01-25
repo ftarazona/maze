@@ -614,4 +614,20 @@ public class Maze
 
 		return IDs;
 	}
+
+	public int[][] drawFlags()	{
+		int[][] flagIDs = new int[height][width];
+
+		for(int y = 0; y < height; y++)	{
+			for(int x = 0; x < width; x++)	{
+				if(boxes[x][y] == null)	{ flagIDs[x][y] = -1; }
+				else if(boxes[x][y].hasFlag(BoxFlag.BOX_START))	{ flagIDs[x][y] = BoxFlag.BOX_START.toInt(); }
+				else if(boxes[x][y].hasFlag(BoxFlag.BOX_END))	{ flagIDs[x][y] = BoxFlag.BOX_END.toInt(); }
+				else if(boxes[x][y].hasFlag(BoxFlag.BOX_MARKED))	{ flagIDs[x][y] = BoxFlag.BOX_MARKED.toInt(); }
+				else	{ flagIDs[x][y] = 0; }
+			}
+		}
+
+		return flagIDs;
+	}
 }

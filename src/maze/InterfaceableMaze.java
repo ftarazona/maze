@@ -58,4 +58,5 @@ public interface InterfaceableMaze extends Graph	{
 	
 
 	public int[][] drawIDs();
+	public int[][] drawFlags();
 }
