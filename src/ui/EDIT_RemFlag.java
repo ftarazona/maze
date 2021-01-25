@@ -8,12 +8,15 @@ import maze.InterfaceableMaze;
 import maze.MazeException;
 
 
+/** Removes a flag at given coordinates. */
 public class EDIT_RemFlag implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 	private Pi pi;
 	private Previous prev;
 
+	/** Constructs the command with specified maze, pi, previous
+	 *  functions. */
 	public EDIT_RemFlag(InterfaceableMaze maze, Pi pi, Previous prev)	{
 		this.maze = maze;
 		this.pi = pi;
@@ -29,6 +32,10 @@ public class EDIT_RemFlag implements CommandInterface	{
 	}
 
 
+	/** @throws InvalidArgumentsException if coordinates can not
+	 *  be read.
+	 *  @throws MazeException if the passed coordinates can not be
+	 *  reached for example. */
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 

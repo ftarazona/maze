@@ -8,10 +8,13 @@ import java.io.FileInputStream;
 import maze.InterfaceableMaze;
 
 
+/** LoadScript loads a script from file. */
 public class UI_LoadScript implements CommandInterface	{
 
 	private Queue<String> queue;
 
+	/** Constructs the command with specified command queue of an
+	 *  interface. */
 	public UI_LoadScript(Queue<String> queue)	{
 		this.queue = queue;
 	}
@@ -25,6 +28,7 @@ public class UI_LoadScript implements CommandInterface	{
 	}
 
 	
+	/** @throws IOException if an I/O error occured. */
 	public void run(String[] args)
 		throws UIException	{
 

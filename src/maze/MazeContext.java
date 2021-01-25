@@ -3,6 +3,8 @@ package maze;
 import java.util.HashMap;
 
 
+/** MazeContext gathers constants and methods useful for developpers.
+  */
 public class MazeContext	{
 
 	public static final int NULL_ID 	= 0;
@@ -53,6 +55,15 @@ public class MazeContext	{
 		flagsTab.put("marked",	BoxFlag.BOX_MARKED);
 	}
 
+	/** Construcs a new box with given type and arguments.
+	 *  @param boxType type of the box to be built.
+	 *  @param args array of arguments to be given the
+	 *  constructor.
+	 *  @return A new box, if given type is 0, then returns null.
+	 *  @throws InvalidBoxArgumentsException if box constructor
+	 *  could not parse the arguments.
+	 *  @throws UnexpectedBoxTypeException if given type does not
+	 *  match any. */
 	public static Box newBox(int boxType, int[] args)	
 		throws InvalidBoxArgumentsException, UnexpectedBoxTypeException	{
 	switch(boxType)	{
@@ -66,6 +77,12 @@ public class MazeContext	{
 	}
 	}
 
+	/** Returns the number of arguments for a given box type.
+	 *  @param boxType type of the box to be searched.
+	 *  @return The number of arguments necessary to build the
+	 *  box type.
+	 *  @throws UnexpectedBoxTypeException if given type does not
+	 *  match any. */
 	public static int getNbArgs(int boxType)	
 		throws UnexpectedBoxTypeException	{
 	switch(boxType)	{
@@ -79,10 +96,18 @@ public class MazeContext	{
 	}
 	}
 
+	/** Converts a box type from string to integer.
+	 *  @param str the string box type.
+	 *  @return An Integer corresponding, or null if the string
+	 *  does not match any type. */
 	public static Integer getBoxType(String str)	{
 		return boxTypeTab.get(str);
 	}
 
+	/** Converts a flag from string to integer.
+	 *  @param str the string flag.
+	 *  @return An flag corresponding, or null if the string
+	 *  does not match any flag. */
 	public static BoxFlag getFlag(String str)	{
 		return flagsTab.get(str);
 	}

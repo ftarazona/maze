@@ -7,10 +7,12 @@ import maze.InterfaceableMaze;
 import graphics.MazeApp;
 
 
+/** DrawMaze draws the maze in a tile map. */
 public class DISPLAY_DrawMaze implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 
+	/** Constructs the command with specified maze. */
 	public DISPLAY_DrawMaze(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
@@ -24,6 +26,8 @@ public class DISPLAY_DrawMaze implements CommandInterface	{
 	}
 
 
+	/** @throws IOException if an error occured while loading the
+	 *  tile set. */
 	public void run(String[] args)
 		throws UIException	{
 

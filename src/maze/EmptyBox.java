@@ -5,10 +5,13 @@ import java.io.PrintStream;
 import java.io.IOException;
 
 
+/** Basic box with maximum practicability. */
 public class EmptyBox extends Box	{
 
-	/** Constructs an EmptyBox with given coordinates and no flag.
-	 *  @param x, y, z are the coordinates of the WallBox. */
+	/** Constructs an EmptyBox with specified arguments.
+	 *  @param args arguments, must contain 4 arguments.
+	 *  @throws InvalidBoxArgumentsException if not given correct
+	 *  number of arguments. */
 	public EmptyBox(int[] args)	
 		throws InvalidBoxArgumentsException	{
 		super(args);

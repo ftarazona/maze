@@ -7,12 +7,15 @@ import maze.InterfaceableMaze;
 import maze.MazeException;
 
 
+/** SetRoot sets a new root in the maze. */
 public class EDIT_SetRoot implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 	private Pi pi;
 	private Previous prev;
 
+	/** Constructs the command with specified maze, pi, previous
+	 *  functions. */
 	public EDIT_SetRoot(InterfaceableMaze maze, Pi pi, Previous prev)	{
 		this.maze = maze;
 		this.pi = pi;
@@ -28,6 +31,8 @@ public class EDIT_SetRoot implements CommandInterface	{
 	}
 
 
+	/** @throws InvalidArgumentsException if position can not be
+	 *  read. */
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 

@@ -4,13 +4,17 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.IOException;
 
+
+/** Box of variable practicability finite if shallow, infinite if
+ *  deep. */
 public class WaterBox extends Box	{
 
 	private boolean deep;
 
-	/** Constructs a WaterBox with given coordinates and no flag.
-	 *  @param x, y, z are the coordinates of the WallBox. 
-	 *  @param depth indicates whether the waters are deep. */
+	/** Constructs a WaterBox with specified arguments.
+	 *  @param args arguments, must contain 5 arguments.
+	 *  @throws InvalidBoxArgumentsException if not given correct
+	 *  number of arguments. */
 	public WaterBox(int[] args)	
 		throws InvalidBoxArgumentsException	{
 

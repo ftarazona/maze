@@ -1,4 +1,5 @@
 unnamed package
 dijkstra
-fileops
-graph
+graphics
+maze
+ui

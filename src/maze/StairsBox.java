@@ -5,6 +5,9 @@ import java.io.PrintStream;
 import java.io.IOException;
 
 
+/** NOT IMPLEMENTED YET, REQUIRES INTERNAL MODIFICATIONS.
+ *  Stairs is a box that forbids a mov to the right/left or up/down.
+ *  It also facilitates the move to a certain direction. */
 public class StairsBox extends Box	{
 
 	public final static int UP_DOWN		= 0;
@@ -12,9 +15,10 @@ public class StairsBox extends Box	{
 
 	private int dir;
 
-	/** Constructs a WaterBox with given coordinates and no flag.
-	 *  @param x, y, z are the coordinates of the WallBox. 
-	 *  @param dir indicates the direction of the stairs. */
+	/** Constructs a StairsBox with specified arguments.
+	 *  @param args arguments, must contain 5 arguments.
+	 *  @throws InvalidBoxArgumentsException if not given correct
+	 *  number of arguments. */
 	public StairsBox(int[] args)	
 		throws InvalidBoxArgumentsException	{
 		super(args);

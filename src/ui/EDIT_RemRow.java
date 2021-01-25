@@ -4,10 +4,12 @@ import maze.InterfaceableMaze;
 import maze.MazeException;
 
 
+/** RemRow removes a row in the maze at a given position. */
 public class EDIT_RemRow implements CommandInterface	{
 
 	private InterfaceableMaze maze;
-	
+
+	/** Constructs the command with specified maze. */
 	public EDIT_RemRow(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
@@ -21,6 +23,10 @@ public class EDIT_RemRow implements CommandInterface	{
 	}
 
 
+	/** @throws InvalidArgumentsException if position can not be
+	 *  read.
+	 *  @throws MazeException if the passed position can not be
+	 *  reached for example. */
 	public void run(String[] args)
 		throws UIException, MazeException	{
 

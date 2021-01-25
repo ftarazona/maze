@@ -5,10 +5,12 @@ import maze.MazeContext;
 import maze.MazeException;
 
 
+/** NewMaze creates a new maze. */
 public class IO_NewMaze implements CommandInterface	{
 	
 	private InterfaceableMaze maze;
 
+	/** Constructs the command with specified maze. */
 	public IO_NewMaze(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
@@ -24,6 +26,12 @@ public class IO_NewMaze implements CommandInterface	{
 	}
 
 
+	/** @throws InvalidArgumentsException if dimensions can not
+	 *  be read.
+	 *  @throws UnknownBoxTypeException if the passed box type
+	 *  does not match any.
+	 *  @throws MazeException if Maze can not create the new maze.
+	 */
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 		

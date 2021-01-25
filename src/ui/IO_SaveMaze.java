@@ -8,10 +8,12 @@ import maze.InterfaceableMaze;
 import maze.MazeException;
 
 
+/** SaveMaze writes maze in an output stream. */
 public class IO_SaveMaze implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 
+	/** Constructs the command with specified maze. */
 	public IO_SaveMaze(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
@@ -25,6 +27,7 @@ public class IO_SaveMaze implements CommandInterface	{
 	}
 
 
+	/** @throws IOException if an I/O error occured. */
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 		if(args.length != 2)	{ throw new IncorrectUsageException(args.length, 2); }

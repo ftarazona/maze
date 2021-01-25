@@ -10,14 +10,14 @@ import maze.Vertex;
 
 public interface ASet	{
 
-	/** Adds a vertex to the set.
-	 *  @param v is the vertex to be added to the set.
+	/** Adds vertex to the set.
+	 *  @param vertex is the vertex to be added to the set.
 	 */
-	public void add(Vertex v);
+	public void add(Vertex vertex);
 
-	/** Checks whether a vertex is in the set.
-	 *  @param v is the vertex to be checked.
+	/** Checks whether vertex is in the set.
+	 *  @param vertex is the vertex to be checked.
 	 *  @return true if the ASet contains v, false otherwise.
 	 */
-	public boolean contains(Vertex v);
+	public boolean contains(Vertex vertex);
 }

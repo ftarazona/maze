@@ -4,10 +4,12 @@ import maze.InterfaceableMaze;
 import maze.MazeException;
 
 
+/** RemBox removes a box in the maze. */
 public class EDIT_RemBox implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 
+	/** Constructs the command with specified maze. */
 	public EDIT_RemBox(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
@@ -21,6 +23,10 @@ public class EDIT_RemBox implements CommandInterface	{
 	}
 
 
+	/** @throws InvalidArgumentsException if an integer can not be
+	 *  read.
+	 *  @throws MazeException if the passed coordinates can not be
+	 *  reached. */
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 		if(args.length != 3)	{ throw new IncorrectUsageException(args.length, 3); }

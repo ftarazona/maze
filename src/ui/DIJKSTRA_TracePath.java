@@ -11,12 +11,16 @@ import maze.Vertex;
 import maze.MazeException;
 
 
+/** TracePath command marks the path calculated by dijkstra to a
+ *  given vertex */
 public class DIJKSTRA_TracePath implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 	private Pi pi;
 	private Previous prev;
 
+	/** Constructs the command with specified maze, pi and
+	 *  previous functions. */
 	public DIJKSTRA_TracePath(InterfaceableMaze maze, Pi pi, Previous prev)	{
 		this.maze = maze;
 		this.pi = pi;
@@ -31,6 +35,9 @@ public class DIJKSTRA_TracePath implements CommandInterface	{
 		return "tracepath <x> <y>\n";
 	}
 
+	/** @throws InvalidArgumentsException if x or y could not be
+	 *  read. 
+	 *  @throws MazeException if maze encountered an error. */
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 

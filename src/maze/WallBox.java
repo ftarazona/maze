@@ -4,10 +4,13 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.IOException;
 
+/** Basic box with infinite practicability. */
 public class WallBox extends Box	{
 
-	/** Constructs a WallBox with given coordinates and no flag.
-	 *  @param x, y, z are the coordinates of the WallBox. */
+	/** Constructs a WallBox with specified arguments.
+	 *  @param args arguments, must contain 4 arguments.
+	 *  @throws InvalidBoxArgumentsException if not given correct
+	 *  number of arguments. */
 	public WallBox(int[] args)	
 		throws InvalidBoxArgumentsException	{
 		super(args);

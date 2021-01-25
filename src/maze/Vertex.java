@@ -6,6 +6,7 @@ package maze;
 
 public interface Vertex	{
 	
-	 /** @return the ID of the vertex. */
+	 /** Returns the ID of the vertex.
+	  *  @return the ID of the vertex. */
 	public int getID();
 }

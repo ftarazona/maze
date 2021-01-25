@@ -4,10 +4,12 @@ import maze.InterfaceableMaze;
 import maze.MazeException;
 
 
+/** HideFlags requires maze to hide all flags when displaying. */
 public class DISPLAY_HideFlags implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 
+	/** Constructs the command with specified maze. */
 	public DISPLAY_HideFlags(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}

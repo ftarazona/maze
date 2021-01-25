@@ -5,10 +5,14 @@ import java.io.PrintStream;
 import java.io.IOException;
 
 
+/** NOT IMPLEMENTED YET, REQUIRES INTERNAL MODIFICATIONS.
+ *  A bridge box would allow superposition of two boxes. */
 public class BridgeBox extends Box	{
 
-	/** Constructs a BridgeBox with given coordinates and no flag.
-	 *  @param x, y, z are the coordinates of the box. */
+	/** Constructs a BridgeBox with specified arguments.
+	 *  @param args arguments, must contain 4 arguments.
+	 *  @throws InvalidBoxArgumentsException if not given correct
+	 *  number of arguments. */
 	public BridgeBox(int[] args)	
 		throws InvalidBoxArgumentsException	{
 		super(args);

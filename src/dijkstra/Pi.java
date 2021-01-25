@@ -11,13 +11,14 @@ import maze.Vertex;
 public interface Pi	{
 
 	/** Sets the value of Pi for a given vertex. 
-	 *  @param v is the vertex for which the @param value is set.
+	 *  @param vertex vertex to be recorded.
+	 *  @param value value to be recorded.
 	 */
-	public void set(Vertex v, int value);
+	public void set(Vertex vertex, int value);
 
 	/** Gets the value of pi for a given vertex. 
-	 *  @param v is the vertex to be looked for.
-	 *  @return the minimal distance from the root by vertices in
+	 *  @param vertex vertex to be searched.
+	 *  @return minimal distance from the root by vertices in
 	    the ASet used by algorithm.
 	 */
 	public int get(Vertex vertex);

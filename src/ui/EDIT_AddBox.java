@@ -5,10 +5,12 @@ import maze.MazeContext;
 import maze.MazeException;
 
 
+/** AddBox adds a box in the maze */
 public class EDIT_AddBox implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 
+	/** Constructs the command with specified maze. */
 	public EDIT_AddBox(InterfaceableMaze maze)	{
 		this.maze = maze;
 	}
@@ -23,6 +25,12 @@ public class EDIT_AddBox implements CommandInterface	{
 	}
 
 
+	/** @throws InvalidArgumentsException if an integer value can
+	 *  not be read.
+	 *  @throws UnknownBoxTypeException if the box type given does
+	 *  not match any.
+	 *  @throws MazeException if an error occured in Maze class,
+	 *  such as trying to reach out of bounds coordinates. */
 	public void run(String[] args)
 		throws UIException, MazeException	{
 		

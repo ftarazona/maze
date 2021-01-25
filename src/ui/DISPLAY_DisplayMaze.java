@@ -6,11 +6,14 @@ import maze.InterfaceableMaze;
 import maze.MazeException;
 
 
+/** DisplayMaze displays the maze in an output stream. */
 public class DISPLAY_DisplayMaze implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 	private PrintStream out;
 
+	/** Constructs the command with specified maze and out stream.
+	  */
 	public DISPLAY_DisplayMaze(InterfaceableMaze maze, PrintStream out)	{
 		this.maze = maze;
 		this.out = out;

@@ -9,12 +9,15 @@ import maze.InterfaceableMaze;
 import maze.Vertex;
 
 
+/** Dijkstra command runs dijkstra algorithm on a given maze. */
 public class DIJKSTRA_Dijkstra implements CommandInterface	{
 
 	private InterfaceableMaze maze;
 	private Pi pi;
 	private Previous prev;
 
+	/** Constructs the command with specified maze, pi and
+	 *  previous function. */
 	public DIJKSTRA_Dijkstra(InterfaceableMaze maze, Pi pi, Previous prev)	{
 		this.maze = maze;
 		this.pi = pi;
@@ -31,6 +34,7 @@ public class DIJKSTRA_Dijkstra implements CommandInterface	{
 	}
 
 
+	/** @throws NoRootException if the maze has no root. */
 	public void run(String[] args)	
 		throws UIException	{
 		

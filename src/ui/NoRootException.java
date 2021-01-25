@@ -1,5 +1,6 @@
 package ui;
 
+/** Signals no root was found for running Dijkstra algorithm. */
 public class NoRootException extends UIException	{
 
 	public static final long serialVersionUID = 202012301428L;
