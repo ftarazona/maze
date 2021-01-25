@@ -20,6 +20,7 @@ public class MazeApp extends JFrame	{
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		pack();
+		setResizable(false);
 		setVisible(true);
 	}
 

@@ -11,9 +11,9 @@ import maze.BoxFlag;
 
 public class TileMap extends JPanel	{
 	
-	private final static Color START_COLOR	= new Color((float)49, (float)200, (float)214, (float)0.5);
-	private final static Color END_COLOR	= new Color((float)234, (float)140, (float)39, (float)0.5);
-	private final static Color MARKED_COLOR	= new Color((float)247, (float)185, (float)242, (float)0.5);
+	private final static Color START_COLOR	= new Color(49, 200, 214, 130);
+	private final static Color END_COLOR	= new Color(234, 140, 39, 130);
+	private final static Color MARKED_COLOR	= new Color(247, 185, 242, 130);
 	
 	public static final long serialVersionUID = 202101160145L;
 
@@ -69,15 +69,15 @@ public class TileMap extends JPanel	{
 
 				if(f == BoxFlag.BOX_START.toInt())	{
 					g.setColor(START_COLOR);
-					g.fillRect(x, y, x + gridSize, y + gridSize);
+					g.fillRect(x, y, gridSize, gridSize);
 				}
 				else if(f == BoxFlag.BOX_END.toInt())	{
 					g.setColor(END_COLOR);
-					g.fillRect(x, y, x + gridSize, y + gridSize);
+					g.fillRect(x, y, gridSize, gridSize);
 				}
 				else if(f == BoxFlag.BOX_MARKED.toInt())	{
 					g.setColor(MARKED_COLOR);
-					g.fillRect(x, y, x + gridSize, y + gridSize);
+					g.fillRect(x, y, gridSize, gridSize);
 				}
 
 			}
