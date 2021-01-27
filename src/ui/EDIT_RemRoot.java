@@ -1,45 +1,36 @@
 package ui;
 
-import dijkstra.Pi;
-import dijkstra.Previous;
-
-import maze.InterfaceableMaze;
-import maze.MazeException;
+import dijkstra.*;
+import maze.*;
 
 
-/** RemRoot removes the current root in maze. */ 
-public class EDIT_RemRoot implements CommandInterface	{
+/** NewMaze creates a new maze. */
+public class EDIT_RemRoot extends Command implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	private Pi pi;
-	private Previous prev;
+	protected static final int[][]	expected = {{}};
 
-	/** Constructs the command with specified maze, pi, previous
-	 *  functions. */
-	public EDIT_RemRoot(InterfaceableMaze maze, Pi pi, Previous prev)	{
-		this.maze = maze;
-		this.pi = pi;
-		this.prev = prev;
+	protected static final String cmdName
+		= "RemRoot";
+	protected static final String helpMessage
+		= "Removes the maze root.";
+	protected static final String usageMessage
+		= "remroot";
+
+	public EDIT_RemRoot(Object[] arguments, CoreInterface ui)
+		throws IncorrectUsageException	{
+		super(arguments, expected, ui);
 	}
 
-	public String description()	{
-		return "remroot - Removes a potential root\n";
-	}
+	public void run()	
+		throws NoMazeException, MazeException	{
 
-	public String usage()	{
-		return	"remroot\n";
-	}
-
-
-	public void run(String[] args)	
-		throws UIException, MazeException	{
-
-		if(args.length != 1)	{
-			throw new IncorrectUsageException(args.length, 1);
+		InterfaceableMaze maze = ui.getMaze();
+		if(maze == null)	{
+			throw new NoMazeException();
 		}
-		
+
 		maze.remRoot();
-		pi.clear();
-		prev.clear();
+		ui.getPi().clear();
+		ui.getPrevious().clear();
 	}
 }

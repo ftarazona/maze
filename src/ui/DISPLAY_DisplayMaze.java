@@ -1,37 +1,28 @@
 package ui;
 
-import java.io.PrintStream;
-
-import maze.InterfaceableMaze;
-import maze.MazeException;
+import dijkstra.*;
+import maze.*;
 
 
-/** DisplayMaze displays the maze in an output stream. */
-public class DISPLAY_DisplayMaze implements CommandInterface	{
+/** NewMaze creates a new maze. */
+public class DISPLAY_DisplayMaze extends Command implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	private PrintStream out;
+	protected static final int[][]	expected = {{}};
 
-	/** Constructs the command with specified maze and out stream.
-	  */
-	public DISPLAY_DisplayMaze(InterfaceableMaze maze, PrintStream out)	{
-		this.maze = maze;
-		this.out = out;
+	protected static final String cmdName
+		= "Display";
+	protected static final String helpMessage
+		= "Displays maze.";
+	protected static final String usageMessage
+		= "display";
+
+	public DISPLAY_DisplayMaze(Object[] arguments, CoreInterface ui)
+		throws IncorrectUsageException	{
+		super(arguments, expected, ui);
 	}
 
-	public String description()	{
-		return "display - Displays the maze on the selected output.\n";
-	}
-
-	public String usage()	{
-		return "display\n";
-	}
-
-
-	public void run(String[] args)	
-		throws UIException, MazeException	{
-		if(args.length > 1)	{ throw new IncorrectUsageException(1, args.length); }
-
-		maze.display(out);
+	public void run()	
+		throws NoMazeException, NoRootException, MazeException	{
+		ui.displayMaze();
 	}
 }

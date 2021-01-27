@@ -1,69 +1,38 @@
 package ui;
 
-import maze.InterfaceableMaze;
-import maze.MazeContext;
-import maze.MazeException;
+import maze.*;
 
 
-/** AddBox adds a box in the maze */
-public class EDIT_AddBox implements CommandInterface	{
+/** NewMaze creates a new maze. */
+public class EDIT_AddBox extends Command implements CommandInterface	{
 
-	private InterfaceableMaze maze;
+	protected static final int[][]	expected = {{Parser.INTEGER, Parser.INTEGER, Parser.INTEGER, Parser.INTEGER}};
 
-	/** Constructs the command with specified maze. */
-	public EDIT_AddBox(InterfaceableMaze maze)	{
-		this.maze = maze;
+	protected static final String cmdName
+		= "AddBox";
+	protected static final String helpMessage
+		= "Adds a box to the current maze.";
+	protected static final String usageMessage
+		= "addbox <type> <x> <y> <z> <flags> <info>";
+
+	public EDIT_AddBox(Object[] arguments, CoreInterface ui)
+		throws IncorrectUsageException	{
+		super(arguments, expected, ui);
 	}
 
-	public String description()	{
-		return "addbox - Adds or replaces a box of the maze.\n";
-	}
+	public void run()
+		throws NoMazeException, MazeException	{
+		int[] args = new int[arguments.length];
+		for(int i = 0; i < arguments.length; i++)	{
+			args[i] = ((Integer)arg(i)).intValue();
+		}
 
-	public String usage()	{
-		return	"1. addbox <x> <y> <z> (empty)\n" +
-			"2. addbox <x> <y> <z> <type>\n";
-	}
-
-
-	/** @throws InvalidArgumentsException if an integer value can
-	 *  not be read.
-	 *  @throws UnknownBoxTypeException if the box type given does
-	 *  not match any.
-	 *  @throws MazeException if an error occured in Maze class,
-	 *  such as trying to reach out of bounds coordinates. */
-	public void run(String[] args)
-		throws UIException, MazeException	{
+		InterfaceableMaze maze = ui.getMaze();
 		
-		if(args.length < MazeContext.MIN_ARGS)	{ 
-			throw new IncorrectUsageException(args.length, MazeContext.MIN_ARGS); 
+		if(maze == null)	{
+			throw new NoMazeException();
 		}
-
-		int boxType;
-		int[] boxArgs = new int[args.length - 1];
-
-		for(int i = 1; i <= 3; i++)	{
-			try	{
-				boxArgs[i - 1] = Integer.parseInt(args[i]);
-			} catch (NumberFormatException e)	{
-				throw new InvalidArgumentsException(args[i], i);
-			}
-		}
-
-		try	{
-			boxType = UIContext.boxType(args[4]);
-		} catch (IndexOutOfBoundsException e)	{
-			boxType = MazeContext.NULL_ID;
-		}
-
-		boxArgs[3] = 0;
-		for(int i = 5; i < args.length; i++)	{
-			try	{
-				boxArgs[i - 1] = Integer.parseInt(args[i]);
-			} catch (NumberFormatException e)	{
-				throw new InvalidArgumentsException(args[i], i);
-			}
-		}
-
-		maze.addBox(boxType, boxArgs);
+		
+		maze.addBox(args);
 	}
 }

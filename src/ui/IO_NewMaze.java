@@ -1,65 +1,30 @@
 package ui;
 
-import maze.InterfaceableMaze;
-import maze.MazeContext;
-import maze.MazeException;
+import maze.*;
 
 
 /** NewMaze creates a new maze. */
-public class IO_NewMaze implements CommandInterface	{
-	
-	private InterfaceableMaze maze;
+public class IO_NewMaze extends Command implements CommandInterface	{
 
-	/** Constructs the command with specified maze. */
-	public IO_NewMaze(InterfaceableMaze maze)	{
-		this.maze = maze;
+	protected static final int[][] expected	= {{Parser.INTEGER, Parser.INTEGER}};
+
+	protected static final String cmdName
+		= "NewMaze";
+	protected static final String helpMessage
+		= "Opens a new maze with given dimensions.";
+	protected static final String usageMessage
+		= "newmaze <width> <height>";
+
+	public IO_NewMaze(Object[] arguments, CoreInterface ui)
+		throws IncorrectUsageException	{
+		super(arguments, expected, ui);
 	}
 
-	public String description()	{
-		return "new - Creates a new maze with given dimensions.\n";
-	}
+	public void run()	
+		throws MazeException	{
+		int x = ((Integer)arg(0)).intValue();
+		int y = ((Integer)arg(1)).intValue();
 
-	public String usage()	{
-		return 	"1. new <>\n" +
-			"2. new <height> <width>\n" +
-			"3. new <height> <width> <boxtype>\n";
-	}
-
-
-	/** @throws InvalidArgumentsException if dimensions can not
-	 *  be read.
-	 *  @throws UnknownBoxTypeException if the passed box type
-	 *  does not match any.
-	 *  @throws MazeException if Maze can not create the new maze.
-	 */
-	public void run(String[] args)	
-		throws UIException, MazeException	{
-		
-		if(args.length == 1 || args.length > 4)	{ throw new IncorrectUsageException(args.length, 4); }
-
-		int usage = 3;
-		int width = 0, height = 0, type;
-
-		try	{
-			height = Integer.parseInt(args[1]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[1], 1);
-		} catch (IndexOutOfBoundsException e)	{
-			usage = 1;
-		}
-
-		try	{
-			width = Integer.parseInt(args[2]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[2], 2);
-		}
-		try	{
-			type = UIContext.boxType(args[3]);
-		} catch (IndexOutOfBoundsException e)	{
-			type = MazeContext.NULL_ID;
-		}
-
-		if(usage == 1)	{ maze.newMaze(0, 0, UIContext.boxType("null")); }
-		else	{ maze.newMaze(height, width, type); }
+		ui.addMaze(x, y);
 	}
 }

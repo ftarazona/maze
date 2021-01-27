@@ -1,55 +1,34 @@
 package ui;
 
-import maze.InterfaceableMaze;
-import maze.MazeContext;
-import maze.MazeException;
+import maze.*;
 
 
-/** AddRow adds a row to the maze at a given position. */
-public class EDIT_AddRow implements CommandInterface	{
-	
-	private InterfaceableMaze maze;
+/** NewMaze creates a new maze. */
+public class EDIT_AddRow extends Command implements CommandInterface	{
 
-	/** Constructs the command with specified maze. */
-	public EDIT_AddRow(InterfaceableMaze maze)	{
-		this.maze = maze;
-	}
-	
-	public String description()	{
-		return "addrow - Adds a row to the maze.\n";
-	}
+	protected static final int[][] expected	= {{Parser.INTEGER}};
 
-	public String usage()	{
-		return	"1. addrow <pos>\n" +
-			"2. addrow <pos> <type>\n";
+	protected static final String cmdName
+		= "AddRow";
+	protected static final String helpMessage
+		= "Adds a row to the maze at given position.";
+	protected static final String usageMessage
+		= "addrow <pos>";
+
+	public EDIT_AddRow(Object[] arguments, CoreInterface ui)
+		throws IncorrectUsageException	{
+		super(arguments, expected, ui);
 	}
 
+	public void run()
+		throws NoMazeException, MazeException	{
+		int pos = ((Integer)arg(0)).intValue();
 
-	/** @throws InvalidArgumentsException if an integer value can
-	 *  not be read.
-	 *  @throws UnknownBoxTypeException if the box type given does
-	 *  not match any.
-	 *  @throws MazeException if an error occured in Maze class,
-	 *  such as trying to reach out of bounds coordinates. */
-	public void run(String[] args)	
-		throws UIException, MazeException	{
-
-		if(args.length < 2 || args.length > 3)	{ throw new IncorrectUsageException(args.length, 3); }
-
-		int pos = 0, type;
-
-		try	{
-			pos = Integer.parseInt(args[1]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[1], 1);
+		InterfaceableMaze maze = ui.getMaze();
+		if(maze == null)	{
+			throw new NoMazeException();
 		}
 
-		try	{
-			type = UIContext.boxType(args[2]);
-		} catch (IndexOutOfBoundsException e)	{
-			type = MazeContext.NULL_ID;
-		}
-
-		maze.addRow(pos, type);
+		maze.addRow(pos);
 	}
 }

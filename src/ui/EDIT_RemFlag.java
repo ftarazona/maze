@@ -1,68 +1,36 @@
 package ui;
 
-import dijkstra.Pi;
-import dijkstra.Previous;
-
-import maze.BoxFlag;
-import maze.InterfaceableMaze;
-import maze.MazeException;
+import maze.*;
 
 
-/** Removes a flag at given coordinates. */
-public class EDIT_RemFlag implements CommandInterface	{
+/** NewMaze creates a new maze. */
+public class EDIT_RemFlag extends Command implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	private Pi pi;
-	private Previous prev;
+	protected static final int[][]	expected = {{Parser.INTEGER, Parser.INTEGER, Parser.INTEGER}};
 
-	/** Constructs the command with specified maze, pi, previous
-	 *  functions. */
-	public EDIT_RemFlag(InterfaceableMaze maze, Pi pi, Previous prev)	{
-		this.maze = maze;
-		this.pi = pi;
-		this.prev = prev;
+	protected static final String cmdName
+		= "RemFlag";
+	protected static final String helpMessage
+		= "Removes a flag to the box at given coordinates.";
+	protected static final String usageMessage
+		= "rembox <x> <y> <flag>";
+
+	public EDIT_RemFlag(Object[] arguments, CoreInterface ui)
+		throws IncorrectUsageException	{
+		super(arguments, expected, ui);
 	}
 
-	public String description()	{
-		return "remflag - Removes a flag.\n";
-	}
+	public void run()
+		throws NoMazeException, MazeException	{
+		int x = ((Integer)arg(0)).intValue();
+		int y = ((Integer)arg(1)).intValue();
+		int flags = ((Integer)arg(2)).intValue();
 
-	public String usage()	{
-		return	"remflag <x> <y> <flag>\n";
-	}
-
-
-	/** @throws InvalidArgumentsException if coordinates can not
-	 *  be read.
-	 *  @throws MazeException if the passed coordinates can not be
-	 *  reached for example. */
-	public void run(String[] args)	
-		throws UIException, MazeException	{
-
-		if(args.length != 4)	{
-			throw new IncorrectUsageException(4, args.length);
+		InterfaceableMaze maze = ui.getMaze();
+		if(maze == null)	{
+			throw new NoMazeException();
 		}
 
-		int x = 0, y = 0;
-		BoxFlag flag = null;
-
-		try	{
-			x = Integer.parseInt(args[1]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[1], 1);
-		}
-		try	{
-			y = Integer.parseInt(args[2]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[2], 2);
-		}
-		
-		flag = UIContext.flag(args[3]);
-		if(flag.equals(BoxFlag.BOX_START))	{
-			pi.clear();
-			prev.clear();
-		}
-
-		maze.remFlag(x, y, flag);
+		maze.remFlag(x, y, BoxFlag.valueOf(flags));
 	}
 }

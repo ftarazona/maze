@@ -1,43 +1,32 @@
 package ui;
 
-import maze.InterfaceableMaze;
-import maze.MazeException;
+import maze.*;
 
 
-/** RemCol removes a column in the maze at a given position. */
-public class EDIT_RemCol implements CommandInterface	{
+/** NewMaze creates a new maze. */
+public class EDIT_RemCol extends Command implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	
-	/** Constructs the command with specified maze. */
-	public EDIT_RemCol(InterfaceableMaze maze)	{
-		this.maze = maze;
+	protected static final int[][] expected	= {{Parser.INTEGER}};
+
+	protected static final String cmdName
+		= "RemCol";
+	protected static final String helpMessage
+		= "Removes a column to the maze at given position.";
+	protected static final String usageMessage
+		= "remcol <pos>";
+
+	public EDIT_RemCol(Object[] arguments, CoreInterface ui)
+		throws IncorrectUsageException	{
+		super(arguments, expected, ui);
 	}
 
-	public String description()	{
-		return "remcol - Removes a column to the maze.\n";
-	}
+	public void run()
+		throws NoMazeException, MazeException	{
+		int pos = ((Integer)arg(0)).intValue();
 
-	public String usage()	{
-		return	"remcol <pos>\n";
-	}
-
-
-	/** @throws InvalidArgumentsException if position can not be
-	 *  read.
-	 *  @throws MazeException if the passed position can not be
-	 *  reached for example. */
-	public void run(String[] args)
-		throws UIException, MazeException	{
-
-		if(args.length != 2)	{ throw new IncorrectUsageException(args.length, 2); }
-
-		int pos = 0;
-
-		try	{
-			pos = Integer.parseInt(args[1]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[1], 1);
+		InterfaceableMaze maze = ui.getMaze();
+		if(maze == null)	{
+			throw new NoMazeException();
 		}
 
 		maze.remCol(pos);

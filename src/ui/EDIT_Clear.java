@@ -1,44 +1,36 @@
 package ui;
 
-import dijkstra.Pi;
-import dijkstra.Previous;
-
-import maze.InterfaceableMaze;
+import dijkstra.*;
+import maze.*;
 
 
-/** Clear clears all the flags in the maze. */
-public class EDIT_Clear implements CommandInterface	{
+/** NewMaze creates a new maze. */
+public class EDIT_Clear extends Command implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	private Pi pi;
-	private Previous prev;
+	protected static final int[][]	expected = {{}};
 
-	/** Constructs the command with specified maze, pi, previous
-	 *  functions. */
-	public EDIT_Clear(InterfaceableMaze maze, Pi pi, Previous prev)	{ 
-		this.maze 	= maze;
-		this.pi		= pi;
-		this.prev	= prev;
+	protected static final String cmdName
+		= "ClearFlags";
+	protected static final String helpMessage
+		= "Clears the maze flags.";
+	protected static final String usageMessage
+		= "clear";
+
+	public EDIT_Clear(Object[] arguments, CoreInterface ui)	
+		throws IncorrectUsageException	{
+		super(arguments, expected, ui);
 	}
 
-	public String description()	{
-		return "clear - Removes all flags\n";
-	}
+	public void run()	
+		throws NoMazeException, MazeException	{
 
-	public String usage()	{
-		return	"clear\n";
-	}
-
-
-	public void run(String[] args)	
-		throws UIException	{
-
-		if(args.length != 1)	{
-			throw new IncorrectUsageException(args.length, 1);
+		InterfaceableMaze maze = ui.getMaze();
+		if(maze == null)	{
+			throw new NoMazeException();
 		}
 
 		maze.clear();
-		pi.clear();
-		prev.clear();
+		ui.getPi().clear();
+		ui.getPrevious().clear();
 	}
 }

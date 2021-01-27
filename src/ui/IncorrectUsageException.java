@@ -8,6 +8,8 @@ public class IncorrectUsageException extends UIException	{
 	private final int nArgsExp;
 	private final int nArgsRec;
 
+	public IncorrectUsageException()	{ nArgsExp = 0; nArgsRec = 0;}
+
 	/** Constructs a new IncorrectUsageException with specified
 	 *  expected and received number of arguments. */
 	public IncorrectUsageException(int exp, int rec)	{

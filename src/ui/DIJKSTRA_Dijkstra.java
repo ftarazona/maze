@@ -1,48 +1,39 @@
 package ui;
 
-import dijkstra.Dijkstra;
-import dijkstra.Pi;
-import dijkstra.Previous;
-import dijkstra.Visited;
-
-import maze.InterfaceableMaze;
-import maze.Vertex;
+import dijkstra.*;
+import maze.*;
 
 
-/** Dijkstra command runs dijkstra algorithm on a given maze. */
-public class DIJKSTRA_Dijkstra implements CommandInterface	{
+/** NewMaze creates a new maze. */
+public class DIJKSTRA_Dijkstra extends Command implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	private Pi pi;
-	private Previous prev;
+	protected static final int[][]	expected = {{}};
 
-	/** Constructs the command with specified maze, pi and
-	 *  previous function. */
-	public DIJKSTRA_Dijkstra(InterfaceableMaze maze, Pi pi, Previous prev)	{
-		this.maze = maze;
-		this.pi = pi;
-		this.prev = prev;
+	protected static final String cmdName
+		= "Dijkstra";
+	protected static final String helpMessage
+		= "Runs Dijkstra Algorithm.";
+	protected static final String usageMessage
+		= "dijkstra";
+
+	public DIJKSTRA_Dijkstra(Object[] arguments, CoreInterface ui)
+		throws IncorrectUsageException	{
+		super(arguments, expected, ui);
 	}
 
-	public String description()	{
-		return "dijkstra - Processes Dijkstra algorithm from the current root.\n";
-	}
-	
-	public String usage()	{
-		return 	"disjktra\n" +
-			"WARNING: the current maze must have a root set.\n";
-	}
+	public void run()	
+		throws NoMazeException, NoRootException, MazeException	{
 
+		InterfaceableMaze maze = ui.getMaze();
+		if(maze == null)	{
+			throw new NoMazeException();
+		}
 
-	/** @throws NoRootException if the maze has no root. */
-	public void run(String[] args)	
-		throws UIException	{
-		
 		Vertex root = maze.getRoot();
 		if(root == null)	{
 			throw new NoRootException();
 		}
 
-		Dijkstra.dijkstra(maze, root, new Visited(), pi, prev);
+		Dijkstra.dijkstra(maze, root, new Visited(), ui.getPi(), ui.getPrevious());
 	}
 }

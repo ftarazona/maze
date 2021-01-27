@@ -1,63 +1,48 @@
 package ui;
 
-import java.util.ArrayList;
-
-import dijkstra.Pi;
-import dijkstra.Previous;
-
-import maze.BoxFlag;
-import maze.InterfaceableMaze;
-import maze.Vertex;
-import maze.MazeException;
+import java.util.*;
+import dijkstra.*;
+import maze.*;
 
 
-/** TracePath command marks the path calculated by dijkstra to a
- *  given vertex */
-public class DIJKSTRA_TracePath implements CommandInterface	{
+/** NewMaze creates a new maze. */
+public class DIJKSTRA_TracePath extends Command implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	private Pi pi;
-	private Previous prev;
+	protected static final int[][]	expected = {{Parser.INTEGER, Parser.INTEGER}, {}};
 
-	/** Constructs the command with specified maze, pi and
-	 *  previous functions. */
-	public DIJKSTRA_TracePath(InterfaceableMaze maze, Pi pi, Previous prev)	{
-		this.maze = maze;
-		this.pi = pi;
-		this.prev = prev;
+	protected static final String cmdName
+		= "TracePath";
+	protected static final String helpMessage
+		= "Trace fatest path to position or to every end flags.";
+	protected static final String usageMessage
+		= "1. tracepath <x> <y>\n" +
+		  "2. tracepath";
+
+	public DIJKSTRA_TracePath(Object[] arguments, CoreInterface ui)	
+		throws IncorrectUsageException	{
+		super(arguments, expected, ui);
 	}
 
-	public String description()	{
-		return "tracepath - Traces minimal path to a given box in the maze.\n";
-	}
+	public void run()	
+		throws NoMazeException, NoRootException, MazeException	{
 
-	public String usage()	{
-		return "tracepath <x> <y>\n";
-	}
-
-	/** @throws InvalidArgumentsException if x or y could not be
-	 *  read. 
-	 *  @throws MazeException if maze encountered an error. */
-	public void run(String[] args)	
-		throws UIException, MazeException	{
-
-		if(args.length != 3)	{ throw new IncorrectUsageException(args.length, 3); }
-
-		int x = 0, y = 0;
-		ArrayList<Vertex> path = new ArrayList<Vertex>();
-
-		try	{
-			x = Integer.parseInt(args[1]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[1], 1);
-		}
-		try	{
-			y = Integer.parseInt(args[2]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[2], 2);
+		InterfaceableMaze maze = ui.getMaze();
+		if(maze == null)	{
+			throw new NoMazeException();
 		}
 		
-		path = prev.getFullPath(maze.getBox(x, y));
-		maze.setSelection(path, BoxFlag.BOX_MARKED);
+		ArrayList<Vertex> toReach = new ArrayList<Vertex>();
+
+		if(usage == 0)	{
+			int x = ((Integer)arg(0)).intValue();
+			int y = ((Integer)arg(1)).intValue();
+			toReach.add(maze.getBox(x, y));
+		} else if(usage == 1)	{
+			toReach = maze.getSelection(BoxFlag.BOX_END);
+		}
+
+		for(Vertex v: toReach)	{
+			maze.setSelection(ui.getPrevious().getFullPath(v), BoxFlag.BOX_MARKED);
+		}
 	}
 }

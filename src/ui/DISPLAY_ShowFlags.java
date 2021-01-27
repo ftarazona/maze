@@ -1,32 +1,34 @@
 package ui;
 
-import maze.InterfaceableMaze;
-import maze.MazeException;
+import dijkstra.*;
+import maze.*;
 
 
-/** ShowFlags requires maze to show all flags when displaying. */
-public class DISPLAY_ShowFlags implements CommandInterface	{
+/** NewMaze creates a new maze. */
+public class DISPLAY_ShowFlags extends Command implements CommandInterface	{
 
-	private InterfaceableMaze maze;
+	protected static final int[][]	expected = {{}};
 
-	/** Constructs the command with specified maze. */
-	public DISPLAY_ShowFlags(InterfaceableMaze maze)	{
-		this.maze = maze;
+	protected static final String cmdName
+		= "ShowFlags";
+	protected static final String helpMessage
+		= "Tells the interface to display any flag.";
+	protected static final String usageMessage
+		= "1. showflags";
+
+	public DISPLAY_ShowFlags(Object[] arguments, CoreInterface ui)
+		throws IncorrectUsageException	{
+		super(arguments, expected, ui);
 	}
 
-	public String description()	{
-		return "showflags - Displays the flagged boxes of the maze.\n";
-	}
+	public void run()	
+		throws NoMazeException, MazeException	{
 
-	public String usage()	{
-		return "showflags\n";
-	}
-
-
-	public void run(String[] args)	
-		throws UIException, MazeException	{
-		if(args.length != 1)	{ throw new IncorrectUsageException(1, args.length); }
-
+		InterfaceableMaze maze = ui.getMaze();
+		if(maze == null)	{
+			throw new NoMazeException();
+		}
+		
 		maze.showAllFlags();
 	}
 }

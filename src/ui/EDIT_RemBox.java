@@ -1,47 +1,33 @@
 package ui;
 
-import maze.InterfaceableMaze;
-import maze.MazeException;
+import maze.*;
 
 
-/** RemBox removes a box in the maze. */
-public class EDIT_RemBox implements CommandInterface	{
+/** NewMaze creates a new maze. */
+public class EDIT_RemBox extends Command implements CommandInterface	{
 
-	private InterfaceableMaze maze;
+	protected static final int[][] expected = {{Parser.INTEGER, Parser.INTEGER}};
 
-	/** Constructs the command with specified maze. */
-	public EDIT_RemBox(InterfaceableMaze maze)	{
-		this.maze = maze;
+	protected static final String cmdName
+		= "RemBox";
+	protected static final String helpMessage
+		= "Removes the box at given coordinates.";
+	protected static final String usageMessage
+		= "rembox <x> <y>";
+
+	public EDIT_RemBox(Object[] arguments, CoreInterface ui)
+		throws IncorrectUsageException	{
+		super(arguments, expected, ui);
 	}
 
-	public String description()	{
-		return "rembox - Removes a box from the maze.\n";
-	}
+	public void run()	
+		throws NoMazeException, MazeException	{
 
-	public String usage()	{
-		return "rembox <x> <y>\n";
-	}
-
-
-	/** @throws InvalidArgumentsException if an integer can not be
-	 *  read.
-	 *  @throws MazeException if the passed coordinates can not be
-	 *  reached. */
-	public void run(String[] args)	
-		throws UIException, MazeException	{
-		if(args.length != 3)	{ throw new IncorrectUsageException(args.length, 3); }
-
-		int x = 0, y = 0;
-
-		try	{
-			x = Integer.parseInt(args[1]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[1], 1);
-		}
-		try	{
-			y = Integer.parseInt(args[2]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[2], 2);
+		int x = ((Integer)arg(0)).intValue();
+		int y = ((Integer)arg(1)).intValue();
+		InterfaceableMaze maze = ui.getMaze();
+		if(maze == null)	{
+			throw new NoMazeException();
 		}
 
 		maze.remBox(x, y);
