@@ -1,34 +1,32 @@
 package ui;
 
-import dijkstra.*;
-import maze.*;
+import maze.InterfaceableMaze;
+import maze.MazeException;
 
 
-/** NewMaze creates a new maze. */
-public class DISPLAY_HideFlags extends Command implements CommandInterface	{
+/** HideFlags requires maze to hide all flags when displaying. */
+public class DISPLAY_HideFlags implements CommandInterface	{
 
-	protected static final int[][] expected	= {{}};
+	private InterfaceableMaze maze;
 
-	protected static final String cmdName
-		= "HideFlags";
-	protected static final String helpMessage
-		= "Tells the interface not to display any flag.";
-	protected static final String usageMessage
-		= "1. hideflags";
-
-	public DISPLAY_HideFlags(Object[] arguments, CoreInterface ui)
-		throws IncorrectUsageException	{
-		super(arguments, expected, ui);
+	/** Constructs the command with specified maze. */
+	public DISPLAY_HideFlags(InterfaceableMaze maze)	{
+		this.maze = maze;
 	}
 
-	public void run()	
-		throws NoMazeException, MazeException	{
+	public String description()	{
+		return "hideflags - Displays the flagged boxes of the maze.\n";
+	}
 
-		InterfaceableMaze maze = ui.getMaze();
-		if(maze == null)	{
-			throw new NoMazeException();
-		}
-		
+	public String usage()	{
+		return "hideflags\n";
+	}
+
+
+	public void run(String[] args)	
+		throws UIException, MazeException	{
+		if(args.length != 1)	{ throw new IncorrectUsageException(1, args.length); }
+
 		maze.hideAllFlags();
 	}
 }

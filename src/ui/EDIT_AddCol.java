@@ -1,34 +1,54 @@
 package ui;
 
-import maze.*;
+import maze.InterfaceableMaze;
+import maze.MazeContext;
+import maze.MazeException;
 
+/** AddCol adds a column to the maze at given position. */
+public class EDIT_AddCol implements CommandInterface	{
+	
+	private InterfaceableMaze maze;
 
-/** NewMaze creates a new maze. */
-public class EDIT_AddCol extends Command implements CommandInterface	{
-
-	protected static final int[][] expected	= {{Parser.INTEGER}};
-
-	protected static final String cmdName
-		= "AddCol";
-	protected static final String helpMessage
-		= "Adds a column to the maze at given position.";
-	protected static final String usageMessage
-		= "addcol <pos>";
-
-	public EDIT_AddCol(Object[] arguments, CoreInterface ui)
-		throws IncorrectUsageException	{
-		super(arguments, expected, ui);
+	/** Constructs the command with specified maze. */
+	public EDIT_AddCol(InterfaceableMaze maze)	{
+		this.maze = maze;
 	}
 
-	public void run()
-		throws NoMazeException, MazeException	{
-		int pos = ((Integer)arg(0)).intValue();
+	public String description()	{
+		return "addcol - Adds a column to the maze.\n";
+	}
 
-		InterfaceableMaze maze = ui.getMaze();
-		if(maze == null)	{
-			throw new NoMazeException();
+	public String usage()	{
+		return	"1. addcol <pos>\n" +
+			"2. addcol <pos> <type>\n";
+	}
+
+
+	/** @throws InvalidArgumentsException if an integer value can
+	 *  not be read.
+	 *  @throws UnknownBoxTypeException if the box type given does
+	 *  not match any.
+	 *  @throws MazeException if an error occured in Maze class,
+	 *  such as trying to reach out of bounds coordinates. */
+	public void run(String[] args)	
+		throws UIException, MazeException	{
+
+		if(args.length == 1 || args.length > 3)	{ throw new IncorrectUsageException(args.length, 3); }
+
+		int pos = 0, type;
+
+		try	{
+			pos = Integer.parseInt(args[1]);
+		} catch (NumberFormatException e)	{
+			throw new InvalidArgumentsException(args[1], 1);
 		}
 
-		maze.addCol(pos);
+		try	{
+			type = UIContext.boxType(args[2]);
+		} catch (IndexOutOfBoundsException e)	{
+			type = MazeContext.NULL_ID;
+		}
+
+		maze.addCol(pos, type);
 	}
 }

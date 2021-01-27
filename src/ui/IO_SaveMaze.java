@@ -1,39 +1,47 @@
 package ui;
 
-import maze.*;
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
-/** NewMaze creates a new maze. */
-public class IO_SaveMaze extends Command implements CommandInterface	{
+import maze.InterfaceableMaze;
+import maze.MazeException;
 
-	protected static final int[][]	expected = {{Parser.STRING}};
 
-	protected static final String cmdName
-		= "SaveMaze";
-	protected static final String helpMessage
-		= "Writes the current maze in a file.";
-	protected static final String usageMessage
-		= "savemaze <filename>";
+/** SaveMaze writes maze in an output stream. */
+public class IO_SaveMaze implements CommandInterface	{
 
-	public IO_SaveMaze(Object[] arguments, CoreInterface ui)
-		throws IncorrectUsageException	{
-		super(arguments, expected, ui);
+	private InterfaceableMaze maze;
+
+	/** Constructs the command with specified maze. */
+	public IO_SaveMaze(InterfaceableMaze maze)	{
+		this.maze = maze;
 	}
 
-	public void run()
-		throws NoMazeException, MazeException, IOException	{
+	public String description()	{
+		return "save - Writes the current maze in given file.\n";
+	}
 
-		String filename = (String)arg(0);
-		FileOutputStream file = new FileOutputStream(filename);
-		BufferedOutputStream buf = new BufferedOutputStream(file);
-		InterfaceableMaze maze = ui.getMaze();
+	public String usage()	{
+		return "save <filename>\n";
+	}
 
-		if(maze == null)	{
-			throw new NoMazeException();
+
+	/** @throws IOException if an I/O error occured. */
+	public void run(String[] args)	
+		throws UIException, MazeException	{
+		if(args.length != 2)	{ throw new IncorrectUsageException(args.length, 2); }
+
+		FileOutputStream file = null;
+		BufferedOutputStream bs = null;
+		try	{
+			file = new FileOutputStream(args[1]);
+			bs = new BufferedOutputStream(file);
+			maze.write(bs);
+			bs.close();
+			file.close();
+		} catch (IOException e)	{
+			throw new UIException(e.getMessage());
 		}
-
-		maze.write(buf);
-		buf.close();
-		file.close();
 	}
 }

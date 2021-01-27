@@ -1,35 +1,34 @@
 package ui;
 
-import dijkstra.*;
-import maze.*;
+import maze.InterfaceableMaze;
+import maze.MazeException;
 
 
-/** NewMaze creates a new maze. */
-public class DISPLAY_ShowFlag extends Command implements CommandInterface	{
+/** ShowFlag requires maze to show a flag when displaying. */
+public class DISPLAY_ShowFlag implements CommandInterface	{
 
-	protected static final int[][] expected	= {{Parser.INTEGER}};
+	private InterfaceableMaze maze;
 
-	protected static final String cmdName
-		= "ShowFlag";
-	protected static final String helpMessage
-		= "Tells the interface to display a specific flag.";
-	protected static final String usageMessage
-		= "1. showflag <flag>";
-
-	public DISPLAY_ShowFlag(Object[] arguments, CoreInterface ui)
-		throws IncorrectUsageException	{
-		super(arguments, expected, ui);
+	/** Constructs the command with specified maze. */
+	public DISPLAY_ShowFlag(InterfaceableMaze maze)	{
+		this.maze = maze;
 	}
 
-	public void run()	
-		throws NoMazeException, MazeException	{
+	public String description()	{
+		return "show - Displays the flagged boxes of the maze.\n";
+	}
 
-		int flag = ((Integer)arg(0)).intValue();
-		InterfaceableMaze maze = ui.getMaze();
-		if(maze == null)	{
-			throw new NoMazeException();
-		}
-		
-		maze.show(BoxFlag.valueOf(flag));
+	public String usage()	{
+		return "show <flag>\n";
+	}
+
+
+	/** @throws UnknownFlagException if the passed flag does not
+	 *  match any. */
+	public void run(String[] args)	
+		throws UIException, MazeException	{
+		if(args.length != 2)	{ throw new IncorrectUsageException(2, args.length); }
+
+		maze.show(UIContext.flag(args[1]));
 	}
 }

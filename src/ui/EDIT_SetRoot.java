@@ -1,38 +1,62 @@
 package ui;
 
-import dijkstra.*;
-import maze.*;
+import dijkstra.Pi;
+import dijkstra.Previous;
+
+import maze.InterfaceableMaze;
+import maze.MazeException;
 
 
-/** NewMaze creates a new maze. */
-public class EDIT_SetRoot extends Command implements CommandInterface	{
+/** SetRoot sets a new root in the maze. */
+public class EDIT_SetRoot implements CommandInterface	{
 
-	protected static final int[][]	expected = {{Parser.INTEGER, Parser.INTEGER}};
+	private InterfaceableMaze maze;
+	private Pi pi;
+	private Previous prev;
 
-	protected static final String cmdName
-		= "SetRoot";
-	protected static final String helpMessage
-		= "Sets the maze root at given coordinates.";
-	protected static final String usageMessage
-		= "setroot <x> <y>";
-
-	public EDIT_SetRoot(Object[] arguments, CoreInterface ui)
-		throws IncorrectUsageException	{
-		super(arguments, expected, ui);
+	/** Constructs the command with specified maze, pi, previous
+	 *  functions. */
+	public EDIT_SetRoot(InterfaceableMaze maze, Pi pi, Previous prev)	{
+		this.maze = maze;
+		this.pi = pi;
+		this.prev = prev;
 	}
 
-	public void run()	
-		throws NoMazeException, MazeException	{
+	public String description()	{
+		return "setroot - Sets the position of the root\n";
+	}
 
-		int x = ((Integer)arg(0)).intValue();
-		int y = ((Integer)arg(1)).intValue();
-		InterfaceableMaze maze = ui.getMaze();
-		if(maze == null)	{
-			throw new NoMazeException();
+	public String usage()	{
+		return	"setroot <x> <y>\n";
+	}
+
+
+	/** @throws InvalidArgumentsException if position can not be
+	 *  read. */
+	public void run(String[] args)	
+		throws UIException, MazeException	{
+
+		if(args.length != 3)	{
+			throw new IncorrectUsageException(args.length, 3);
 		}
 
-		maze.setRoot(x, y);
-		ui.getPi().clear();
-		ui.getPrevious().clear();
+		int x = 0, y = 0;
+
+		try	{
+			x = Integer.parseInt(args[1]);
+		} catch (NumberFormatException e)	{
+			throw new InvalidArgumentsException(args[1], 1);
+		}
+		try	{
+			y = Integer.parseInt(args[2]);
+		} catch (NumberFormatException e)	{
+			throw new InvalidArgumentsException(args[2], 2);
+		}
+		
+		if(maze.setRoot(x, y))	{
+			System.out.println("WARNING: new root.");
+			pi.clear();
+			prev.clear();
+		}
 	}
 }

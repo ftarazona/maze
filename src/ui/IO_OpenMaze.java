@@ -1,30 +1,48 @@
 package ui;
 
-import maze.*;
-import java.util.*;
-import java.io.*;
+import java.io.BufferedInputStream;
+import java.io.FileInputStream;
+import java.io.IOException;
 
-/** NewMaze creates a new maze. */
-public class IO_OpenMaze extends Command implements CommandInterface	{
+import maze.InterfaceableMaze;
+import maze.MazeException;
 
-	protected static final int[][]	expected = {{Parser.STRING}};
 
-	protected static final String cmdName
-		= "OpenMaze";
-	protected static final String helpMessage
-		= "Reads a new maze from a file.";
-	protected static final String usageMessage
-		= "openmaze <filename>";
+/** OpenMaze reads a maze from an input stream, typically a file. */
+public class IO_OpenMaze implements CommandInterface	{
 
-	public IO_OpenMaze(Object[] arguments, CoreInterface ui)
-		throws IncorrectUsageException	{
-		super(arguments, expected, ui);
+	private InterfaceableMaze maze;
+
+	/** Constructs the command with specified maze. */
+	public IO_OpenMaze(InterfaceableMaze maze)	{
+		this.maze = maze;
 	}
 
-	public void run()	
-		throws MazeException, IOException	{
-		String filename = (String)arg(0);
+	public String description()	{
+		return "open - Reads a maze from a given file.\n";
+	}
 
-		ui.addMaze(filename);
+	public String usage()	{
+		return "open <maze filename>\n";
+	}
+
+
+	/** @throws IOException if an I/O error occured.
+	 *  @throws MazeException if the file can not be parsed. */
+	public void run(String[] args)	
+		throws UIException, MazeException	{
+		if(args.length != 2)	{ throw new IncorrectUsageException(args.length, 2); }
+
+		FileInputStream file = null;
+		BufferedInputStream bs = null;
+		try	{
+			file = new FileInputStream(args[1]);
+			bs = new BufferedInputStream(file);
+			maze.read(bs);
+			bs.close();
+			file.close();
+		} catch (IOException e)	{
+			throw new UIException(e.getMessage());
+		}
 	}
 }
