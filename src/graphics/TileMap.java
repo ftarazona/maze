@@ -17,8 +17,6 @@ public class TileMap extends JPanel	{
 	
 	public static final long serialVersionUID = 202101160145L;
 
-	private final MazeApp app;
-
 	private final String tileset_file;
 	private final Image tileset;
 	private final int gridSize;
@@ -28,10 +26,9 @@ public class TileMap extends JPanel	{
 	int height;
 	int width;
 
-	public TileMap(MazeApp app, InterfaceableMaze maze)	
+	public TileMap(InterfaceableMaze maze)	
 		throws IOException	{
 		super();
-		this.app = app;
 		this.maze = maze;
 		tileset_file = "resources/tileset.png";
 
@@ -82,5 +79,15 @@ public class TileMap extends JPanel	{
 
 			}
 		}
+	}
+
+	public static void drawMaze(InterfaceableMaze maze)	
+		throws IOException	{
+		JFrame frame = new JFrame();
+		TileMap map = new TileMap(maze);
+		frame.setContentPane(map);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.pack();
+		frame.setVisible(true);
 	}
 }

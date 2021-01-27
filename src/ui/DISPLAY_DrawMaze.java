@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import maze.InterfaceableMaze;
 
-import graphics.MazeApp;
+import graphics.TileMap;
 
 
 /** DrawMaze draws the maze in a tile map. */
@@ -36,7 +36,7 @@ public class DISPLAY_DrawMaze implements CommandInterface	{
 		}
 
 		try	{
-			MazeApp.drawMaze(maze);
+			TileMap.drawMaze(maze);
 		} catch (Exception e)	{
 			throw new UIException(e.getMessage());
 		}
