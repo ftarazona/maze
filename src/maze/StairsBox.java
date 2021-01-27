@@ -10,6 +10,11 @@ import java.io.IOException;
  *  It also facilitates the move to a certain direction. */
 public class StairsBox extends Box	{
 
+	public static int	ID	= 'S';
+	private static int	ARGS	= 5;
+	private static int	SPRITE_UP	= -1;
+	private static int	SPRITE_LEFT	= -1;
+
 	public final static int UP_DOWN		= 0;
 	public final static int LEFT_RIGHT	= 1;
 

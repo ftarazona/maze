@@ -4,6 +4,7 @@ import java.io.OutputStream;
 import java.io.PrintStream;
 import java.io.IOException;
 
+import java.util.Arrays;
 import java.util.EnumSet;
 
 
@@ -11,6 +12,10 @@ import java.util.EnumSet;
  *  general features such as coordinates or flags. */
 public abstract class Box
 	implements Vertex	{
+
+	public static int	ID	= 0;
+	private static int	ARGS	= 4;
+	private static int	SPRITE	= -1;
 
 	/** An object counter used to ensure each object gets a unique
 	 *  ID. */
@@ -32,16 +37,30 @@ public abstract class Box
 	public Box(int[] args)	
 		throws InvalidBoxArgumentsException	{
 
-		if(args.length < 4)	{
-			throw new InvalidBoxArgumentsException(args.length, MazeContext.NULL_ARGS);
+		if(args.length < ARGS)	{
+			throw new InvalidBoxArgumentsException(args.length, ARGS);
 		}
 
-		this.x = args[0];
-		this.y = args[1];
-		this.z = args[2];
+		this.x 	= args[0];
+		this.y 	= args[1];
+		this.z 	= args[2];
 		setFlags(args[3]);
-		this.id = nextID;
+		this.id	= nextID;
 		nextID++;
+		this.drawid	= SPRITE;
+	}
+
+	public static Box newBox(int[] args)
+		throws InvalidBoxArgumentsException, UnexpectedBoxTypeException	{
+		int boxType = args[0];
+		int[] boxArgs = Arrays.copyOfRange(args, 1, args.length);
+		switch(boxType)	{
+		case WallBox.ID:	return new WallBox(boxArgs);
+		case EmptyBox.ID:	return new EmptyBox(boxArgs);
+		case WaterBox.ID:	return new WaterBox(boxArgs);
+		case ID:		return null;
+		default:		throw new UnexceptedBoxType(boxType);
+		}
 	}
 
 	/** Returns the ID of the box.

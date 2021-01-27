@@ -9,6 +9,11 @@ import java.io.IOException;
  *  deep. */
 public class WaterBox extends Box	{
 
+	public static int	ID	= 'O';
+	private static int	ARGS	= 5;
+	private static int	SPRITE_SHALLOW	= 1;
+	private static int	SPRITE_DEEP	= 1;
+
 	private boolean deep;
 
 	/** Constructs a WaterBox with specified arguments.
@@ -19,11 +24,11 @@ public class WaterBox extends Box	{
 		throws InvalidBoxArgumentsException	{
 
 		super(args);
-		if(args.length != MazeContext.WATER_ARGS)	{
-			throw new InvalidBoxArgumentsException(args.length, MazeContext.WATER_ARGS);
+		if(args.length != ARGS)	{
+			throw new InvalidBoxArgumentsException(args.length, ARGS);
 		}
 		deep = args[3] != 0;
-		drawid = deep ? MazeContext.WATER_SPRITE_DEEP : MazeContext.WATER_SPRITE_SHALLOW;
+		drawid = deep ? SPRITE_DEEP : SPRITE_SHALLOW;
 	}
 
 	public int getPracticability()	{
@@ -33,7 +38,7 @@ public class WaterBox extends Box	{
 	public void write(OutputStream out)
 		throws IOException	{
 	
-		out.write(MazeContext.WATER_ID);
+		out.write(ID);
 		writeGeneralData(out);
 		out.write(deep ? 1 : 0);
 	}

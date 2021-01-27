@@ -47,7 +47,7 @@ public class Maze
 	 *  @param type box type to fill with.
 	 *  @throws UnexpectedBoxTypeException if type does not match
 	 *  any. */
-	public Maze(int height, int width, int type)	
+	public Maze(int height, int width)	
 		throws UnexpectedBoxTypeException	{
 		showFlag = EnumSet.noneOf(BoxFlag.class);
 		newMaze(height, width, type);
@@ -55,21 +55,19 @@ public class Maze
 
 	/** Creates a new maze without invoking constructor.
 	 *  This method effectively opens the maze. */
-	public void newMaze(int height, int width, int boxType)	
-		throws UnexpectedBoxTypeException	{
+	public void newMaze(int height, int width, int[] args)	
+		throws UnexpectedBoxTypeException, InvalidBoxArgumentsException	{
 		boxes = new Box[height][width];
 		this.height = height;
 		this.width = width;
 		this.area = 0;
 		for(int i = 0; i < height; i++)	{
 			for(int j = 0; j < width; j++)	{
-				try	{
-					boxes[i][j] = null;
-					int[] args = new int[MazeContext.getNbArgs(boxType)];
-					args[0] = j;
-					args[1] = i;
-					addBox(boxType, args);
-				} catch (MazeException e) {}
+				if(args.length >= 3)	{
+					args[1] = j;
+					args[2] = i;
+				}
+				boxes[i][j] = Box.newBox(args);
 			}
 		}
 
@@ -122,7 +120,7 @@ public class Maze
 			args[i - 1] = input.get(i);
 		}
 		
-		Box box = MazeContext.newBox(boxType, args);
+		Box box = Box.newBox(args);
 		return box;
 	}
 
@@ -470,8 +468,8 @@ public class Maze
 /* ************************ Editing methods *********************** */
 /* **************************************************************** */
 
-	public void addRow(int pos, int type)	
-		throws MazeOutOfBoundsException, UnexpectedBoxTypeException	{
+	public void addRow(int pos, int[] args)	
+		throws MazeOutOfBoundsException, UnexpectedBoxTypeException, InvalidBoxArgumentsException	{
 
 		if(pos < 0 || pos > height)	{
 			throw new MazeOutOfBoundsException(0, pos, width, height);
@@ -500,12 +498,11 @@ public class Maze
 		height++;
 		
 		for(int j = 0; j < width; j++)	{
-			int[] args = new int[MazeContext.getNbArgs(type)];
-			args[0] = j;
-			args[1] = pos;
-			try	{
-				addBox(type, args);
-			} catch(Exception e)	{}
+			if(args.length >= 3)	{
+				args[1] = j;
+				args[2] = pos;
+			}
+			addBox(args);
 		}
 	}
 
@@ -544,8 +541,8 @@ public class Maze
 		height--;
 	}
 
-	public void addCol(int pos, int type)	
-		throws MazeOutOfBoundsException, UnexpectedBoxTypeException	{
+	public void addCol(int pos, int[] args)	
+		throws MazeOutOfBoundsException, UnexpectedBoxTypeException, InvalidBoxArgumentsException	{
 
 		if(pos < 0 || pos > width)	{
 			throw new MazeOutOfBoundsException(pos, 0, width, height);
@@ -573,12 +570,11 @@ public class Maze
 		boxes = temp;
 		width++;
 		for(int i = 0; i < height; i++)	{
-			int[] args = new int[MazeContext.getNbArgs(type)];
-			args[0] = pos;
-			args[1] = i;
-			try	{
-				addBox(type, args);
-			} catch(Exception e)	{}
+			if(args.length >= 3)	{
+				args[1] = pos;
+				args[2] = i;
+			}
+			addBox(args);
 		}
 	}
 
@@ -618,12 +614,9 @@ public class Maze
 
 	}
 
-	public void addBox(int type, int[] args)
+	public void addBox(int[] args)
 		throws MazeOutOfBoundsException, UnexpectedBoxTypeException, InvalidBoxArgumentsException	{
 
-		if(args.length < MazeContext.MIN_ARGS)	{
-			throw new InvalidBoxArgumentsException(2, MazeContext.MIN_ARGS);
-		}
 		int x = args[0];
 		int y = args[1];
 
@@ -631,11 +624,11 @@ public class Maze
 			throw new MazeOutOfBoundsException(x, y, width, height);
 		}
 
-		if(boxes[y][x] == null && type != MazeContext.NULL_ID)	{
+		if(boxes[y][x] == null && type != BOX.ID)	{
 			area++;
 		}
 
-		boxes[y][x] = MazeContext.newBox(type, args);
+		boxes[y][x] = Box.newBox(args);
 	}
 
 	public void remBox(int x, int y)	
