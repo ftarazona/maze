@@ -6,6 +6,7 @@ import java.util.EnumSet;
  *  instance. */
 public enum BoxFlag	{
 
+	NO_FLAG,
 	BOX_START,
 	BOX_END,
 	BOX_MARKED;
@@ -45,5 +46,14 @@ public enum BoxFlag	{
 			}
 		}
 		return flags;
+	}
+
+	static public BoxFlag valueOf(int value)	{
+		for(BoxFlag flag: BoxFlag.values())	{
+			if((value & flag.toInt()) != 0)	{
+				return flag;
+			}
+		}
+		return BoxFlag.NO_FLAG;
 	}
 }

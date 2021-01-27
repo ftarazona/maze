@@ -8,6 +8,10 @@ import java.io.IOException;
 /** Basic box with maximum practicability. */
 public class EmptyBox extends Box	{
 
+	public static final int ID 		= 'E';
+	protected static final int ARGS		= 4;
+	protected static final int SPRITE	= 0;
+
 	/** Constructs an EmptyBox with specified arguments.
 	 *  @param args arguments, must contain 4 arguments.
 	 *  @throws InvalidBoxArgumentsException if not given correct
@@ -15,10 +19,10 @@ public class EmptyBox extends Box	{
 	public EmptyBox(int[] args)	
 		throws InvalidBoxArgumentsException	{
 		super(args);
-		if(args.length != MazeContext.EMPTY_ARGS)	{
-			throw new InvalidBoxArgumentsException(args.length, MazeContext.EMPTY_ARGS);
+		if(args.length != ARGS)	{
+			throw new InvalidBoxArgumentsException(args.length, ARGS);
 		}
-		drawid = MazeContext.EMPTY_SPRITE;
+		drawid = SPRITE;
 	}
 
 	public int getPracticability()	{
@@ -28,7 +32,7 @@ public class EmptyBox extends Box	{
 	public void write(OutputStream out)
 		throws IOException	{
 		
-		out.write(MazeContext.EMPTY_ID);
+		out.write(ID);
 		writeGeneralData(out);
 	}
 

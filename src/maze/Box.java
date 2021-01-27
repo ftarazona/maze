@@ -1,10 +1,8 @@
 package maze;
 
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.IOException;
+import java.io.*;
 
-import java.util.EnumSet;
+import java.util.*;
 
 
 /** This abstract class implements a graph's vertex. It provides
@@ -12,6 +10,10 @@ import java.util.EnumSet;
 public abstract class Box
 	implements Vertex	{
 
+	public static final int ID		= 0;
+	protected static final int ARGS		= 3;
+	protected static final int SPRITE	= -1;
+	
 	/** An object counter used to ensure each object gets a unique
 	 *  ID. */
 	private static int nextID = 0;
@@ -33,15 +35,42 @@ public abstract class Box
 		throws InvalidBoxArgumentsException	{
 
 		if(args.length < 4)	{
-			throw new InvalidBoxArgumentsException(args.length, MazeContext.NULL_ARGS);
+			throw new InvalidBoxArgumentsException(args.length, ARGS);
 		}
 
-		this.x = args[0];
-		this.y = args[1];
-		this.z = args[2];
+		this.x	= args[0];
+		this.y 	= args[1];
+		this.z 	= args[2];
 		setFlags(args[3]);
 		this.id = nextID;
 		nextID++;
+		drawid 	= SPRITE; 
+	}
+
+	/** Construcs a new box with given type and arguments.
+	 *  @param boxType type of the box to be built.
+	 *  @param args array of arguments to be given the
+	 *  constructor.
+	 *  @return A new box, if given type is 0, then returns null.
+	 *  @throws InvalidBoxArgumentsException if box constructor
+	 *  could not parse the arguments.
+	 *  @throws UnexpectedBoxTypeException if given type does not
+	 *  match any. */
+	public static Box newBox(int[] args)	
+		throws InvalidBoxArgumentsException, UnexpectedBoxTypeException	{
+
+		if(args.length < 1)	{ throw new UnexpectedBoxTypeException(); }
+		int[] effectiveArgs = Arrays.copyOfRange(args, 1, args.length);
+
+		switch(args[0])	{
+			case WallBox.ID: 	return new WallBox(effectiveArgs);
+			case EmptyBox.ID: 	return new EmptyBox(effectiveArgs);
+//			case WaterBox.ID: 	return new WaterBox(effectiveArgs);
+//			case StairsBox.ID: 	return new StairsBox(effectiveArgs);
+//			case BridgeBox.ID: 	return new BridgeBox(effectiveArgs);
+			case 0:			return null;
+			default:		throw new UnexpectedBoxTypeException(args[0]);
+		}
 	}
 
 	/** Returns the ID of the box.

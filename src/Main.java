@@ -2,7 +2,11 @@ import ui.*;
 
 public class Main	{
 	public static void main(String[] args)	{
-		MazeManager ui = new MazeManager();
-		ui.run(args);
+		try	{
+			GraphicalInterface ui = new GraphicalInterface();
+			ui.run();
+		} catch (Exception e)	{
+			System.out.println(e.getMessage());
+		}
 	}
 }

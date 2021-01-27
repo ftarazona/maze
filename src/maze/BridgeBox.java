@@ -9,6 +9,10 @@ import java.io.IOException;
  *  A bridge box would allow superposition of two boxes. */
 public class BridgeBox extends Box	{
 
+	public static final int ID 		= 'B';
+	protected static final int ARGS 	= 4;
+	protected static final int SPRITE	= -1;
+
 	/** Constructs a BridgeBox with specified arguments.
 	 *  @param args arguments, must contain 4 arguments.
 	 *  @throws InvalidBoxArgumentsException if not given correct
@@ -16,10 +20,10 @@ public class BridgeBox extends Box	{
 	public BridgeBox(int[] args)	
 		throws InvalidBoxArgumentsException	{
 		super(args);
-		if(args.length != MazeContext.BRIDGE_ARGS)	{
-			throw new InvalidBoxArgumentsException(args.length, MazeContext.BRIDGE_ARGS);
+		if(args.length != ARGS)	{
+			throw new InvalidBoxArgumentsException(args.length, ARGS);
 		}
-		drawid = MazeContext.BRIDGE_SPRITE;
+		drawid = SPRITE;
 	}
 
 	public int getPracticability()	{
@@ -29,7 +33,7 @@ public class BridgeBox extends Box	{
 	public void write(OutputStream out)
 		throws IOException	{
 		
-		out.write(MazeContext.BRIDGE_ID);
+		out.write(ID);
 		writeGeneralData(out);
 	}
 
