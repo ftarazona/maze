@@ -2,10 +2,8 @@ package graphics;
 
 import java.io.*;
 import java.awt.*;
-import java.awt.event.*;
 import javax.imageio.ImageIO;
 import javax.swing.*;
-import javax.swing.event.*;
 
 import maze.InterfaceableMaze;
 import maze.MazeException;
@@ -44,11 +42,6 @@ public class TileMap extends JPanel	{
 		refreshMaze();
 	}
 
-	public void stateChanged(ChangeEvent evt)	{
-		refreshMaze();
-		repaint();
-	}
-
 	public void refreshMaze()	{
 		this.IDs 	= maze.drawIDs();
 		this.flagIDs	= maze.drawFlags();
@@ -60,6 +53,7 @@ public class TileMap extends JPanel	{
 
 	@Override
 	public void paintComponent(Graphics g)	{
+		refreshMaze();
 		super.paintComponent(g);
 		g.clearRect(0, 0, getWidth(), getHeight());
 

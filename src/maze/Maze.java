@@ -47,34 +47,44 @@ public class Maze
 	 *  @param type box type to fill with.
 	 *  @throws UnexpectedBoxTypeException if type does not match
 	 *  any. */
-	public Maze(int height, int width)	
+	public Maze(int height, int width, int type)	
 		throws UnexpectedBoxTypeException	{
 		showFlag = EnumSet.noneOf(BoxFlag.class);
-		newMaze(height, width);
+		newMaze(height, width, type);
 	}
 
 	/** Creates a new maze without invoking constructor.
 	 *  This method effectively opens the maze. */
-	public void newMaze(int height, int width)	{
-		boxes 		= new Box[height][width];
-		this.height 	= height;
-		this.width 	= width;
-		this.area 	= 0;
+	public void newMaze(int height, int width, int boxType)	
+		throws UnexpectedBoxTypeException	{
+		boxes = new Box[height][width];
+		this.height = height;
+		this.width = width;
+		this.area = 0;
+		for(int i = 0; i < height; i++)	{
+			for(int j = 0; j < width; j++)	{
+				try	{
+					boxes[i][j] = null;
+					int[] args = new int[MazeContext.getNbArgs(boxType)];
+					args[0] = j;
+					args[1] = i;
+					addBox(boxType, args);
+				} catch (MazeException e) {}
+			}
+		}
 
-		opened 		= true;
-		hasRoot 	= false;
+		opened = true;
 	}
 
 	/** Constructs a maze from a matrix of boxes.
 	 *  @param boxes a matrix of boxes. */
 	public Maze(Box[][] boxes)	{
 		this();
-		this.boxes 	= boxes;
-		this.width 	= boxes[0].length;
-		this.height 	= boxes.length;
-
-		opened 		= true;
-		hasRoot 	= false;
+		this.boxes = boxes;
+		this.width = boxes[0].length;
+		this.height = boxes.length;
+		opened = true;
+		hasRoot = false;
 	}
 
 
@@ -100,12 +110,19 @@ public class Maze
 			c = in.read();
 		}
 
+		//No box type may be found
+		try	{
+			boxType = input.get(0);
+		} catch(IndexOutOfBoundsException e)	{
+			throw new UnexpectedBoxTypeException();
+		}
+	
 		int[] args = new int[input.size() - 1];
-		for(int i = 0; i < input.size() - 1; i++)	{
-			args[i] = input.get(i);
+		for(int i = 1; i < input.size() - 1; i++)	{
+			args[i - 1] = input.get(i);
 		}
 		
-		Box box = Box.newBox(args);
+		Box box = MazeContext.newBox(boxType, args);
 		return box;
 	}
 
@@ -453,8 +470,8 @@ public class Maze
 /* ************************ Editing methods *********************** */
 /* **************************************************************** */
 
-	public void addRow(int pos)	
-		throws MazeOutOfBoundsException	{
+	public void addRow(int pos, int type)	
+		throws MazeOutOfBoundsException, UnexpectedBoxTypeException	{
 
 		if(pos < 0 || pos > height)	{
 			throw new MazeOutOfBoundsException(0, pos, width, height);
@@ -481,6 +498,15 @@ public class Maze
 		}
 		boxes = temp;
 		height++;
+		
+		for(int j = 0; j < width; j++)	{
+			int[] args = new int[MazeContext.getNbArgs(type)];
+			args[0] = j;
+			args[1] = pos;
+			try	{
+				addBox(type, args);
+			} catch(Exception e)	{}
+		}
 	}
 
 	public void remRow(int pos)	
@@ -518,8 +544,8 @@ public class Maze
 		height--;
 	}
 
-	public void addCol(int pos)	
-		throws MazeOutOfBoundsException	{
+	public void addCol(int pos, int type)	
+		throws MazeOutOfBoundsException, UnexpectedBoxTypeException	{
 
 		if(pos < 0 || pos > width)	{
 			throw new MazeOutOfBoundsException(pos, 0, width, height);
@@ -546,6 +572,14 @@ public class Maze
 		}
 		boxes = temp;
 		width++;
+		for(int i = 0; i < height; i++)	{
+			int[] args = new int[MazeContext.getNbArgs(type)];
+			args[0] = pos;
+			args[1] = i;
+			try	{
+				addBox(type, args);
+			} catch(Exception e)	{}
+		}
 	}
 
 	public void remCol(int pos)	
@@ -584,24 +618,24 @@ public class Maze
 
 	}
 
-	public void addBox(int[] args)
+	public void addBox(int type, int[] args)
 		throws MazeOutOfBoundsException, UnexpectedBoxTypeException, InvalidBoxArgumentsException	{
 
-		if(args.length < 3)	{
-			throw new InvalidBoxArgumentsException(args.length - 1, 2);
+		if(args.length < MazeContext.MIN_ARGS)	{
+			throw new InvalidBoxArgumentsException(2, MazeContext.MIN_ARGS);
 		}
-		int x = args[1];
-		int y = args[2];
+		int x = args[0];
+		int y = args[1];
 
 		if(x < 0 || x >= width || y < 0 || y >= height)	{
 			throw new MazeOutOfBoundsException(x, y, width, height);
 		}
 
-		if(boxes[y][x] == null && args[0] != Box.ID)	{
+		if(boxes[y][x] == null && type != MazeContext.NULL_ID)	{
 			area++;
 		}
 
-		boxes[y][x] = Box.newBox(args);
+		boxes[y][x] = MazeContext.newBox(type, args);
 	}
 
 	public void remBox(int x, int y)	

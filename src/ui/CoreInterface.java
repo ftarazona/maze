@@ -35,12 +35,42 @@ public abstract class CoreInterface implements UserInterface	{
 	public final static int	RUN_DIJKSTRA 	= 23;
 	public final static int	TRACE_PATH 	= 24;
 
+	protected ArrayDeque<Command> 	queue;
+	protected ArrayDeque<Command>	scriptsQueue;
+	protected ArrayList<Command>	history;
 	private Exception		exception = null;
 
 	public CoreInterface()	{
+		queue		= new ArrayDeque<Command>();
+		scriptsQueue	= new ArrayDeque<Command>();
+		history		= new ArrayList<Command>();
 	}
-	
-	public void raiseException(Exception e)	{
+
+	public void 	pushCommand(Command cmd)	{
+		queue.offer(cmd);
+	}
+
+	public void 	pushScriptCommand(Command cmd)	{
+		scriptsQueue.offer(cmd);
+	}
+
+	public void 	runCommand()	{
+		Command cmd = queue.pop();
+		history.add(cmd);
+		try	{
+			cmd.run();
+		} catch(Exception e)	{ raiseException(e); }
+	}
+
+	public void 	runScripts()	{
+		while(scriptsQueue.isEmpty())	{
+			try	{
+				scriptsQueue.pop().run();
+			} catch (Exception e)	{}
+		}
+	}
+
+	private void raiseException(Exception e)	{
 		exception = e;
 	}
 	public Exception getException()	{
@@ -49,12 +79,45 @@ public abstract class CoreInterface implements UserInterface	{
 		return e;
 	}
 
+	public void generateCommand(int cmdID, Object[] args)	{
+		Command cmd = null;
+		try	{
+		switch(cmdID)	{
+			case NEW_MAZE:		cmd = new IO_NewMaze(args, this); 		break;
+			case OPEN_MAZE:		cmd = new IO_OpenMaze(args, this); 		break;
+			case SAVE_MAZE:		cmd = new IO_SaveMaze(args, this); 		break;
+			case ADD_ROW:		cmd = new EDIT_AddRow(args, this); 		break;
+			case REM_ROW:		cmd = new EDIT_RemRow(args, this); 		break;
+			case ADD_COL:		cmd = new EDIT_AddCol(args, this); 		break;
+			case REM_COL:		cmd = new EDIT_RemCol(args, this); 		break;
+			case ADD_BOX:		cmd = new EDIT_AddBox(args, this); 		break;
+			case REM_BOX:		cmd = new EDIT_RemBox(args, this); 		break;
+			case ADD_FLAG:		cmd = new EDIT_AddFlag(args, this); 		break;
+			case REM_FLAG:		cmd = new EDIT_RemFlag(args, this); 		break;
+			case SET_ROOT:		cmd = new EDIT_SetRoot(args, this); 		break;
+			case REM_ROOT:		cmd = new EDIT_RemRoot(args, this); 		break;
+			case CLEAR_FLAGS:	cmd = new EDIT_Clear(args, this); 		break;
+			case SHOW_FLAG:		cmd = new DISPLAY_ShowFlag(args, this);		break;
+			case SHOW_ALL_FLAGS:	cmd = new DISPLAY_ShowFlags(args, this);	break;
+			case HIDE_FLAG:		cmd = new DISPLAY_HideFlag(args, this);		break;
+			case HIDE_ALL_FLAGS:	cmd = new DISPLAY_HideFlags(args, this);	break;
+			case DISPLAY:		cmd = new DISPLAY_DisplayMaze(args, this);	break;
+			case RUN_DIJKSTRA:	cmd = new DIJKSTRA_Dijkstra(args, this);	break;
+			case TRACE_PATH:	cmd = new DIJKSTRA_TracePath(args, this);	break;
+		}
+		} catch (IncorrectUsageException e)	{ raiseException(e); }
+
+		pushCommand(cmd);
+	}
+
 	public abstract InterfaceableMaze 	getMaze();
 	public abstract Pi			getPi();
 	public abstract Previous		getPrevious();
 
-	public abstract void addMaze(int x, int y);
-	public abstract void addMaze(String filename);
+	public abstract void addMaze(int x, int y)
+		throws MazeException;
+	public abstract void addMaze(String filename)
+		throws MazeException, IOException;
 
 	public abstract void addScript(String filename);
 

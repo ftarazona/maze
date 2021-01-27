@@ -4,22 +4,18 @@ import java.io.IOException;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.event.*;
 
-import ui.*;
 import maze.InterfaceableMaze;
 
-public class MazeApp extends JFrame implements ChangeListener	{
+public class MazeApp extends JFrame	{
 
 	private final WindowPanel	windowPanel;
-	private final GraphicalInterface ui;
 
-	public MazeApp(GraphicalInterface core)	
+	public MazeApp(InterfaceableMaze maze)	
 		throws IOException	{
 		super("A-MAZE-ING!");
 
-		this.ui = core;
-		setContentPane(windowPanel	= new WindowPanel(this));
+		setContentPane(windowPanel	= new WindowPanel(this, maze));
 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
@@ -28,19 +24,9 @@ public class MazeApp extends JFrame implements ChangeListener	{
 		setVisible(true);
 	}
 
-	public GraphicalInterface getUI()	{ return ui; }
-
-	public void stateChanged(ChangeEvent evt)	{
-		Exception e = ui.getException();
-		if(e != null)	{
-			JOptionPane.showMessageDialog(this, e.getMessage());
-		}
-		windowPanel.stateChanged(evt);
-	}
-
-	public static void drawMaze(GraphicalInterface core)	
+	public static void drawMaze(InterfaceableMaze maze)	
 		throws IOException	{
-		MazeApp frame = new MazeApp(core);
+		MazeApp frame = new MazeApp(maze);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.pack();
 		frame.setMinimumSize(frame.getSize());

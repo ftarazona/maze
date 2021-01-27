@@ -27,6 +27,7 @@ public class GraphicalInterface extends CoreInterface implements UserInterface	{
 	}
 
 	public void stateChanges()	{
+		System.out.println("State Changes");
 		ChangeEvent evt = new ChangeEvent(this);
 		for(ChangeListener listener: listeners)
 			listener.stateChanged(evt);
@@ -36,30 +37,20 @@ public class GraphicalInterface extends CoreInterface implements UserInterface	{
 	public Pi getPi()			{ return pi; }
 	public Previous getPrevious()		{ return previous; }
 
-	public void addMaze(int width, int height)	{
-		try	{
-			maze.newMaze(height, width);
-		} catch (Exception e)	{ raiseException(e); }
+	public void addMaze(int width, int height)	
+		throws MazeException	{
+		maze.newMaze(height, width);
 		stateChanges();
 	}
-	public void addMaze(String filename)	{
-		try	{	
-			InputStream file	= new FileInputStream(filename);
-			BufferedInputStream buf	= new BufferedInputStream(file);
-			maze.read(buf);
-			buf.close();
-			file.close();
-		} catch (Exception e)	{ raiseException(e); }
-		stateChanges();
-	}
-	public void saveMaze(String filename)	{
-		try	{
-			FileOutputStream file	= new FileOutputStream(filename);
-			BufferedOutputStream buf = new BufferedOutputStream(file);
-			maze.write(buf);
-			buf.close();
-			file.close();
-		} catch (Exception e)	{ raiseException(e); }
+
+	public void addMaze(String filename)	
+		throws MazeException, IOException	{
+		
+		InputStream file	= new FileInputStream(filename);
+		BufferedInputStream buf	= new BufferedInputStream(file);
+		maze.read(buf);
+		buf.close();
+		file.close();
 		stateChanges();
 	}
 

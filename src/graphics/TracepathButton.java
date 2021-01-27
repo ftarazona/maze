@@ -1,11 +1,9 @@
 package graphics;
 
 import java.awt.*;
-import java.awt.event.*;
 import javax.swing.*;
-import javax.swing.event.*;
 
-public class TracepathButton extends JButton implements ActionListener	{
+public class TracepathButton extends JButton	{
 
 	private final MazeApp app;
 
@@ -13,11 +11,5 @@ public class TracepathButton extends JButton implements ActionListener	{
 		super("Trace Path");
 		this.app = app;
 		setPreferredSize(new Dimension(120, 20));
-
-		addActionListener(this);
-	}
-
-	public final void actionPerformed(ActionEvent evt)	{
-
 	}
 }

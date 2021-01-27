@@ -7,10 +7,6 @@ import java.io.IOException;
 /** Basic box with infinite practicability. */
 public class WallBox extends Box	{
 
-	public static final int ID 		= 'W';
-	protected static final int ARGS 	= 4;
-	protected static final int SPRITE	= 3;
-
 	/** Constructs a WallBox with specified arguments.
 	 *  @param args arguments, must contain 4 arguments.
 	 *  @throws InvalidBoxArgumentsException if not given correct
@@ -18,10 +14,10 @@ public class WallBox extends Box	{
 	public WallBox(int[] args)	
 		throws InvalidBoxArgumentsException	{
 		super(args);
-		if(args.length != ARGS)	{
-			throw new InvalidBoxArgumentsException(args.length, ARGS);
+		if(args.length != MazeContext.WALL_ARGS)	{
+			throw new InvalidBoxArgumentsException(args.length, MazeContext.WALL_ARGS);
 		}
-		drawid = SPRITE;
+		drawid = MazeContext.WALL_SPRITE;
 	}
 
 	public int getPracticability()	{
@@ -31,7 +27,7 @@ public class WallBox extends Box	{
 	public void write(OutputStream out)	
 		throws IOException	{
 
-		out.write(ID);
+		out.write(MazeContext.WALL_ID);
 		writeGeneralData(out);
 	}
 
