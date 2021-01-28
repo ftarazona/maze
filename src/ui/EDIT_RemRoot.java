@@ -10,16 +10,12 @@ import maze.MazeException;
 /** RemRoot removes the current root in maze. */ 
 public class EDIT_RemRoot implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	private Pi pi;
-	private Previous prev;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified maze, pi, previous
 	 *  functions. */
-	public EDIT_RemRoot(InterfaceableMaze maze, Pi pi, Previous prev)	{
-		this.maze = maze;
-		this.pi = pi;
-		this.prev = prev;
+	public EDIT_RemRoot(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -34,12 +30,8 @@ public class EDIT_RemRoot implements CommandInterface	{
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 
-		if(args.length != 1)	{
-			throw new IncorrectUsageException(args.length, 1);
-		}
-		
-		maze.remRoot();
-		pi.clear();
-		prev.clear();
+		ui.getMaze().remRoot();
+		ui.getPi().clear();
+		ui.getPrevious().clear();
 	}
 }

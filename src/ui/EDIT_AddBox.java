@@ -1,18 +1,18 @@
 package ui;
 
+import maze.EmptyBox;
 import maze.InterfaceableMaze;
-import maze.MazeContext;
 import maze.MazeException;
 
 
 /** AddBox adds a box in the maze */
 public class EDIT_AddBox implements CommandInterface	{
 
-	private InterfaceableMaze maze;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public EDIT_AddBox(InterfaceableMaze maze)	{
-		this.maze = maze;
+	public EDIT_AddBox(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -20,8 +20,8 @@ public class EDIT_AddBox implements CommandInterface	{
 	}
 
 	public String usage()	{
-		return	"1. addbox <x> <y> <z> (empty)\n" +
-			"2. addbox <x> <y> <z> <type>\n";
+		return	"1. addbox <x> <y> (empty)\n" +
+			"2. addbox <x> <y> <type>\n";
 	}
 
 
@@ -34,36 +34,27 @@ public class EDIT_AddBox implements CommandInterface	{
 	public void run(String[] args)
 		throws UIException, MazeException	{
 		
-		if(args.length < MazeContext.MIN_ARGS)	{ 
-			throw new IncorrectUsageException(args.length, MazeContext.MIN_ARGS); 
-		}
-
-		int boxType;
-		int[] boxArgs = new int[args.length - 1];
-
-		for(int i = 1; i <= 3; i++)	{
-			try	{
-				boxArgs[i - 1] = Integer.parseInt(args[i]);
-			} catch (NumberFormatException e)	{
-				throw new InvalidArgumentsException(args[i], i);
-			}
-		}
+		int[] boxArgs = new int[args.length + 2];
 
 		try	{
-			boxType = UIContext.boxType(args[4]);
-		} catch (IndexOutOfBoundsException e)	{
-			boxType = MazeContext.NULL_ID;
-		}
-
-		boxArgs[3] = 0;
-		for(int i = 5; i < args.length; i++)	{
-			try	{
-				boxArgs[i - 1] = Integer.parseInt(args[i]);
-			} catch (NumberFormatException e)	{
-				throw new InvalidArgumentsException(args[i], i);
+			if(args.length >= 4)	{
+				boxArgs[0] = ui.keyWord(args[3]);
+			} else	{
+				boxArgs[0] = EmptyBox.ID;
 			}
+			boxArgs[1] = Integer.parseInt(args[1]);
+			boxArgs[2] = Integer.parseInt(args[2]);
+			boxArgs[3] = 0;
+			boxArgs[4] = 0;
+			for(int i = 4; i < args.length; i++)	{
+				boxArgs[i+1] = Integer.parseInt(args[i]);
+			}
+		} catch (NumberFormatException e)	{
+			throw new InvalidArgumentsException("Coordinates and box options are expected to be integers");
+		} catch (IndexOutOfBoundsException e)	{
+			throw new IncorrectUsageException();
 		}
 
-		maze.addBox(boxType, boxArgs);
+		ui.getMaze().addBox(boxArgs);
 	}
 }

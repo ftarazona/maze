@@ -11,16 +11,12 @@ import maze.MazeException;
 /** Removes a flag at given coordinates. */
 public class EDIT_RemFlag implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	private Pi pi;
-	private Previous prev;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified maze, pi, previous
 	 *  functions. */
-	public EDIT_RemFlag(InterfaceableMaze maze, Pi pi, Previous prev)	{
-		this.maze = maze;
-		this.pi = pi;
-		this.prev = prev;
+	public EDIT_RemFlag(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -38,31 +34,25 @@ public class EDIT_RemFlag implements CommandInterface	{
 	 *  reached for example. */
 	public void run(String[] args)	
 		throws UIException, MazeException	{
-
-		if(args.length != 4)	{
-			throw new IncorrectUsageException(4, args.length);
-		}
-
+	
 		int x = 0, y = 0;
 		BoxFlag flag = null;
 
 		try	{
 			x = Integer.parseInt(args[1]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[1], 1);
-		}
-		try	{
 			y = Integer.parseInt(args[2]);
+			flag = BoxFlag.valueOf(ui.keyWord(args[3]));
 		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[2], 2);
-		}
-		
-		flag = UIContext.flag(args[3]);
-		if(flag.equals(BoxFlag.BOX_START))	{
-			pi.clear();
-			prev.clear();
+			throw new InvalidArgumentsException("Coordinates are expected to be integers.");
+		} catch (IndexOutOfBoundsException e)	{
+			throw new IncorrectUsageException();
 		}
 
-		maze.remFlag(x, y, flag);
+		if(flag.equals(BoxFlag.BOX_START))	{
+			ui.getPi().clear();
+			ui.getPrevious().clear();
+		}
+
+		ui.getMaze().remFlag(x, y, flag);
 	}
 }

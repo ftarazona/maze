@@ -9,10 +9,10 @@ import java.io.IOException;
  *  deep. */
 public class WaterBox extends Box	{
 
-	public static int	ID	= 'O';
-	private static int	ARGS	= 5;
-	private static int	SPRITE_SHALLOW	= 1;
-	private static int	SPRITE_DEEP	= 1;
+	public static final int		ID	= 'O';
+	private static final int	ARGS	= 5;
+	private static final int	SPRITE_SHALLOW	= 1;
+	private static final int	SPRITE_DEEP	= 1;
 
 	private boolean deep;
 
@@ -24,7 +24,7 @@ public class WaterBox extends Box	{
 		throws InvalidBoxArgumentsException	{
 
 		super(args);
-		if(args.length != ARGS)	{
+		if(args.length < ARGS)	{
 			throw new InvalidBoxArgumentsException(args.length, ARGS);
 		}
 		deep = args[3] != 0;

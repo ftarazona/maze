@@ -7,9 +7,9 @@ import java.io.IOException;
 /** Basic box with infinite practicability. */
 public class WallBox extends Box	{
 
-	public static int	ID	= 'W';
-	private static int	ARGS	= 4;
-	private static int	SPRITE	= 3;
+	public static final int		ID	= 'W';
+	private static final int	ARGS	= 4;
+	private static final int	SPRITE	= 3;
 
 	/** Constructs a WallBox with specified arguments.
 	 *  @param args arguments, must contain 4 arguments.
@@ -18,7 +18,7 @@ public class WallBox extends Box	{
 	public WallBox(int[] args)	
 		throws InvalidBoxArgumentsException	{
 		super(args);
-		if(args.length != ARGS)	{
+		if(args.length < ARGS)	{
 			throw new InvalidBoxArgumentsException(args.length, ARGS);
 		}
 		drawid = SPRITE;

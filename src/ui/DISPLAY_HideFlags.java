@@ -7,11 +7,11 @@ import maze.MazeException;
 /** HideFlags requires maze to hide all flags when displaying. */
 public class DISPLAY_HideFlags implements CommandInterface	{
 
-	private InterfaceableMaze maze;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public DISPLAY_HideFlags(InterfaceableMaze maze)	{
-		this.maze = maze;
+	public DISPLAY_HideFlags(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -25,8 +25,7 @@ public class DISPLAY_HideFlags implements CommandInterface	{
 
 	public void run(String[] args)	
 		throws UIException, MazeException	{
-		if(args.length != 1)	{ throw new IncorrectUsageException(1, args.length); }
 
-		maze.hideAllFlags();
+		ui.getMaze().hideAllFlags();
 	}
 }

@@ -13,9 +13,9 @@ import java.util.EnumSet;
 public abstract class Box
 	implements Vertex	{
 
-	public static int	ID	= 0;
-	private static int	ARGS	= 4;
-	private static int	SPRITE	= -1;
+	public static final int		ID	= 0;
+	private static final int	ARGS	= 4;
+	private static final int	SPRITE	= -1;
 
 	/** An object counter used to ensure each object gets a unique
 	 *  ID. */
@@ -59,7 +59,7 @@ public abstract class Box
 		case EmptyBox.ID:	return new EmptyBox(boxArgs);
 		case WaterBox.ID:	return new WaterBox(boxArgs);
 		case ID:		return null;
-		default:		throw new UnexceptedBoxType(boxType);
+		default:		throw new UnexpectedBoxTypeException(boxType);
 		}
 	}
 

@@ -10,11 +10,11 @@ import graphics.TileMap;
 /** DrawMaze draws the maze in a tile map. */
 public class DISPLAY_DrawMaze implements CommandInterface	{
 
-	private InterfaceableMaze maze;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public DISPLAY_DrawMaze(InterfaceableMaze maze)	{
-		this.maze = maze;
+	public DISPLAY_DrawMaze(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -31,12 +31,8 @@ public class DISPLAY_DrawMaze implements CommandInterface	{
 	public void run(String[] args)
 		throws UIException	{
 
-		if(args.length != 1)	{
-			throw new IncorrectUsageException(args.length, 1);
-		}
-
 		try	{
-			TileMap.drawMaze(maze);
+			TileMap.drawMaze(ui.getMaze());
 		} catch (Exception e)	{
 			throw new UIException(e.getMessage());
 		}

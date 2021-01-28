@@ -4,6 +4,7 @@ import java.util.Queue;
 import java.util.Scanner;
 
 import java.io.FileInputStream;
+import java.io.IOException;
 
 import maze.InterfaceableMaze;
 
@@ -11,12 +12,12 @@ import maze.InterfaceableMaze;
 /** LoadScript loads a script from file. */
 public class UI_LoadScript implements CommandInterface	{
 
-	private Queue<String> queue;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified command queue of an
 	 *  interface. */
-	public UI_LoadScript(Queue<String> queue)	{
-		this.queue = queue;
+	public UI_LoadScript(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -32,16 +33,14 @@ public class UI_LoadScript implements CommandInterface	{
 	public void run(String[] args)
 		throws UIException	{
 
-		if(args.length != 2)	{
-			throw new IncorrectUsageException(args.length, 4);
-		}
-
 		try	{
 			Scanner scanner = new Scanner(new FileInputStream(args[1]));
 			while(scanner.hasNextLine())	{
-				queue.offer(scanner.nextLine());
+				ui.offerScript(scanner.nextLine());
 			}
-		} catch(Exception e)	{
+		} catch (IndexOutOfBoundsException e)	{
+			throw new IncorrectUsageException();
+		} catch (IOException e)	{
 			throw new UIException(e.getMessage());
 		}
 	}

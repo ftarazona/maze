@@ -1,18 +1,18 @@
 package ui;
 
+import maze.Box;
 import maze.InterfaceableMaze;
-import maze.MazeContext;
 import maze.MazeException;
 
 
 /** NewMaze creates a new maze. */
 public class IO_NewMaze implements CommandInterface	{
 	
-	private InterfaceableMaze maze;
+	private UserInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public IO_NewMaze(InterfaceableMaze maze)	{
-		this.maze = maze;
+	public IO_NewMaze(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -34,32 +34,34 @@ public class IO_NewMaze implements CommandInterface	{
 	 */
 	public void run(String[] args)	
 		throws UIException, MazeException	{
+	
+		int width = 0;
+		int height = 0;
+		int[] boxArgs = new int[args.length + 5];
+
+		try	{
+			if(args.length >= 3)	{
+				height = Integer.parseInt(args[1]);
+				width = Integer.parseInt(args[2]);
+			}
+			if(args.length >= 4)	{
+				boxArgs[0] = ui.keyWord(args[3]);
+			} else	{
+				boxArgs[0] = Box.ID;
+			}
+			boxArgs[1] = 0;
+			boxArgs[2] = 0;
+			boxArgs[3] = 0;
+			boxArgs[4] = 0;
+			for(int i = 4; i < args.length; i++)	{
+				boxArgs[i+1] = Integer.parseInt(args[i]);
+			}
+		} catch (NumberFormatException e)	{
+			throw new InvalidArgumentsException("Width, height and box options are expected to be integers.");
+		} catch (IndexOutOfBoundsException e)	{
+			throw new IncorrectUsageException();
+		}
 		
-		if(args.length == 1 || args.length > 4)	{ throw new IncorrectUsageException(args.length, 4); }
-
-		int usage = 3;
-		int width = 0, height = 0, type;
-
-		try	{
-			height = Integer.parseInt(args[1]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[1], 1);
-		} catch (IndexOutOfBoundsException e)	{
-			usage = 1;
-		}
-
-		try	{
-			width = Integer.parseInt(args[2]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[2], 2);
-		}
-		try	{
-			type = UIContext.boxType(args[3]);
-		} catch (IndexOutOfBoundsException e)	{
-			type = MazeContext.NULL_ID;
-		}
-
-		if(usage == 1)	{ maze.newMaze(0, 0, UIContext.boxType("null")); }
-		else	{ maze.newMaze(height, width, type); }
+		ui.getMaze().newMaze(height, width, boxArgs);
 	}
 }

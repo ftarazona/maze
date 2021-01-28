@@ -7,11 +7,11 @@ import maze.MazeException;
 /** RemCol removes a column in the maze at a given position. */
 public class EDIT_RemCol implements CommandInterface	{
 
-	private InterfaceableMaze maze;
+	private final UserInterface ui;
 	
 	/** Constructs the command with specified maze. */
-	public EDIT_RemCol(InterfaceableMaze maze)	{
-		this.maze = maze;
+	public EDIT_RemCol(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -30,16 +30,16 @@ public class EDIT_RemCol implements CommandInterface	{
 	public void run(String[] args)
 		throws UIException, MazeException	{
 
-		if(args.length != 2)	{ throw new IncorrectUsageException(args.length, 2); }
-
 		int pos = 0;
 
 		try	{
 			pos = Integer.parseInt(args[1]);
 		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[1], 1);
+			throw new InvalidArgumentsException("Position is expected to be an integer.");
+		} catch (IndexOutOfBoundsException e)	{
+			throw new IncorrectUsageException();
 		}
 
-		maze.remCol(pos);
+		ui.getMaze().remCol(pos);
 	}
 }

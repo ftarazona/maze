@@ -1,21 +1,21 @@
 package ui;
 
+import maze.Box;
 import maze.InterfaceableMaze;
-import maze.MazeContext;
 import maze.MazeException;
 
-/** AddCol adds a column to the maze at given position. */
+/** AddCol adds a column to the ui at given position. */
 public class EDIT_AddCol implements CommandInterface	{
 	
-	private InterfaceableMaze maze;
+	private final UserInterface ui;
 
-	/** Constructs the command with specified maze. */
-	public EDIT_AddCol(InterfaceableMaze maze)	{
-		this.maze = maze;
+	/** Constructs the command with specified ui. */
+	public EDIT_AddCol(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
-		return "addcol - Adds a column to the maze.\n";
+		return "addcol - Adds a column to the ui.\n";
 	}
 
 	public String usage()	{
@@ -33,22 +33,29 @@ public class EDIT_AddCol implements CommandInterface	{
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 
-		if(args.length == 1 || args.length > 3)	{ throw new IncorrectUsageException(args.length, 3); }
-
-		int pos = 0, type;
+		int pos = 0;
+		int[] boxArgs = new int[args.length + 2];
 
 		try	{
 			pos = Integer.parseInt(args[1]);
+			if(args.length >= 3)	{
+				boxArgs[0] = ui.keyWord(args[2]);
+			} else	{
+				boxArgs[0] = Box.ID;
+			}
+			boxArgs[1] = 0;
+			boxArgs[2] = 0;
+			boxArgs[3] = 0;
+			boxArgs[4] = 0;
+			for(int i = 3; i < args.length; i++)	{
+				boxArgs[i+2] = Integer.parseInt(args[i]);
+			}
 		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[1], 1);
-		}
-
-		try	{
-			type = UIContext.boxType(args[2]);
+			throw new InvalidArgumentsException("Box options are expected to be integers");
 		} catch (IndexOutOfBoundsException e)	{
-			type = MazeContext.NULL_ID;
+			throw new IncorrectUsageException();
 		}
 
-		maze.addCol(pos, type);
+		ui.getMaze().addCol(pos, boxArgs);
 	}
 }

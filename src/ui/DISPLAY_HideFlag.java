@@ -1,5 +1,6 @@
 package ui;
 
+import maze.BoxFlag;
 import maze.InterfaceableMaze;
 import maze.MazeException;
 
@@ -7,11 +8,11 @@ import maze.MazeException;
 /** HideFlag requires the maze to hide a flag when displaying. */
 public class DISPLAY_HideFlag implements CommandInterface	{
 
-	private InterfaceableMaze maze;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public DISPLAY_HideFlag(InterfaceableMaze maze)	{
-		this.maze = maze;
+	public DISPLAY_HideFlag(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -27,8 +28,11 @@ public class DISPLAY_HideFlag implements CommandInterface	{
 	 *  match any. */
 	public void run(String[] args)	
 		throws UIException, MazeException	{
-		if(args.length != 2)	{ throw new IncorrectUsageException(2, args.length); }
 
-		maze.hide(UIContext.flag(args[1]));
+		try	{
+			ui.getMaze().hide(BoxFlag.valueOf(ui.keyWord(args[1])));
+		} catch (IndexOutOfBoundsException e)	{
+			throw new IncorrectUsageException();
+		}
 	}
 }

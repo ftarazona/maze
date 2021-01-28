@@ -15,16 +15,12 @@ import maze.MazeException;
  *  given vertex */
 public class DIJKSTRA_TracePath implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	private Pi pi;
-	private Previous prev;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified maze, pi and
 	 *  previous functions. */
-	public DIJKSTRA_TracePath(InterfaceableMaze maze, Pi pi, Previous prev)	{
-		this.maze = maze;
-		this.pi = pi;
-		this.prev = prev;
+	public DIJKSTRA_TracePath(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -32,7 +28,8 @@ public class DIJKSTRA_TracePath implements CommandInterface	{
 	}
 
 	public String usage()	{
-		return "tracepath <x> <y>\n";
+		return "tracepath" + 
+			"tracepath <x> <y>\n";
 	}
 
 	/** @throws InvalidArgumentsException if x or y could not be
@@ -41,23 +38,22 @@ public class DIJKSTRA_TracePath implements CommandInterface	{
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 
-		if(args.length != 3)	{ throw new IncorrectUsageException(args.length, 3); }
-
 		int x = 0, y = 0;
-		ArrayList<Vertex> path = new ArrayList<Vertex>();
+		ArrayList<Vertex> toReach = new ArrayList<Vertex>();
 
 		try	{
 			x = Integer.parseInt(args[1]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[1], 1);
-		}
-		try	{
 			y = Integer.parseInt(args[2]);
+			toReach.add(ui.getMaze().getBox(x, y));
 		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[2], 2);
+			throw new InvalidArgumentsException("Coordinates are expected to be integers.");
+		} catch (IndexOutOfBoundsException e)	{
+			toReach = ui.getMaze().getSelection(BoxFlag.BOX_END);
 		}
 		
-		path = prev.getFullPath(maze.getBox(x, y));
-		maze.setSelection(path, BoxFlag.BOX_MARKED);
+		for(Vertex v: toReach)	{
+			ArrayList<Vertex> path = ui.getPrevious().getFullPath(v);
+			ui.getMaze().setSelection(path, BoxFlag.BOX_MARKED);
+		}
 	}
 }

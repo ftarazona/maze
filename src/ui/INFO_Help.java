@@ -6,14 +6,12 @@ import java.io.PrintStream;
 /** Help displays descriptions of all known commands. */
 public class INFO_Help implements CommandInterface	{
 
-	private UIContext context;
-	private PrintStream out;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified context and output
 	 *  strem. */
-	public INFO_Help(UIContext context, PrintStream out)	{
-		this.context = context;
-		this.out = out;
+	public INFO_Help(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -27,10 +25,6 @@ public class INFO_Help implements CommandInterface	{
 	public void run(String[] args)	
 		throws UIException	{
 
-		if(args.length != 1)	{
-			throw new IncorrectUsageException(1, args.length);
-		}
-
-		out.print(context.help());
+		ui.getOutStream().print("Help");
 	}
 }

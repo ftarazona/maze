@@ -10,16 +10,12 @@ import maze.MazeException;
 /** SetRoot sets a new root in the maze. */
 public class EDIT_SetRoot implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	private Pi pi;
-	private Previous prev;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified maze, pi, previous
 	 *  functions. */
-	public EDIT_SetRoot(InterfaceableMaze maze, Pi pi, Previous prev)	{
-		this.maze = maze;
-		this.pi = pi;
-		this.prev = prev;
+	public EDIT_SetRoot(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -36,27 +32,17 @@ public class EDIT_SetRoot implements CommandInterface	{
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 
-		if(args.length != 3)	{
-			throw new IncorrectUsageException(args.length, 3);
-		}
-
 		int x = 0, y = 0;
 
 		try	{
 			x = Integer.parseInt(args[1]);
-		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[1], 1);
-		}
-		try	{
 			y = Integer.parseInt(args[2]);
 		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException(args[2], 2);
+			throw new InvalidArgumentsException("Coordinates are expected to be integers.");
+		} catch (IndexOutOfBoundsException e)	{
+			throw new IncorrectUsageException();
 		}
-		
-		if(maze.setRoot(x, y))	{
-			System.out.println("WARNING: new root.");
-			pi.clear();
-			prev.clear();
-		}
+
+		ui.getMaze().setRoot(x, y);
 	}
 }

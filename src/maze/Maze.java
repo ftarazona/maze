@@ -50,7 +50,10 @@ public class Maze
 	public Maze(int height, int width)	
 		throws UnexpectedBoxTypeException	{
 		showFlag = EnumSet.noneOf(BoxFlag.class);
-		newMaze(height, width, type);
+		this.height = height;
+		this.width = width;
+		this.area = 0;
+		opened = true;
 	}
 
 	/** Creates a new maze without invoking constructor.
@@ -99,7 +102,7 @@ public class Maze
 		throws IOException, UnexpectedBoxTypeException, InvalidBoxArgumentsException	{
 		ArrayList<Integer> input = new ArrayList<Integer>();
 
-		int c = in.read(), boxType;
+		int c = in.read();
 		if(c == -1)	{ return null; }
 
 		//While not reaching a stop signal
@@ -108,16 +111,10 @@ public class Maze
 			c = in.read();
 		}
 
-		//No box type may be found
-		try	{
-			boxType = input.get(0);
-		} catch(IndexOutOfBoundsException e)	{
-			throw new UnexpectedBoxTypeException();
-		}
 	
-		int[] args = new int[input.size() - 1];
-		for(int i = 1; i < input.size() - 1; i++)	{
-			args[i - 1] = input.get(i);
+		int[] args = new int[input.size()];
+		for(int i = 0; i < input.size() - 1; i++)	{
+			args[i] = input.get(i);
 		}
 		
 		Box box = Box.newBox(args);
@@ -617,14 +614,14 @@ public class Maze
 	public void addBox(int[] args)
 		throws MazeOutOfBoundsException, UnexpectedBoxTypeException, InvalidBoxArgumentsException	{
 
-		int x = args[0];
-		int y = args[1];
+		int x = args[1];
+		int y = args[2];
 
 		if(x < 0 || x >= width || y < 0 || y >= height)	{
 			throw new MazeOutOfBoundsException(x, y, width, height);
 		}
 
-		if(boxes[y][x] == null && type != BOX.ID)	{
+		if(boxes[y][x] == null && args[0] != Box.ID)	{
 			area++;
 		}
 
@@ -665,8 +662,8 @@ public class Maze
 
 		for(int y = 0; y < height; y++)	{
 			for(int x = 0; x < width; x++)	{
-				if(boxes[x][y] == null)	{ IDs[x][y] = -1; }
-				else	{ IDs[x][y] = boxes[x][y].drawID(); }
+				if(boxes[y][x] == null)	{ IDs[y][x] = -1; }
+				else	{ IDs[y][x] = boxes[y][x].drawID(); }
 			}
 		}
 
@@ -678,11 +675,11 @@ public class Maze
 
 		for(int y = 0; y < height; y++)	{
 			for(int x = 0; x < width; x++)	{
-				if(boxes[x][y] == null)	{ flagIDs[x][y] = -1; }
-				else if(boxes[x][y].hasFlag(BoxFlag.BOX_START))	{ flagIDs[x][y] = BoxFlag.BOX_START.toInt(); }
-				else if(boxes[x][y].hasFlag(BoxFlag.BOX_END))	{ flagIDs[x][y] = BoxFlag.BOX_END.toInt(); }
-				else if(boxes[x][y].hasFlag(BoxFlag.BOX_MARKED))	{ flagIDs[x][y] = BoxFlag.BOX_MARKED.toInt(); }
-				else	{ flagIDs[x][y] = 0; }
+				if(boxes[y][x] == null)	{ flagIDs[y][x] = -1; }
+				else if(boxes[y][x].hasFlag(BoxFlag.BOX_START))	{ flagIDs[y][x] = BoxFlag.BOX_START.toInt(); }
+				else if(boxes[y][x].hasFlag(BoxFlag.BOX_END))	{ flagIDs[y][x] = BoxFlag.BOX_END.toInt(); }
+				else if(boxes[y][x].hasFlag(BoxFlag.BOX_MARKED))	{ flagIDs[y][x] = BoxFlag.BOX_MARKED.toInt(); }
+				else	{ flagIDs[y][x] = 0; }
 			}
 		}
 

@@ -9,14 +9,12 @@ import maze.MazeException;
 /** DisplayMaze displays the maze in an output stream. */
 public class DISPLAY_DisplayMaze implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	private PrintStream out;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified maze and out stream.
 	  */
-	public DISPLAY_DisplayMaze(InterfaceableMaze maze, PrintStream out)	{
-		this.maze = maze;
-		this.out = out;
+	public DISPLAY_DisplayMaze(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -30,8 +28,7 @@ public class DISPLAY_DisplayMaze implements CommandInterface	{
 
 	public void run(String[] args)	
 		throws UIException, MazeException	{
-		if(args.length > 1)	{ throw new IncorrectUsageException(1, args.length); }
 
-		maze.display(out);
+		ui.getMaze().display(ui.getOutStream());
 	}
 }

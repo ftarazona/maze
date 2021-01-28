@@ -18,8 +18,8 @@ public interface InterfaceableMaze extends Graph	{
 	 *  @param boxType type of the boxes to fill the maze with.
 	 *  @throws UnexpectedBoxTypeException if the given box type
 	 *  does not match with any. */
-	public void newMaze(int height, int width, int boxType)
-		throws UnexpectedBoxTypeException;
+	public void newMaze(int height, int width, int[] boxArgs)
+		throws UnexpectedBoxTypeException, InvalidBoxArgumentsException;
 
 	/** Reads a new maze from a given input stream.
 	 *  @param in input stream to be read.
@@ -138,8 +138,8 @@ public interface InterfaceableMaze extends Graph	{
 	 *  of the maze.
 	 *  @throws UnexpectedBoxTypeException if the given box type
 	 *  does not match any. */
-	public void addRow(int pos, int boxType)
-		throws MazeOutOfBoundsException, UnexpectedBoxTypeException;
+	public void addRow(int pos, int[] boxArgs)
+		throws MazeOutOfBoundsException, UnexpectedBoxTypeException, InvalidBoxArgumentsException;
 
 	/** Removes a row.
 	 *  @param pos position of the row to be removed.
@@ -155,8 +155,8 @@ public interface InterfaceableMaze extends Graph	{
 	 *  of the maze.
 	 *  @throws UnexpectedBoxTypeException if the given box type
 	 *  does not match any. */
-	public void addCol(int pos, int boxType)
-		throws MazeOutOfBoundsException, UnexpectedBoxTypeException;
+	public void addCol(int pos, int[] boxArgs)
+		throws MazeOutOfBoundsException, UnexpectedBoxTypeException, InvalidBoxArgumentsException;
 	
 	/** Removes a column.
 	 *  @param pos position of the column to be removed.
@@ -176,7 +176,7 @@ public interface InterfaceableMaze extends Graph	{
 	 *  arguments could not be parsed by the Box constructor.
 	 *  @throws UnexpectedBoxTypeException if the given box type
 	 *  does not match any. */
-	public void addBox(int type, int[] args)
+	public void addBox(int[] args)
 		throws MazeOutOfBoundsException, InvalidBoxArgumentsException, UnexpectedBoxTypeException;
 
 	/** Removes the box at the given coordinates.

@@ -11,11 +11,11 @@ import maze.MazeException;
 /** OpenMaze reads a maze from an input stream, typically a file. */
 public class IO_OpenMaze implements CommandInterface	{
 
-	private InterfaceableMaze maze;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public IO_OpenMaze(InterfaceableMaze maze)	{
-		this.maze = maze;
+	public IO_OpenMaze(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -31,18 +31,22 @@ public class IO_OpenMaze implements CommandInterface	{
 	 *  @throws MazeException if the file can not be parsed. */
 	public void run(String[] args)	
 		throws UIException, MazeException	{
-		if(args.length != 2)	{ throw new IncorrectUsageException(args.length, 2); }
 
 		FileInputStream file = null;
 		BufferedInputStream bs = null;
 		try	{
 			file = new FileInputStream(args[1]);
 			bs = new BufferedInputStream(file);
-			maze.read(bs);
-			bs.close();
-			file.close();
+			ui.getMaze().read(bs);
 		} catch (IOException e)	{
 			throw new UIException(e.getMessage());
+		} catch (IndexOutOfBoundsException e)	{
+			throw new IncorrectUsageException();
+		} finally	{
+			try	{
+				bs.close();
+				file.close();
+			} catch (IOException e)	{}
 		}
 	}
 }

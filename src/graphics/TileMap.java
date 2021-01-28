@@ -36,6 +36,7 @@ public class TileMap extends JPanel	{
 
 		gridSize = 32;
 		IDs = new int[0][0];
+		flagIDs = new int[0][0];
 		refreshMaze();
 	}
 

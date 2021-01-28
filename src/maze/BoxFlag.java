@@ -46,4 +46,13 @@ public enum BoxFlag	{
 		}
 		return flags;
 	}
+
+	static public BoxFlag valueOf(int value)	{
+		for(BoxFlag flag: BoxFlag.values())	{
+			if((value & flag.toInt()) != 0)	{
+				return flag;
+			}
+		}
+		return null;
+	}
 }

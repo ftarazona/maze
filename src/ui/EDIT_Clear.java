@@ -9,16 +9,12 @@ import maze.InterfaceableMaze;
 /** Clear clears all the flags in the maze. */
 public class EDIT_Clear implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	private Pi pi;
-	private Previous prev;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified maze, pi, previous
 	 *  functions. */
-	public EDIT_Clear(InterfaceableMaze maze, Pi pi, Previous prev)	{ 
-		this.maze 	= maze;
-		this.pi		= pi;
-		this.prev	= prev;
+	public EDIT_Clear(UserInterface ui)	{ 
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -33,12 +29,8 @@ public class EDIT_Clear implements CommandInterface	{
 	public void run(String[] args)	
 		throws UIException	{
 
-		if(args.length != 1)	{
-			throw new IncorrectUsageException(args.length, 1);
-		}
-
-		maze.clear();
-		pi.clear();
-		prev.clear();
+		ui.getMaze().clear();
+		ui.getPi().clear();
+		ui.getPrevious().clear();
 	}
 }

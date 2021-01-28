@@ -12,16 +12,12 @@ import maze.Vertex;
 /** Dijkstra command runs dijkstra algorithm on a given maze. */
 public class DIJKSTRA_Dijkstra implements CommandInterface	{
 
-	private InterfaceableMaze maze;
-	private Pi pi;
-	private Previous prev;
+	private final UserInterface ui;
 
 	/** Constructs the command with specified maze, pi and
 	 *  previous function. */
-	public DIJKSTRA_Dijkstra(InterfaceableMaze maze, Pi pi, Previous prev)	{
-		this.maze = maze;
-		this.pi = pi;
-		this.prev = prev;
+	public DIJKSTRA_Dijkstra(UserInterface ui)	{
+		this.ui = ui;
 	}
 
 	public String description()	{
@@ -38,11 +34,11 @@ public class DIJKSTRA_Dijkstra implements CommandInterface	{
 	public void run(String[] args)	
 		throws UIException	{
 		
-		Vertex root = maze.getRoot();
+		Vertex root = ui.getMaze().getRoot();
 		if(root == null)	{
 			throw new NoRootException();
 		}
 
-		Dijkstra.dijkstra(maze, root, new Visited(), pi, prev);
+		Dijkstra.dijkstra(ui.getMaze(), root, new Visited(), ui.getPi(), ui.getPrevious());
 	}
 }
