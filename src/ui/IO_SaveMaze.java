@@ -34,6 +34,7 @@ public class IO_SaveMaze implements CommandInterface	{
 		FileOutputStream file = null;
 		BufferedOutputStream bs = null;
 		try	{
+			ui.getMaze();
 			file = new FileOutputStream(args[1]);
 			bs = new BufferedOutputStream(file);
 			ui.getMaze().write(bs);
