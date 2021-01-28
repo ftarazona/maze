@@ -1,20 +1,25 @@
 package ui;
 
-import java.util.ArrayDeque;
-import java.util.HashMap;
-import java.util.Queue;
-import java.util.Scanner;
-
-import java.io.PrintStream;
-import java.io.IOException;
+import java.util.*;
+import java.io.*;
 
 import dijkstra.*;
 import maze.*;
 
 
 /** Implementation of a user interface */
-public class PromptInterface extends CoreInterface implements UserInterface	{
+public class PromptInterface implements UserInterface	{
 	
+	private boolean quitValue		= false;
+	private boolean recordingScript		= false;
+	private boolean modified		= false;
+	private Queue<String> mainQueue		= new ArrayDeque<String>();
+	private Queue<String> scriptQueue	= new ArrayDeque<String>();
+	private Queue<String> recordQueue	= new ArrayDeque<String>();
+	private ArrayList<String> history	= new ArrayList<String>();
+
+	private HashMap<String, String> vars	= new HashMap<String, String>();
+
 	private InterfaceableMaze maze	= new Maze();
 	private Pi pi			= new PiFunction();
 	private Previous previous	= new PreviousFunction();
@@ -44,6 +49,7 @@ public class PromptInterface extends CoreInterface implements UserInterface	{
 		CommandInterface showscript	= new UI_DisplayScript(this);
 		CommandInterface record		= new UI_Record(this);
 		CommandInterface savescript	= new UI_SaveScript(this);
+		CommandInterface declare	= new UI_DeclareVariable(this);
 		CommandInterface help		= new INFO_Help(this);
 		CommandInterface usage		= new INFO_Usage(this);
 		CommandInterface height		= new INFO_Height(this);
@@ -74,6 +80,7 @@ public class PromptInterface extends CoreInterface implements UserInterface	{
 
 		commands.put("quit", 		quit);
 		commands.put("exit", 		quit);
+		commands.put("var",		declare);
 		commands.put("script",		loadScript);
 		commands.put("showscript",	showscript);
 		commands.put("displayscript",	showscript);
@@ -112,6 +119,7 @@ public class PromptInterface extends CoreInterface implements UserInterface	{
 		commands.put("clear",		clear);
 	}
 
+
 	public void run(String[] args)	{
 		while(!hasQuitted())	{
 			while(executeCommand());
@@ -119,6 +127,62 @@ public class PromptInterface extends CoreInterface implements UserInterface	{
 			offer(scanner.nextLine());
 			executeCommand();
 		}
+	}
+
+	public boolean 		executeCommand()	{
+		String cmdStr = new String();
+		if(!mainQueue.isEmpty())	{
+			cmdStr = mainQueue.poll();
+		} else if(!scriptQueue.isEmpty())	{
+			cmdStr = scriptQueue.poll();
+			history.add(cmdStr);
+		} else	{
+			return false;
+		}
+
+		String[] args = cmdStr.toLowerCase().split(" ");
+		boolean toRecord = !args[0].equals("*") && !args[0].equals("record");
+		if(args[0].equals("*"))	{
+			args = Arrays.copyOfRange(args, 1, args.length);
+		}
+
+		CommandInterface cmd = null;
+
+		try	{
+			for(int i = 0; i < args.length; i++)	{
+				int len = args[i].length();
+				if(len > 0 && args[i].charAt(0) == '$')	{
+					args[i] = fetchVariable(args[i].substring(1));
+				}
+			}
+
+			if(!cmdStr.isEmpty())	{
+				cmd = fetchCommand(args[0]);
+				cmd.run(args);
+			}
+			if(recordingScript && toRecord)	{
+				recordQueue.offer(cmdStr);
+			}
+		} catch (IncorrectUsageException e)	{
+			getOutStream().print(String.format(
+				"Wrong usage :\n%s\n", 
+				cmd.usage()));
+		} catch (NoMazeOpenedException e)	{
+			getOutStream().print(e.getMessage() + "\n");
+		} catch (UIException e)	{
+			getOutStream().print(String.format("An error occured while trying to run a command: %s\n", e.getMessage()));
+		} catch (MazeException e)	{
+			getOutStream().print(String.format("An error occured while running a command: %s\n", e.getMessage()));
+		} catch (Exception e)	{
+			getOutStream().print(String.format(
+				"An internal error occured : \n" +
+				"%s\n" +
+				"Please report the bug to " +
+				"florian.tarazona@telecom-paris.fr\n",
+				e.getMessage()));
+			e.printStackTrace();
+		}
+		return true;
 	}
 
 	public CommandInterface	fetchCommand(String str)
@@ -144,6 +208,41 @@ public class PromptInterface extends CoreInterface implements UserInterface	{
 		}
 		return ret.intValue();
 	}
+
+	public void offer(String cmd)	{
+		mainQueue.offer(cmd);
+	}
+
+	public void offerScript(String cmd)	{
+		scriptQueue.offer(cmd);
+	}
+
+	public void setVariable(String variable, String value)	{
+		vars.put(variable, value);
+	}
+	public String fetchVariable(String variable)	
+		throws UninitializedVariableException	{
+		String value = vars.get(variable);
+		if(value == null)	{ 
+			throw new UninitializedVariableException(variable);
+		} else	{
+			return value;
+		}
+	}
+
+	public void quit()		{ quitValue = true; }
+	public boolean hasQuitted()	{ return quitValue; }
+
+	public void startRecording()	{ 
+		recordQueue.clear();
+		recordingScript = true; 
+	}
+	public void stopRecording()	{ recordingScript = false; }
+	public Queue<String> getRecord()	{ return recordQueue; }
+
+	public void modify()		{ modified = true; }
+	public void save()		{ modified = false; }
+	public boolean wasModified()	{ return modified; }
 
 	public InterfaceableMaze 	getMaze()	
 		throws NoMazeOpenedException	{ 
