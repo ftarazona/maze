@@ -44,9 +44,13 @@ public class IO_OpenMaze implements CommandInterface	{
 			throw new IncorrectUsageException();
 		} finally	{
 			try	{
-				bs.close();
-				file.close();
-			} catch (IOException e)	{}
+				if(bs != null)
+					bs.close();
+				if(file != null)
+					file.close();
+			} catch (IOException e)	{ 
+				throw new UIException(e.getMessage()); 
+			}
 		}
 	}
 }

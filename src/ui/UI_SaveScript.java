@@ -24,8 +24,12 @@ public class UI_SaveScript implements CommandInterface	{
 		ui.stopRecording();
 		Queue<String> cmds = ui.getRecord();
 
+		FileOutputStream file = null;
+		PrintStream stream = null;
+
 		try	{
-			PrintStream stream = new PrintStream(new File(args[1]));
+			file = new FileOutputStream(args[1]);
+			stream = new PrintStream(file);
 			while(!cmds.isEmpty())	{
 				stream.println(cmds.poll());
 			}

@@ -33,8 +33,12 @@ public class UI_LoadScript implements CommandInterface	{
 	public void run(String[] args)
 		throws UIException	{
 
+		FileInputStream file = null;
+		Scanner scanner = null;
+
 		try	{
-			Scanner scanner = new Scanner(new FileInputStream(args[1]));
+			file = new FileInputStream(args[1]);
+			scanner = new Scanner(file);
 			while(scanner.hasNextLine())	{
 				ui.offerScript(scanner.nextLine());
 			}
@@ -42,6 +46,15 @@ public class UI_LoadScript implements CommandInterface	{
 			throw new IncorrectUsageException();
 		} catch (IOException e)	{
 			throw new UIException(e.getMessage());
+		} finally	{
+			try	{
+				if(scanner != null)
+					scanner.close();
+				if(file != null)
+					file.close();
+			} catch (IOException e)	{
+				throw new UIException(e.getMessage());
+			}
 		}
 	}
 }
