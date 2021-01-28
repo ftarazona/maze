@@ -8,21 +8,22 @@ import maze.MazeException;
 /** NewMaze creates a new maze. */
 public class IO_NewMaze implements CommandInterface	{
 	
-	private UserInterface ui;
+	private PromptInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public IO_NewMaze(UserInterface ui)	{
+	public IO_NewMaze(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "new - Creates a new maze with given dimensions.\n";
+		return 
+		"New 		~ Creates a new maze with given dimensions.";
 	}
 
 	public String usage()	{
 		return 	"1. new <>\n" +
 			"2. new <height> <width>\n" +
-			"3. new <height> <width> <boxtype>\n";
+			"3. new <height> <width> <boxtype>";
 	}
 
 

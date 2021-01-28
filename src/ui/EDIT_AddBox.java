@@ -8,20 +8,21 @@ import maze.MazeException;
 /** AddBox adds a box in the maze */
 public class EDIT_AddBox implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public EDIT_AddBox(UserInterface ui)	{
+	public EDIT_AddBox(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "addbox - Adds or replaces a box of the maze.\n";
+		return 
+		"Addbox 		~ Adds or replaces a box of the maze.";
 	}
 
 	public String usage()	{
 		return	"1. addbox <x> <y> (empty)\n" +
-			"2. addbox <x> <y> <type>\n";
+			"2. addbox <x> <y> <type>";
 	}
 
 

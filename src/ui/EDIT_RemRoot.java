@@ -10,20 +10,21 @@ import maze.MazeException;
 /** RemRoot removes the current root in maze. */ 
 public class EDIT_RemRoot implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze, pi, previous
 	 *  functions. */
-	public EDIT_RemRoot(UserInterface ui)	{
+	public EDIT_RemRoot(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "remroot - Removes a potential root\n";
+		return 
+		"RemRoot		~ Removes a potential root.";
 	}
 
 	public String usage()	{
-		return	"remroot\n";
+		return	"remroot";
 	}
 
 

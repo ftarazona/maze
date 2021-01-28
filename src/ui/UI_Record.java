@@ -5,17 +5,18 @@ import java.io.*;
 
 public class UI_Record implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	public String usage()	{
 		return "record";
 	}
 
 	public String description()	{
-		return "Requests user interface to record commands from this point.";
+		return 
+		"Record		~ Requests user interface to record commands from this point.";
 	}
 
-	public UI_Record(UserInterface ui)	{
+	public UI_Record(PromptInterface ui)	{
 		this.ui = ui;
 	}
 

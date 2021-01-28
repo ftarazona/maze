@@ -10,20 +10,21 @@ import maze.MazeException;
 /** SetRoot sets a new root in the maze. */
 public class EDIT_SetRoot implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze, pi, previous
 	 *  functions. */
-	public EDIT_SetRoot(UserInterface ui)	{
+	public EDIT_SetRoot(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "setroot - Sets the position of the root\n";
+		return 
+		"SetRoot 	~ Sets the position of the root.";
 	}
 
 	public String usage()	{
-		return	"setroot <x> <y>\n";
+		return	"setroot <x> <y>";
 	}
 
 

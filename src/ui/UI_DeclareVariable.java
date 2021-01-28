@@ -11,7 +11,8 @@ public class UI_DeclareVariable implements CommandInterface	{
 	}
 
 	public String description()	{
-		return "Initializes a variable.";
+		return 
+		"Var		~ Initializes a variable.";
 	}
 
 	public UI_DeclareVariable(PromptInterface ui)	{ this.ui = ui; }

@@ -8,19 +8,20 @@ import maze.MazeException;
 /** HideFlag requires the maze to hide a flag when displaying. */
 public class DISPLAY_HideFlag implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public DISPLAY_HideFlag(UserInterface ui)	{
+	public DISPLAY_HideFlag(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "hide - Displays the flagged boxes of the maze.\n";
+		return 
+		"Hide 		~ Displays the flagged boxes of the maze.";
 	}
 
 	public String usage()	{
-		return "hide <flag>\n";
+		return "hide <flag>";
 	}
 
 

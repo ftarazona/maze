@@ -7,19 +7,20 @@ import maze.MazeException;
 /** RemBox removes a box in the maze. */
 public class EDIT_RemBox implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public EDIT_RemBox(UserInterface ui)	{
+	public EDIT_RemBox(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "rembox - Removes a box from the maze.\n";
+		return 
+		"RemBox		~ Removes a box from the maze.";
 	}
 
 	public String usage()	{
-		return "rembox <x> <y>\n";
+		return "rembox <x> <y>";
 	}
 
 

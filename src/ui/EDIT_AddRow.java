@@ -8,20 +8,21 @@ import maze.MazeException;
 /** AddRow adds a row to the maze at a given position. */
 public class EDIT_AddRow implements CommandInterface	{
 	
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public EDIT_AddRow(UserInterface ui)	{
+	public EDIT_AddRow(PromptInterface ui)	{
 		this.ui = ui;
 	}
 	
 	public String description()	{
-		return "addrow - Adds a row to the maze.\n";
+		return 
+		"AddRow		~ Adds a row to the maze.";
 	}
 
 	public String usage()	{
 		return	"1. addrow <pos>\n" +
-			"2. addrow <pos> <type>\n";
+			"2. addrow <pos> <type>";
 	}
 
 

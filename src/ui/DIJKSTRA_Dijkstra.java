@@ -12,21 +12,22 @@ import maze.Vertex;
 /** Dijkstra command runs dijkstra algorithm on a given maze. */
 public class DIJKSTRA_Dijkstra implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze, pi and
 	 *  previous function. */
-	public DIJKSTRA_Dijkstra(UserInterface ui)	{
+	public DIJKSTRA_Dijkstra(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "dijkstra - Processes Dijkstra algorithm from the current root.\n";
+		return 
+		"Dijkstra	~ Processes Dijkstra algorithm from the current root.";
 	}
 	
 	public String usage()	{
-		return 	"disjktra\n" +
-			"WARNING: the current maze must have a root set.\n";
+		return 	"dijkstra\n" +
+			"WARNING: the current maze must have a root set.";
 	}
 
 

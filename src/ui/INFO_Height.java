@@ -4,22 +4,23 @@ import maze.*;
 
 public class INFO_Height implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	public String usage()	{
 		return "height";
 	}
 
 	public String description()	{
-		return "Tells the height of the current maze.";
+		return 
+		"Height		~ Tells the height of the current maze.";
 	}
 
-	public INFO_Height(UserInterface ui)	{
+	public INFO_Height(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public void run(String[] args)	
 		throws NoMazeOpenedException	{
-		ui.getOutStream().print(String.format("Height of the maze : %d\n", ui.getMaze().getHeight()));
+		ui.println(String.format("Height of the maze : %d", ui.getMaze().getHeight()));
 	}
 }

@@ -5,17 +5,18 @@ import java.io.*;
 
 public class UI_SaveScript implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	public String usage()	{
 		return "savescript <filename>";
 	}
 
 	public String description()	{
-		return "Stops the recording and saves the recorded commands in a script.";
+		return 
+		"SaveScript	~ Stops the recording and saves the recorded commands in a script.";
 	}
 
-	public UI_SaveScript(UserInterface ui)	{
+	public UI_SaveScript(PromptInterface ui)	{
 		this.ui = ui;
 	}
 

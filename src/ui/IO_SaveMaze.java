@@ -11,19 +11,20 @@ import maze.MazeException;
 /** SaveMaze writes maze in an output stream. */
 public class IO_SaveMaze implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public IO_SaveMaze(UserInterface ui)	{
+	public IO_SaveMaze(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "save - Writes the current maze in given file.\n";
+		return 
+		"Save 		~ Writes the current maze in given file.";
 	}
 
 	public String usage()	{
-		return "save <filename>\n";
+		return "save <filename>";
 	}
 
 

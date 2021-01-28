@@ -8,19 +8,20 @@ import maze.MazeException;
 /** ShowFlag requires maze to show a flag when displaying. */
 public class DISPLAY_ShowFlag implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public DISPLAY_ShowFlag(UserInterface ui)	{
+	public DISPLAY_ShowFlag(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "show - Displays the flagged boxes of the maze.\n";
+		return 
+		"Show 		~ Displays the flagged boxes of the maze.";
 	}
 
 	public String usage()	{
-		return "show <flag>\n";
+		return "show <flag>";
 	}
 
 

@@ -11,19 +11,20 @@ import maze.MazeException;
 /** OpenMaze reads a maze from an input stream, typically a file. */
 public class IO_OpenMaze implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public IO_OpenMaze(UserInterface ui)	{
+	public IO_OpenMaze(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "open - Reads a maze from a given file.\n";
+		return 
+		"Open 		~ Reads a maze from a given file.";
 	}
 
 	public String usage()	{
-		return "open <maze filename>\n";
+		return "open <maze filename>";
 	}
 
 

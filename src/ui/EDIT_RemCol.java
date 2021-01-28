@@ -7,19 +7,20 @@ import maze.MazeException;
 /** RemCol removes a column in the maze at a given position. */
 public class EDIT_RemCol implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 	
 	/** Constructs the command with specified maze. */
-	public EDIT_RemCol(UserInterface ui)	{
+	public EDIT_RemCol(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "remcol - Removes a column to the maze.\n";
+		return 
+		"RemCol		~ Removes a column to the maze.";
 	}
 
 	public String usage()	{
-		return	"remcol <pos>\n";
+		return	"remcol <pos>";
 	}
 
 

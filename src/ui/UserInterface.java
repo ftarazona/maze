@@ -11,27 +11,4 @@ public interface UserInterface	{
 	 *  @param args arguments passed to be treated when launching
 	 *  the interface. */
 	public void run(String[] args);
-
-	public void 			offer(String cmd);
-	public void 			offerScript(String cmd);
-	public void			startRecording();
-	public void			stopRecording();
-	public Queue<String>		getRecord();
-	public CommandInterface 	fetchCommand(String str)
-		throws UnknownCommandException;
-	public boolean 			executeCommand();
-	public int 			keyWord(String key)
-		throws UnexpectedKeyWordException;
-	public InterfaceableMaze 	getMaze()
-		throws NoMazeOpenedException;
-	public InterfaceableMaze	getMazeSafe()
-		throws NullMazeException;
-	public Pi	 		getPi();
-	public Previous		 	getPrevious();
-	public PrintStream 		getOutStream();
-	public void 			quit();
-	public boolean 			hasQuitted();
-	public void			modify();
-	public void			save();
-	public boolean			wasModified();
 }

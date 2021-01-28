@@ -5,17 +5,18 @@ import java.io.*;
 
 public class IO_CloseMaze implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	public String usage()	{
 		return "close";
 	}
 
 	public String description()	{
-		return "Closes the current maze.";
+		return 
+		"Close		~ Closes the current maze.";
 	}
 
-	public IO_CloseMaze(UserInterface ui)	{
+	public IO_CloseMaze(PromptInterface ui)	{
 		this.ui = ui;
 	}
 

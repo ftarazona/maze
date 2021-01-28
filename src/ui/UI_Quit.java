@@ -2,9 +2,9 @@ package ui;
 
 public class UI_Quit implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
-	public UI_Quit(UserInterface ui)	{
+	public UI_Quit(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
@@ -13,7 +13,8 @@ public class UI_Quit implements CommandInterface	{
 	}
 
 	public String description()	{
-		return "Quits the interface.";
+		return 
+		"Quit		~ Quits the interface.";
 	}
 
 	public void run(String[] args)	{

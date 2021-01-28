@@ -13,6 +13,8 @@ public class PromptInterface implements UserInterface	{
 	private boolean quitValue		= false;
 	private boolean recordingScript		= false;
 	private boolean modified		= false;
+	private ArrayList<CommandInterface> commandList
+		= new ArrayList<CommandInterface>();
 	private Queue<String> mainQueue		= new ArrayDeque<String>();
 	private Queue<String> scriptQueue	= new ArrayDeque<String>();
 	private Queue<String> recordQueue	= new ArrayDeque<String>();
@@ -44,79 +46,77 @@ public class PromptInterface implements UserInterface	{
 	
 	/** Constructs a new PromptInterface. */
 	public PromptInterface()	{
-		CommandInterface quit		= new UI_Quit(this);
-		CommandInterface loadScript	= new UI_LoadScript(this);
-		CommandInterface showscript	= new UI_DisplayScript(this);
-		CommandInterface record		= new UI_Record(this);
-		CommandInterface savescript	= new UI_SaveScript(this);
-		CommandInterface declare	= new UI_DeclareVariable(this);
-		CommandInterface help		= new INFO_Help(this);
-		CommandInterface usage		= new INFO_Usage(this);
-		CommandInterface height		= new INFO_Height(this);
-		CommandInterface width		= new INFO_Width(this);
-		CommandInterface newmaze	= new IO_NewMaze(this);
-		CommandInterface openmaze	= new IO_OpenMaze(this);
-		CommandInterface savemaze	= new IO_SaveMaze(this);
-		CommandInterface close		= new IO_CloseMaze(this);
-		CommandInterface display	= new DISPLAY_DisplayMaze(this);
-		CommandInterface draw		= new DISPLAY_DrawMaze(this);
-		CommandInterface showflag	= new DISPLAY_ShowFlag(this);
-		CommandInterface showflags	= new DISPLAY_ShowFlags(this);
-		CommandInterface hideflag	= new DISPLAY_HideFlag(this);
-		CommandInterface hideflags	= new DISPLAY_HideFlags(this);
-		CommandInterface dijkstra	= new DIJKSTRA_Dijkstra(this);
-		CommandInterface tracepath	= new DIJKSTRA_TracePath(this);
-		CommandInterface addrow		= new EDIT_AddRow(this);
-		CommandInterface addcol		= new EDIT_AddCol(this);
-		CommandInterface addbox		= new EDIT_AddBox(this);
-		CommandInterface addflag	= new EDIT_AddFlag(this);
-		CommandInterface remrow		= new EDIT_RemRow(this);
-		CommandInterface remcol		= new EDIT_RemCol(this);
-		CommandInterface rembox		= new EDIT_RemBox(this);
-		CommandInterface remflag	= new EDIT_RemFlag(this);
-		CommandInterface setroot	= new EDIT_SetRoot(this);
-		CommandInterface remroot	= new EDIT_RemRoot(this);
-		CommandInterface clear		= new EDIT_Clear(this);
+		commandList.add(new UI_Quit(this));
+		commandList.add(new UI_LoadScript(this));
+		commandList.add(new UI_DisplayScript(this));
+		commandList.add(new UI_Record(this));
+		commandList.add(new UI_SaveScript(this));
+		commandList.add(new UI_DeclareVariable(this));
+		commandList.add(new INFO_Help(this));
+		commandList.add(new INFO_Usage(this));
+		commandList.add(new INFO_Height(this));
+		commandList.add(new INFO_Width(this));
+		commandList.add(new IO_NewMaze(this));
+		commandList.add(new IO_OpenMaze(this));
+		commandList.add(new IO_SaveMaze(this));
+		commandList.add(new IO_CloseMaze(this));
+		commandList.add(new DISPLAY_DisplayMaze(this));
+		commandList.add(new DISPLAY_DrawMaze(this));
+		commandList.add(new DISPLAY_ShowFlag(this));
+		commandList.add(new DISPLAY_ShowFlags(this));
+		commandList.add(new DISPLAY_HideFlag(this));
+		commandList.add(new DISPLAY_HideFlags(this));
+		commandList.add(new DIJKSTRA_Dijkstra(this));
+		commandList.add(new DIJKSTRA_TracePath(this));
+		commandList.add(new EDIT_AddRow(this));
+		commandList.add(new EDIT_AddCol(this));
+		commandList.add(new EDIT_AddBox(this));
+		commandList.add(new EDIT_AddFlag(this));
+		commandList.add(new EDIT_RemRow(this));
+		commandList.add(new EDIT_RemCol(this));
+		commandList.add(new EDIT_RemBox(this));
+		commandList.add(new EDIT_RemFlag(this));
+		commandList.add(new EDIT_SetRoot(this));
+		commandList.add(new EDIT_RemRoot(this));
+		commandList.add(new EDIT_Clear(this));
 
-		commands.put("quit", 		quit);
-		commands.put("exit", 		quit);
-		commands.put("var",		declare);
-		commands.put("script",		loadScript);
-		commands.put("showscript",	showscript);
-		commands.put("displayscript",	showscript);
-		commands.put("record",		record);
-		commands.put("savescript",	savescript);
-		commands.put("help", 		help);
-		commands.put("usage", 		usage);
-		commands.put("height",		height);
-		commands.put("width",		width);
-		commands.put("new",		newmaze);
-		commands.put("newmaze",		newmaze);
-		commands.put("open",		openmaze);
-		commands.put("openmaze",	openmaze);
-		commands.put("save",		savemaze);
-		commands.put("savemaze",	savemaze);
-		commands.put("close",		close);
-		commands.put("closemaze",	close);
-		commands.put("display", 	display);
-		commands.put("draw", 		draw);
-		commands.put("showflag", 	showflag);
-		commands.put("showflags", 	showflags);
-		commands.put("hideflag", 	hideflag);
-		commands.put("hideflags", 	hideflags);
-		commands.put("dijkstra", 	dijkstra);
-		commands.put("tracepath", 	tracepath);
-		commands.put("addrow", 		addrow);
-		commands.put("addcol", 		addcol);
-		commands.put("addbox", 		addbox);
-		commands.put("addflag", 	addflag);
-		commands.put("remrow", 		remrow);
-		commands.put("remcol", 		remcol);
-		commands.put("rembox", 		rembox);
-		commands.put("remflag", 	remflag);
-		commands.put("setroot",		setroot);
-		commands.put("remroot",		remroot);
-		commands.put("clear",		clear);
+		commands.put("quit", 		commandList.get(0));
+		commands.put("exit", 		commandList.get(0));
+		commands.put("script",		commandList.get(1));
+		commands.put("showscript",	commandList.get(2));
+		commands.put("displayscript",	commandList.get(2));
+		commands.put("record",		commandList.get(3));
+		commands.put("savescript",	commandList.get(4));
+		commands.put("var",		commandList.get(5));
+		commands.put("help", 		commandList.get(6));
+		commands.put("usage", 		commandList.get(7));
+		commands.put("height",		commandList.get(8));
+		commands.put("width",		commandList.get(9));
+		commands.put("new",		commandList.get(10));
+		commands.put("newmaze",		commandList.get(10));
+		commands.put("open",		commandList.get(11));
+		commands.put("openmaze",	commandList.get(11));
+		commands.put("save",		commandList.get(12));
+		commands.put("savemaze",	commandList.get(12));
+		commands.put("close",		commandList.get(13));
+		commands.put("closemaze",	commandList.get(13));
+		commands.put("display", 	commandList.get(14));
+		commands.put("draw", 		commandList.get(15));
+		commands.put("showflag", 	commandList.get(16));
+		commands.put("showflags", 	commandList.get(17));
+		commands.put("hideflag", 	commandList.get(18));
+		commands.put("hideflags", 	commandList.get(19));
+		commands.put("dijkstra", 	commandList.get(20));
+		commands.put("tracepath", 	commandList.get(21));
+		commands.put("addrow", 		commandList.get(22));
+		commands.put("addcol", 		commandList.get(23));
+		commands.put("addbox", 		commandList.get(24));
+		commands.put("addflag", 	commandList.get(25));
+		commands.put("remrow", 		commandList.get(26));
+		commands.put("remcol", 		commandList.get(27));
+		commands.put("setroot",		commandList.get(28));
+		commands.put("remroot",		commandList.get(29));
+		commands.put("clear",		commandList.get(30));
 	}
 
 
@@ -195,6 +195,10 @@ public class PromptInterface implements UserInterface	{
 		return cmd;
 	}
 
+	public ArrayList<CommandInterface> getCommandList()	{
+		return commandList;
+	}
+
 	public boolean isCommand(String cmd)	{
 		return commands.get(cmd) != null;
 	}
@@ -260,5 +264,8 @@ public class PromptInterface implements UserInterface	{
 	}
 	public Pi			getPi()		{ return pi; }
 	public Previous		getPrevious()	{ return previous; }
-	public PrintStream		getOutStream()	{ return out; }
+
+	public PrintStream	getOutStream()		{ return out; }
+	public void		print(String str)	{ out.print(str); }
+	public void		println(String str)	{ out.println(str); }
 }

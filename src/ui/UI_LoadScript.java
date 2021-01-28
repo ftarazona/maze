@@ -22,11 +22,12 @@ public class UI_LoadScript implements CommandInterface	{
 	}
 
 	public String description()	{
-		return "script - Loads a script from a file.\n";
+		return 
+		"Script		~ Loads a script from a file.";
 	}
 
 	public String usage()	{
-		return "script <filename>\n";
+		return "script <filename>";
 	}
 
 	
@@ -34,7 +35,6 @@ public class UI_LoadScript implements CommandInterface	{
 	public void run(String[] args)
 		throws UIException	{
 
-		HashMap<String, String> vars = new HashMap<String, String>();
 		int i = 2;
 
 		FileInputStream file = null;

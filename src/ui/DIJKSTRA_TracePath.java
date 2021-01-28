@@ -15,21 +15,22 @@ import maze.MazeException;
  *  given vertex */
 public class DIJKSTRA_TracePath implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze, pi and
 	 *  previous functions. */
-	public DIJKSTRA_TracePath(UserInterface ui)	{
+	public DIJKSTRA_TracePath(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "tracepath - Traces minimal path to a given box in the maze.\n";
+		return 
+		"TracePath 	~ Traces minimal path to a given box in the maze.";
 	}
 
 	public String usage()	{
-		return "tracepath" + 
-			"tracepath <x> <y>\n";
+		return "tracepath\n" + 
+			"tracepath <x> <y>";
 	}
 
 	/** @throws InvalidArgumentsException if x or y could not be

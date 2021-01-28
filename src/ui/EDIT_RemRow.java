@@ -7,19 +7,20 @@ import maze.MazeException;
 /** RemRow removes a row in the maze at a given position. */
 public class EDIT_RemRow implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public EDIT_RemRow(UserInterface ui)	{
+	public EDIT_RemRow(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "remrow - Removes a row to the maze.\n";
+		return 
+		"RemRow		~ Removes a row to the maze.";
 	}
 
 	public String usage()	{
-		return	"remrow <pos>\n";
+		return	"remrow <pos>";
 	}
 
 

@@ -10,19 +10,20 @@ import graphics.TileMap;
 /** DrawMaze draws the maze in a tile map. */
 public class DISPLAY_DrawMaze implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze. */
-	public DISPLAY_DrawMaze(UserInterface ui)	{
+	public DISPLAY_DrawMaze(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "draw - Draws the maze in a frame.\n";
+		return 
+		"Draw 		~ Draws the maze in a frame.";
 	}
 
 	public String usage()	{
-		return "draw\n";
+		return "draw";
 	}
 
 

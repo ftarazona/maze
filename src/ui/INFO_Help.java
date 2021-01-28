@@ -6,25 +6,34 @@ import java.io.PrintStream;
 /** Help displays descriptions of all known commands. */
 public class INFO_Help implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified context and output
 	 *  strem. */
-	public INFO_Help(UserInterface ui)	{
+	public INFO_Help(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "help - gives a description of all commands.\n";
+		return 	
+		"Help		~ Gives a description of all commands.";
 	}
 
 	public String usage()	{
-		return "help\n";
+		return "help";
 	}
 
 	public void run(String[] args)	
 		throws UIException	{
 
-		ui.getOutStream().print("Help");
+		ui.println(	"~~~~~~~~\n" +
+				"~ Help ~\n" +
+				"~~~~~~~~\n");
+
+		for(CommandInterface cmd: ui.getCommandList())	{
+			ui.println(cmd.description());
+		}
+
+		ui.println("");
 	}
 }

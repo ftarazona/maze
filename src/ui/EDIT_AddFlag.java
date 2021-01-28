@@ -11,20 +11,20 @@ import maze.MazeException;
 /** AddFlag adds a flag to a given box in maze. */
 public class EDIT_AddFlag implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Construcs the command with specified maze, pi and previous
 	 *  functions. */
-	public EDIT_AddFlag(UserInterface ui)	{
+	public EDIT_AddFlag(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "addflag - Adds or replaces a flag.\n";
+		return "AddFlag 	~ Adds or replaces a flag.";
 	}
 
 	public String usage()	{
-		return	"addflag <x> <y> <flag>\n";
+		return	"addflag <x> <y> <flag>";
 	}
 
 

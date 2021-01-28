@@ -11,20 +11,21 @@ import maze.MazeException;
 /** Removes a flag at given coordinates. */
 public class EDIT_RemFlag implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze, pi, previous
 	 *  functions. */
-	public EDIT_RemFlag(UserInterface ui)	{
+	public EDIT_RemFlag(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "remflag - Removes a flag.\n";
+		return 
+		"RemFlag		~ Removes a flag.";
 	}
 
 	public String usage()	{
-		return	"remflag <x> <y> <flag>\n";
+		return	"remflag <x> <y> <flag>";
 	}
 
 

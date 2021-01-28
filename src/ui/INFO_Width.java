@@ -4,17 +4,18 @@ import maze.*;
 
 public class INFO_Width implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	public String usage()	{
 		return "width";
 	}
 
 	public String description()	{
-		return "Tells the width of the current maze.";
+		return 
+		"Width		~ Tells the width of the current maze.";
 	}
 
-	public INFO_Width(UserInterface ui)	{
+	public INFO_Width(PromptInterface ui)	{
 		this.ui = ui;
 	}
 

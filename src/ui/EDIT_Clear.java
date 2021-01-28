@@ -9,20 +9,21 @@ import maze.InterfaceableMaze;
 /** Clear clears all the flags in the maze. */
 public class EDIT_Clear implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze, pi, previous
 	 *  functions. */
-	public EDIT_Clear(UserInterface ui)	{ 
+	public EDIT_Clear(PromptInterface ui)	{ 
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "clear - Removes all flags\n";
+		return 
+		"Clear 		~ Removes all flags";
 	}
 
 	public String usage()	{
-		return	"clear\n";
+		return	"clear";
 	}
 
 

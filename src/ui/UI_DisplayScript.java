@@ -12,7 +12,8 @@ public class UI_DisplayScript implements CommandInterface	{
 	}
 
 	public String description()	{
-		return "Shows the content of a script.";
+		return 
+		"ShowScript	~ Shows the content of a script.";
 	}
 
 	public UI_DisplayScript(PromptInterface ui)	{

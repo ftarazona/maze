@@ -7,20 +7,20 @@ import maze.MazeException;
 /** AddCol adds a column to the ui at given position. */
 public class EDIT_AddCol implements CommandInterface	{
 	
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified ui. */
-	public EDIT_AddCol(UserInterface ui)	{
+	public EDIT_AddCol(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "addcol - Adds a column to the ui.\n";
+		return "AddCol 		~ Adds a column to the maze.";
 	}
 
 	public String usage()	{
 		return	"1. addcol <pos>\n" +
-			"2. addcol <pos> <type>\n";
+			"2. addcol <pos> <type>";
 	}
 
 

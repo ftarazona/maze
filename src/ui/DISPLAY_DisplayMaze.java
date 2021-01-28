@@ -9,20 +9,21 @@ import maze.MazeException;
 /** DisplayMaze displays the maze in an output stream. */
 public class DISPLAY_DisplayMaze implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified maze and out stream.
 	  */
-	public DISPLAY_DisplayMaze(UserInterface ui)	{
+	public DISPLAY_DisplayMaze(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
 	public String description()	{
-		return "display - Displays the maze on the selected output.\n";
+		return 
+		"Display 	~ Displays the maze on the selected output.";
 	}
 
 	public String usage()	{
-		return "display\n";
+		return "display";
 	}
 
 
@@ -30,5 +31,6 @@ public class DISPLAY_DisplayMaze implements CommandInterface	{
 		throws UIException, MazeException	{
 
 		ui.getMaze().display(ui.getOutStream());
+		ui.println();
 	}
 }
