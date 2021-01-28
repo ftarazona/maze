@@ -2,6 +2,7 @@ package ui;
 
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.HashMap;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -12,11 +13,11 @@ import maze.InterfaceableMaze;
 /** LoadScript loads a script from file. */
 public class UI_LoadScript implements CommandInterface	{
 
-	private final UserInterface ui;
+	private final PromptInterface ui;
 
 	/** Constructs the command with specified command queue of an
 	 *  interface. */
-	public UI_LoadScript(UserInterface ui)	{
+	public UI_LoadScript(PromptInterface ui)	{
 		this.ui = ui;
 	}
 
@@ -33,14 +34,38 @@ public class UI_LoadScript implements CommandInterface	{
 	public void run(String[] args)
 		throws UIException	{
 
+		HashMap<String, String> vars = new HashMap<String, String>();
+		int i = 2;
+
 		FileInputStream file = null;
 		Scanner scanner = null;
 
 		try	{
 			file = new FileInputStream(args[1]);
 			scanner = new Scanner(file);
+
 			while(scanner.hasNextLine())	{
-				ui.offerScript(scanner.nextLine());
+				String line = scanner.nextLine().toLowerCase();
+				int len = line.length();
+				if(len == 0)	{ continue; }
+				if(line.matches("\\$[a-zA-Z]*"))	{
+					ui.setVariable(line.substring(1), args[i]);
+					i++;
+				} else	{
+					String[] cargs = line.split(" ");
+					String cmd = new String();
+				for(int j = 0; j < cargs.length; j++)	{
+					if(args[j].matches("\\$[a-zA-Z]*"))	{
+						String label = cargs[j].substring(1);
+						cargs[j] = ui.fetchVariable(label);
+						if(cargs[j] == null)	{
+							throw new UninitializedVariableException(label);
+						}
+					}
+					cmd = cmd.concat(cargs[j] + " ");
+				}
+					ui.offerScript(cmd);
+				}
 			}
 		} catch (IndexOutOfBoundsException e)	{
 			throw new IncorrectUsageException();
