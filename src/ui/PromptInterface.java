@@ -42,6 +42,8 @@ public class PromptInterface extends CoreInterface implements UserInterface	{
 		CommandInterface quit		= new UI_Quit(this);
 		CommandInterface loadScript	= new UI_LoadScript(this);
 		CommandInterface showscript	= new UI_DisplayScript(this);
+		CommandInterface record		= new UI_Record(this);
+		CommandInterface savescript	= new UI_SaveScript(this);
 		CommandInterface help		= new INFO_Help(this);
 		CommandInterface usage		= new INFO_Usage(this);
 		CommandInterface height		= new INFO_Height(this);
@@ -74,6 +76,8 @@ public class PromptInterface extends CoreInterface implements UserInterface	{
 		commands.put("script",		loadScript);
 		commands.put("showscript",	showscript);
 		commands.put("displayscript",	showscript);
+		commands.put("record",		record);
+		commands.put("savescript",	savescript);
 		commands.put("help", 		help);
 		commands.put("usage", 		usage);
 		commands.put("height",		height);

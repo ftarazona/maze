@@ -29,10 +29,10 @@ public abstract class CoreInterface implements UserInterface	{
 	public boolean hasQuitted()	{ return quitValue; }
 
 	public void startRecording()	{ 
-		recordQueue.empty();
-		recording = true; 
+		recordQueue.clear();
+		recordingScript = true; 
 	}
-	public void stopRecording()	{ recording = false; }
+	public void stopRecording()	{ recordingScript = false; }
 	public Queue<String> getRecord()	{ return recordQueue; }
 
 	public boolean 		executeCommand()	{
@@ -54,7 +54,7 @@ public abstract class CoreInterface implements UserInterface	{
 				cmd = fetchCommand(args[0]);
 				cmd.run(args);
 			}
-			if(recording)	{
+			if(recordingScript)	{
 				recordQueue.offer(cmdStr);
 			}
 		} catch (IncorrectUsageException e)	{

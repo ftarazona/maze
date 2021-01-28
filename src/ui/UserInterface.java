@@ -14,6 +14,9 @@ public interface UserInterface	{
 
 	public void 			offer(String cmd);
 	public void 			offerScript(String cmd);
+	public void			startRecording();
+	public void			stopRecording();
+	public Queue<String>		getRecord();
 	public CommandInterface 	fetchCommand(String str)
 		throws UnknownCommandException;
 	public boolean 			executeCommand();
