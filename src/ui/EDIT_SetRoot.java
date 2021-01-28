@@ -44,5 +44,6 @@ public class EDIT_SetRoot implements CommandInterface	{
 		}
 
 		ui.getMaze().setRoot(x, y);
+		ui.modify();
 	}
 }

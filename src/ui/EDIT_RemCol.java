@@ -41,5 +41,6 @@ public class EDIT_RemCol implements CommandInterface	{
 		}
 
 		ui.getMaze().remCol(pos);
+		ui.modify();
 	}
 }

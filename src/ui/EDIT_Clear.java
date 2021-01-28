@@ -32,5 +32,6 @@ public class EDIT_Clear implements CommandInterface	{
 		ui.getMaze().clear();
 		ui.getPi().clear();
 		ui.getPrevious().clear();
+		ui.modify();
 	}
 }

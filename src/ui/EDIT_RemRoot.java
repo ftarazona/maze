@@ -33,5 +33,6 @@ public class EDIT_RemRoot implements CommandInterface	{
 		ui.getMaze().remRoot();
 		ui.getPi().clear();
 		ui.getPrevious().clear();
+		ui.modify();
 	}
 }

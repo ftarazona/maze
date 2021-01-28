@@ -57,5 +57,6 @@ public class EDIT_AddCol implements CommandInterface	{
 		}
 
 		ui.getMaze().addCol(pos, boxArgs);
+		ui.modify();
 	}
 }

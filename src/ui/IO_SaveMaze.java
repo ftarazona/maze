@@ -37,6 +37,7 @@ public class IO_SaveMaze implements CommandInterface	{
 			file = new FileOutputStream(args[1]);
 			bs = new BufferedOutputStream(file);
 			ui.getMaze().write(bs);
+			ui.save();
 		} catch (IOException e)	{
 			throw new UIException(e.getMessage());
 		} catch (IndexOutOfBoundsException e)	{

@@ -18,7 +18,8 @@ public class INFO_Width implements CommandInterface	{
 		this.ui = ui;
 	}
 
-	public void run(String[] args)	{
+	public void run(String[] args)	
+		throws NoMazeOpenedException	{
 		ui.getOutStream().print(String.format("Width of the maze : %d\n", ui.getMaze().getWidth()));
 	}
 }

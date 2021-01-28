@@ -56,5 +56,6 @@ public class EDIT_AddFlag implements CommandInterface	{
 		}
 
 		ui.getMaze().addFlag(x, y, flag);
+		ui.modify();
 	}
 }

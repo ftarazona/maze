@@ -18,7 +18,8 @@ public class INFO_Height implements CommandInterface	{
 		this.ui = ui;
 	}
 
-	public void run(String[] args)	{
+	public void run(String[] args)	
+		throws NoMazeOpenedException	{
 		ui.getOutStream().print(String.format("Height of the maze : %d\n", ui.getMaze().getHeight()));
 	}
 }

@@ -9,6 +9,7 @@ public abstract class CoreInterface implements UserInterface	{
 
 	private boolean quitValue		= false;
 	private boolean recordingScript		= false;
+	private boolean modified		= false;
 	private Queue<String> mainQueue		= new ArrayDeque<String>();
 	private Queue<String> scriptQueue	= new ArrayDeque<String>();
 	private Queue<String> recordQueue	= new ArrayDeque<String>();
@@ -35,6 +36,10 @@ public abstract class CoreInterface implements UserInterface	{
 	public void stopRecording()	{ recordingScript = false; }
 	public Queue<String> getRecord()	{ return recordQueue; }
 
+	public void modify()		{ modified = true; }
+	public void save()		{ modified = false; }
+	public boolean wasModified()	{ return modified; }
+
 	public boolean 		executeCommand()	{
 		String cmdStr = new String();
 		if(!mainQueue.isEmpty())	{
@@ -47,6 +52,11 @@ public abstract class CoreInterface implements UserInterface	{
 		}
 
 		String[] args = cmdStr.toLowerCase().split(" ");
+		boolean toRecord = !args[0].equals("*") && !args[0].equals("record");
+		if(args[0].equals("*"))	{
+			args = Arrays.copyOfRange(args, 1, args.length);
+		}
+
 		CommandInterface cmd = null;
 
 		try	{
@@ -54,13 +64,15 @@ public abstract class CoreInterface implements UserInterface	{
 				cmd = fetchCommand(args[0]);
 				cmd.run(args);
 			}
-			if(recordingScript)	{
+			if(recordingScript && toRecord)	{
 				recordQueue.offer(cmdStr);
 			}
 		} catch (IncorrectUsageException e)	{
 			getOutStream().print(String.format(
-				"Wrong usage : %s\n", 
+				"Wrong usage :\n%s\n", 
 				cmd.usage()));
+		} catch (NoMazeOpenedException e)	{
+			getOutStream().print(e.getMessage() + "\n");
 		} catch (UIException e)	{
 			getOutStream().print(String.format("An error occured while trying to run a command: %s\n", e.getMessage()));
 		} catch (MazeException e)	{
@@ -82,7 +94,10 @@ public abstract class CoreInterface implements UserInterface	{
 	public abstract int 			keyWord(String key)
 		throws UnexpectedKeyWordException;
 
-	public abstract InterfaceableMaze 	getMaze();
+	public abstract InterfaceableMaze 	getMaze()
+		throws NoMazeOpenedException;
+	public abstract InterfaceableMaze 	getMazeSafe()
+		throws NullMazeException;
 	public abstract Pi 			getPi();
 	public abstract Previous	 	getPrevious();
 	public abstract PrintStream 		getOutStream();

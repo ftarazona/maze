@@ -42,5 +42,6 @@ public class EDIT_RemBox implements CommandInterface	{
 		}
 
 		ui.getMaze().remBox(x, y);
+		ui.modify();
 	}
 }

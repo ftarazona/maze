@@ -51,6 +51,7 @@ public class PromptInterface extends CoreInterface implements UserInterface	{
 		CommandInterface newmaze	= new IO_NewMaze(this);
 		CommandInterface openmaze	= new IO_OpenMaze(this);
 		CommandInterface savemaze	= new IO_SaveMaze(this);
+		CommandInterface close		= new IO_CloseMaze(this);
 		CommandInterface display	= new DISPLAY_DisplayMaze(this);
 		CommandInterface draw		= new DISPLAY_DrawMaze(this);
 		CommandInterface showflag	= new DISPLAY_ShowFlag(this);
@@ -88,6 +89,8 @@ public class PromptInterface extends CoreInterface implements UserInterface	{
 		commands.put("openmaze",	openmaze);
 		commands.put("save",		savemaze);
 		commands.put("savemaze",	savemaze);
+		commands.put("close",		close);
+		commands.put("closemaze",	close);
 		commands.put("display", 	display);
 		commands.put("draw", 		draw);
 		commands.put("showflag", 	showflag);
@@ -142,7 +145,20 @@ public class PromptInterface extends CoreInterface implements UserInterface	{
 		return ret.intValue();
 	}
 
-	public InterfaceableMaze 	getMaze()	{ return maze; }
+	public InterfaceableMaze 	getMaze()	
+		throws NoMazeOpenedException	{ 
+		if(maze.isOpened())
+			return maze;
+		else
+			throw new NoMazeOpenedException();
+	}
+	public InterfaceableMaze	getMazeSafe()
+		throws NullMazeException	{
+		if(maze != null)
+			return maze;
+		else
+			throw new NullMazeException();
+	}
 	public Pi			getPi()		{ return pi; }
 	public Previous		getPrevious()	{ return previous; }
 	public PrintStream		getOutStream()	{ return out; }

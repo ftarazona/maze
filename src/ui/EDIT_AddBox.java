@@ -56,5 +56,6 @@ public class EDIT_AddBox implements CommandInterface	{
 		}
 
 		ui.getMaze().addBox(boxArgs);
+		ui.modify();
 	}
 }

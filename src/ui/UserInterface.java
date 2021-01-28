@@ -22,10 +22,16 @@ public interface UserInterface	{
 	public boolean 			executeCommand();
 	public int 			keyWord(String key)
 		throws UnexpectedKeyWordException;
-	public InterfaceableMaze 	getMaze();
+	public InterfaceableMaze 	getMaze()
+		throws NoMazeOpenedException;
+	public InterfaceableMaze	getMazeSafe()
+		throws NullMazeException;
 	public Pi	 		getPi();
 	public Previous		 	getPrevious();
 	public PrintStream 		getOutStream();
 	public void 			quit();
 	public boolean 			hasQuitted();
+	public void			modify();
+	public void			save();
+	public boolean			wasModified();
 }

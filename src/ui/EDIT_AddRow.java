@@ -58,5 +58,6 @@ public class EDIT_AddRow implements CommandInterface	{
 		}
 
 		ui.getMaze().addRow(pos, boxArgs);
+		ui.modify();
 	}
 }

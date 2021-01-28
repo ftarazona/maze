@@ -41,5 +41,6 @@ public class EDIT_RemRow implements CommandInterface	{
 		}
 
 		ui.getMaze().remRow(pos);
+		ui.modify();
 	}
 }

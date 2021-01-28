@@ -62,6 +62,6 @@ public class IO_NewMaze implements CommandInterface	{
 			throw new IncorrectUsageException();
 		}
 		
-		ui.getMaze().newMaze(height, width, boxArgs);
+		ui.getMazeSafe().newMaze(height, width, boxArgs);
 	}
 }

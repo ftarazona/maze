@@ -54,5 +54,6 @@ public class EDIT_RemFlag implements CommandInterface	{
 		}
 
 		ui.getMaze().remFlag(x, y, flag);
+		ui.modify();
 	}
 }

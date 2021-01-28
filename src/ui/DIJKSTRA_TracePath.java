@@ -54,6 +54,7 @@ public class DIJKSTRA_TracePath implements CommandInterface	{
 		for(Vertex v: toReach)	{
 			ArrayList<Vertex> path = ui.getPrevious().getFullPath(v);
 			ui.getMaze().setSelection(path, BoxFlag.BOX_MARKED);
+			ui.modify();
 		}
 	}
 }

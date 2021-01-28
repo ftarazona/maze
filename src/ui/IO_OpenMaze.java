@@ -37,7 +37,7 @@ public class IO_OpenMaze implements CommandInterface	{
 		try	{
 			file = new FileInputStream(args[1]);
 			bs = new BufferedInputStream(file);
-			ui.getMaze().read(bs);
+			ui.getMazeSafe().read(bs);
 		} catch (IOException e)	{
 			throw new UIException(e.getMessage());
 		} catch (IndexOutOfBoundsException e)	{
