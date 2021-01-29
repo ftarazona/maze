@@ -95,10 +95,16 @@ public class PromptInterface implements UserInterface	{
 		commands.put("width",		commandList.get(9));
 		commands.put("new",		commandList.get(10));
 		commands.put("newmaze",		commandList.get(10));
+		commands.put("newsafe",		commandList.get(10));
+		commands.put("newmazesafe",	commandList.get(10));
 		commands.put("open",		commandList.get(11));
 		commands.put("openmaze",	commandList.get(11));
+		commands.put("opensafe",	commandList.get(11));
+		commands.put("openmazesafe",	commandList.get(11));
 		commands.put("save",		commandList.get(12));
 		commands.put("savemaze",	commandList.get(12));
+		commands.put("savesafe",	commandList.get(12));
+		commands.put("savemazesafe",	commandList.get(12));
 		commands.put("close",		commandList.get(13));
 		commands.put("closemaze",	commandList.get(13));
 		commands.put("display", 	commandList.get(14));

@@ -1,5 +1,7 @@
 package ui;
 
+import java.util.Scanner;
+
 import maze.Box;
 import maze.InterfaceableMaze;
 import maze.MazeException;
@@ -36,6 +38,22 @@ public class IO_NewMaze implements CommandInterface	{
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 	
+		if(!args[0].contains("safe"))	{
+		boolean closeAnyway = true;
+		boolean answerOK = false;
+		while(ui.wasModified() && !answerOK)	{
+			System.out.println("The current was modified and not saved. Do you want to open a new one anyway ? (y/n) ");
+			Scanner scanner = new Scanner(System.in);
+			String answer = scanner.nextLine().toLowerCase();
+			if(answer.matches("y|yes|n|no"))	{
+				answerOK = true;
+				closeAnyway = answer.matches("y|yes");
+			}
+		}
+
+		if(!closeAnyway)	{ return; }
+		}
+
 		int width = 0;
 		int height = 0;
 		int[] boxArgs = new int[args.length + 5];

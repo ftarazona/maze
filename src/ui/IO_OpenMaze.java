@@ -4,6 +4,8 @@ import java.io.BufferedInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 
+import java.util.Scanner;
+
 import maze.InterfaceableMaze;
 import maze.MazeException;
 
@@ -33,6 +35,22 @@ public class IO_OpenMaze implements CommandInterface	{
 	public void run(String[] args)	
 		throws UIException, MazeException	{
 
+		if(!args[0].contains("safe"))	{
+		boolean closeAnyway = false;
+		boolean answerOK = false;
+		while(ui.wasModified() && !answerOK)	{
+			System.out.println("The current was modified and not saved. Do you want to open a new one anyway ? (y/n) ");
+			Scanner scanner = new Scanner(System.in);
+			String answer = scanner.nextLine().toLowerCase();
+			if(answer.matches("y|yes|n|no"))	{
+				answerOK = true;
+				closeAnyway = answer.matches("y|yes");
+			}
+		}
+
+		if(!closeAnyway)	{ return; }
+		}
+
 		FileInputStream file = null;
 		BufferedInputStream bs = null;
 		try	{
@@ -53,5 +71,10 @@ public class IO_OpenMaze implements CommandInterface	{
 				throw new UIException(e.getMessage()); 
 			}
 		}
+	}
+
+	private static void compatibilityMode(BufferedInputStream bs, InterfaceableMaze maze)	
+		throws MazeException	{
+		System.out.println("Compatibility mode");
 	}
 }
