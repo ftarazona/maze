@@ -21,6 +21,8 @@ public interface InterfaceableMaze extends Graph	{
 	public void newMaze(int height, int width, int[] boxArgs)
 		throws UnexpectedBoxTypeException, InvalidBoxArgumentsException;
 
+	public void newMaze(Box[][] boxes);
+
 	/** Reads a new maze from a given input stream.
 	 *  @param in input stream to be read.
 	 *  @throws IOException if an I/O error occurs.

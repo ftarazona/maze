@@ -81,13 +81,28 @@ public class Maze
 	 *  @param boxes a matrix of boxes. */
 	public Maze(Box[][] boxes)	{
 		this();
-		this.boxes = boxes;
-		this.width = boxes[0].length;
-		this.height = boxes.length;
-		opened = true;
-		hasRoot = false;
+		newMaze(boxes);
 	}
 
+	public void newMaze(Box[][] boxes)	{
+		this.boxes = boxes;
+		this.width = boxes.length;
+		this.height = boxes[0].length;
+		this.area = 0;
+		for(int i = 0; i < width; i++)	{
+			for(int j = 0; j < height; j++)	{
+				if(boxes[j][i] != null)	{ 
+					area++;
+					if(boxes[j][i].hasFlag(BoxFlag.BOX_START))	{
+						try	{
+							setRoot(i, j);
+						} catch (MazeException e)	{}
+					}
+				}
+			}
+		}
+		opened = true;
+	}
 
 	/** Auxiliary method reading a box from an input stream.
 	 *  It stops when it reads characters 255 or reaches EOF.
