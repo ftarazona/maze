@@ -48,8 +48,8 @@ public class UI_LoadScript implements CommandInterface	{
 				String line = scanner.nextLine().toLowerCase();
 				int len = line.length();
 				if(len == 0)	{ continue; }
-				if(line.matches("\\$[a-zA-Z]*"))	{
-					ui.setVariable(line.substring(1), args[i]);
+				if(line.matches("\\$[a-zA-Z]*;"))	{
+					ui.setVariable(line.substring(1, line.length() - 1), args[i]);
 					i++;
 				} else	{
 					String[] cargs = line.split(" ");

@@ -79,6 +79,7 @@ public class PromptInterface implements UserInterface	{
 		commandList.add(new EDIT_SetRoot(this));
 		commandList.add(new EDIT_RemRoot(this));
 		commandList.add(new EDIT_Clear(this));
+		commandList.add(new UI_ListVariables(this));
 
 		commands.put("quit", 		commandList.get(0));
 		commands.put("exit", 		commandList.get(0));
@@ -114,9 +115,12 @@ public class PromptInterface implements UserInterface	{
 		commands.put("addflag", 	commandList.get(25));
 		commands.put("remrow", 		commandList.get(26));
 		commands.put("remcol", 		commandList.get(27));
-		commands.put("setroot",		commandList.get(28));
-		commands.put("remroot",		commandList.get(29));
-		commands.put("clear",		commandList.get(30));
+		commands.put("rembox", 		commandList.get(28));
+		commands.put("remflag", 	commandList.get(29));
+		commands.put("setroot",		commandList.get(30));
+		commands.put("remroot",		commandList.get(31));
+		commands.put("clear",		commandList.get(32));
+		commands.put("variables",	commandList.get(33));
 	}
 
 
@@ -232,6 +236,9 @@ public class PromptInterface implements UserInterface	{
 		} else	{
 			return value;
 		}
+	}
+	public HashMap<String, String> getVariables()	{
+		return vars;
 	}
 
 	public void quit()		{ quitValue = true; }

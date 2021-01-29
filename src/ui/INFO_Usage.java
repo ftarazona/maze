@@ -29,9 +29,9 @@ public class INFO_Usage implements CommandInterface	{
 		throws UIException	{
 	
 		try	{
-			ui.println();
+			ui.println("");
 			ui.println(ui.fetchCommand(args[1]).usage());
-			ui.println();
+			ui.println("");
 		} catch (IndexOutOfBoundsException e)	{
 			throw new IncorrectUsageException();
 		}

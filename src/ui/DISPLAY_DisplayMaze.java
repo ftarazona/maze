@@ -31,6 +31,6 @@ public class DISPLAY_DisplayMaze implements CommandInterface	{
 		throws UIException, MazeException	{
 
 		ui.getMaze().display(ui.getOutStream());
-		ui.println();
+		ui.println("");
 	}
 }

@@ -23,18 +23,33 @@ public class UI_DisplayScript implements CommandInterface	{
 	public void run(String[] args)	
 		throws UIException	{
 
+		ArrayList<String> variables = new ArrayList<String>();
+		ArrayList<String> commands = new ArrayList<String>();
 		try	{
 			Scanner scanner = new Scanner(new FileInputStream(args[1]));
-			ui.getOutStream().print("\nScript " + args[1] + " :\n\n");
+			ui.println("\n~~ Displaying script " + args[1] + " ~~");
 			while(scanner.hasNextLine())	{
 				String str = scanner.nextLine();
-				String cmd = str.toLowerCase().split(" ")[0];
-				if(ui.isCommand(cmd))	{
-					ui.getOutStream().print(str + "\n");
+				if(str.matches("\\$[a-zA-Z]*;"))	{
+					variables.add(str.substring(1, str.length() - 1));
 				} else	{
-					ui.getOutStream().print("(UNKNOWN COMMAND) " + str + "\n");
+				String cmd = str.toLowerCase().split(" ")[0];
+				if(ui.isCommand(cmd) || cmd.matches("\\$(.*)"))	{
+					commands.add(str);
+				} else	{
+					commands.add("(UNKNOWN COMMAND) " + str);
 				}
+				}
+
 			}
+			
+			ui.println("\nVARIABLES :\n");
+			for(String va: variables)
+				ui.println(va);
+
+			ui.println("\nCOMMANDS :\n");
+			for(String cmd: commands)
+				ui.println(cmd);
 			ui.getOutStream().print("\n");
 		} catch (IOException e)	{
 			throw new UIException(e.getMessage());
