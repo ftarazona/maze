@@ -36,6 +36,10 @@ public class EmptyBox extends Box	{
 		writeGeneralData(out);
 	}
 
+	public int compatibilityID()	{
+		return ID;
+	}
+
 	public void display(PrintStream out)	{
 		out.print("O");
 	}

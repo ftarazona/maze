@@ -132,9 +132,8 @@ public class Maze
 			c = in.read();
 		}
 
-	
 		int[] args = new int[input.size()];
-		for(int i = 0; i < input.size() - 1; i++)	{
+		for(int i = 0; i < input.size(); i++)	{
 			args[i] = input.get(i);
 		}
 		
@@ -665,12 +664,13 @@ public class Maze
 	}
 
 	public Vertex getBox(int x, int y)
-		throws MazeOutOfBoundsException	{
+		throws MazeOutOfBoundsException, NullBoxException	{
 
-		if(x < 0 || x >= width || y < 0 || y >= height || boxes[y][x] == null)	{
+		if(x < 0 || x >= width || y < 0 || y >= height)	{
 			throw new MazeOutOfBoundsException(x, y, width, height);
+		} else if(boxes[y][x] == null)	{
+			throw new NullBoxException();
 		}
-
 		return boxes[y][x];
 	}
 

@@ -43,6 +43,10 @@ public class WaterBox extends Box	{
 		out.write(deep ? 1 : 0);
 	}
 
+	public int compatibilityID()	{
+		return ' ';
+	}
+
 	public void display(PrintStream out)	{
 		out.print("~");
 	}

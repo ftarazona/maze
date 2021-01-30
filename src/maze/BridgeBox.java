@@ -37,6 +37,10 @@ public class BridgeBox extends Box	{
 		writeGeneralData(out);
 	}
 
+	public int compatibilityID()	{
+		return ' ';
+	}
+
 	public void display(PrintStream out)	{
 		out.print("B");
 	}

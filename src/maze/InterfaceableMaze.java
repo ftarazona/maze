@@ -204,7 +204,7 @@ public interface InterfaceableMaze extends Graph	{
 	 *  @throws MazeOutOfBoundsException if the coordinates are
 	 *  out of maze border. */
 	public Vertex getBox(int x, int y)
-		throws MazeOutOfBoundsException;
+		throws MazeOutOfBoundsException, NullBoxException;
 	
 
 	/** Returns a matrix of drawing IDs for drawing a tile map.

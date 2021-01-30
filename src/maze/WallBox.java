@@ -35,6 +35,10 @@ public class WallBox extends Box	{
 		writeGeneralData(out);
 	}
 
+	public int compatibilityID()	{
+		return ID;
+	}
+
 	public void display(PrintStream out)	{
 		out.print("W");
 	}

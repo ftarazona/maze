@@ -35,5 +35,9 @@ public class SampleBox extends Box	{
 		//(order of the arguments)
 	}
 
+	public int compatibilityID()	{
+		return ' ';
+	}
+
 	public void display(PrintStream out)	{}
 }

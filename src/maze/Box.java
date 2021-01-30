@@ -197,6 +197,9 @@ public abstract class Box
 	public abstract void write(OutputStream out)
 		throws IOException;
 
+	/** Returns the symbol used in compatibility mode. */
+	public abstract int compatibilityID();
+
 	/** Displays the box in an output stream.
 	 *  @param out output stream to be written. */
 	public abstract void display(PrintStream out);

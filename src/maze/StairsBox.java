@@ -46,6 +46,10 @@ public class StairsBox extends Box	{
 		out.write(dir);
 	}
 
+	public int compatibilityID()	{
+		return ' ';
+	}
+
 	public void display(PrintStream out)	{
 		out.print("/");
 	}
