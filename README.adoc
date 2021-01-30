@@ -35,62 +35,131 @@ Sample classes can be found for implementing new objects with customized behavio
 
 == Getting started with the PromptInterface
 It is now time to explain how to use the _PromptInterface_.
-When entering the interface you will see a ">>>" appear. This means the interface has no more command to execute such as commands given by a script, and it is waiting for a direct user input.
+
+=== Understanding the basics
+
+==== Command queues and stacks
+
+The interface is basically two-step : 
+
+. *Enter* commands : this can be done via _direct user input_, _script loader_, or _iteration loops_.
+. *Execute* these commands, remembering that some of them can get back to the first step.
+
+Each input method has a specific container in which it pushes the commands :
+* _direct user input_ pushes to `main queue`
+* _script loader_ pushes to `script stack`
+* _iteration loops_ pushes to `iteration queue`
+
+The interface will execute commands, giving priority to the `iteration queue`, the `main queue` then the `script stack` until both are empty.
+When it is, it requests a _direct user input_, visualized by a `>>>` in the prompt.
+
+==== Parsing
+
+Whenever a command is pulled from a queue, it is formatted so that long blanks are removed.
+
+When the interface executes a command it is required to parse it first by default. Some commands, like `times`, shall implement their own
+parser due to technical issues. The interface parser will replace variable labels by their values, and will process randomization.
+
+Then the command is passed to the `CommandInterface` via a call to its method `run`, which parse it specifically following its behaviour.
+
+==== Exception management
+
+During the execution, many exceptions can be raised, all the more with a prompt interface not restricting the _user input_. The method
+`executeCommand` catches every exception, indicates it to the user, then continue. It does not cancel every action already made by the
+command, such as defining variables or pushing commands.
 
 === Syntax of a command
-The syntax is quite simple : <command name> (arguments).
+The syntax is very simple. For a basic command, it goes like `<command name> (arguments)`.
+Integer arguments such as positions or coordinates can be randomized by typing `random <min> <max>`.
+
+Not many commands have a fixed number of arguments, they can have differents usages or wait for arguments depending on previouly passed ones.
+
+Note that if, in certain cases, if not enough arguments were passed, the command may deduce default values, `0` for `integers` for instance.
 
 ===== Get help about a command
-help will show a list of commands and usage <command name> will show how to use a command.
+`help` will show a list of commands and `usage <command name>` will show how to use a command.
 
 === Variables
-The interface can record variables. A variable consists of a label and a value, both are String objects.
-To define a variable, you can use the var command : "var label = value"
-To use a variable in a command, you write $label.
+The interface can record variables. A _variable_ consists of a *label* and a *value*, both are `String` objects.
+
+To define a variable, you can use the `var` command : `var label = value`.
+
+To use a variable in a command, you write `$label` instead of an arguments.
+
+To display a list of every variable, type `variables`.
 
 ===== Special variables
-Some variables can be useful, such maze dimensions. In order to make it easier, not having to demand for it each you want it, the interface defines several special variables.
-These are updated each the maze is modified and can not be overriden.
+Some variables can be useful everytime, such as maze dimensions. In order to make it easier, not having to demand for it each you want it, the interface defines several _special variables_, these are `width`, `height` and `area`.
 
-=== Random values
-The interface allows you to randomize integer arguments. In order to use this feature, simply replace an integer argument by "random <min> <max>
+These are updated each time the maze is modified and can not be overriden.
 
 === Iterations
-The times command allows you iterate a command : "times label <first value> <last value> <command>"
-The label is increased from first value to last (excluded) and can be used as an integer value in the command.
-Be careful however, this feature in currently experimental. times
- defines its own parser, meaning that variables and random features might have weird behaviors. To avoid it, please do not use a label reserved for a special variable nor use a randomized value for first or last.
+The `times` command allows you to _iterate a command_, the syntax is `times counter <first> <last> <command>`
+The `counter` is increased from `first` to `last` (excluded) and can be used as an integer variable in the `command`.
+
+Be careful however, this feature in currently experimental.
+`times` implements its own parser due to technical issues such as conflicts between interface variables and the `counter`.
+The parser distinguishes the iteration parameters the command following. In the iteration parameters, it will parse `first` and `last` and
+can search for interface variables. In the command, it will first replace every occurence of `$counter`, then push the command to the 
+`iteration queue`, so that the default parser can be called, except if this is also a `times`.
+
+Let's give an example : `times x 0 $width times y 0 $height addbox $x $y empty`
+
+For the first `times`, x is the `counter`. The `times` parser will fetch `$width` which is indeed an interface variable since it is a _special
+variable_. Then it will replace every occurrence of `$x`, so the command iterated the first time will be `times y 0 $height addbox 0 $y 
+empty`.
+
 
 === Scripts
-One of the main feature is scripting. It allows one to execute several commands very without having to enter them manually.
+One of the main feature is _scripting_. It allows one to execute several commands without having to enter them manually.
 
 ==== Show a script
-The command 'showscript <script name>' will display the given script.
-There are two sections, one detailing the variables to provide when loading the script, and the second the actual commands.
+The command `showscript <script name>` will display the given script.
+
+There are two sections, one detailing the _variables_ to provide when loading the script, and the second the _actual commands_.
 
 ==== Load a script
-To load a script, you must enter "script <script name> (arguments)".
-The arguments are the ones showed by showscript, in that order.
+To load a script, you must enter `script <script name> (arguments)`.
+The arguments are the ones showed by `showscript`, in that order.
+
 When a script is loaded, it is parsed and all the script variables are replaced.
-If some undefined variables are encountered, the loader will assume these are already defined in the interface. For example you can use height, width or area. You can even override them locally in the script.
-When loading a script, the commands are placed in the script queue, meaning that when times is used in script, it will fill the iteration queue, which has a higher priority, so as to get a consistent flow. Believe me, an inconsistent flow can result in very undefined behviors...
+If some undefined variables are encountered, the loader will assume these are already defined in the interface. 
+For example you can use height, width or area. You can even override them locally in the script.
+
+When loading a script, the commands are placed in the `script stack`, meaning that when `times` is used in script,
+it will fill the `iteration queue`, which has a higher priority, so as to get a consistent flow. 
+Believe me, an inconsistent flow can result in very undefined behviors...
+
+A script within in script will pile up, so the flow is still consistent.
 
 ==== Write your own scripts
 The syntax of scripts is pretty much the same as the interface syntax.
-You can however use variables that are to define by the user, by using the syntax '$label;'. This will require the user to provide the value of label when calling the script. Such variables remain defined in the interface even after the script was executed.
+You can however use variables that are to define by the user, by using the syntax `$label;`. 
+This will require the user to provide the value of `label` when calling the script. 
+
+Such variables remain defined in the interface even after the script was executed.
 
 ==== Record scripts
-You can also record a list of commands in a script. For starting to record, simply use the 'record' command. When finished, use 'savescript <script name>' to stop recording and save the commands in a script.
-You might want to avoid some commands to be recorded. For instance, you might to display the maze while recording, for checking purpose, so it is not desired in the final script. You can do so by starting your command by '*', for example '* display'.
-Note that the parser is called before recording, so you can not use variables in recorded scripts except for iterations first/last.
+You can also record a list of commands in a script. For starting to record, simply use the `record` command. 
+When finished, use `savescript <script name>` to stop recording and save the commands in a script.
+You might want to avoid some commands to be recorded. 
+
+For instance, you might to display the maze while recording, for checking purpose, so it is not desired in the final script. 
+You can do so by starting your command by `*`, for example `* display`.
+
+Note that the parser is called before recording, so you can not use variables in recorded scripts except for iterations `counters`.
 
 ==== Some useful scripts
 I thought some scripts might prove useful to get started. They can be found in the scripts/
-* _random_gen.mzs <width> <height>_ creates a new random maze made of walls and empty boxes.
-* _dijkstra.mzs <file> <xRoot> <yRoot> <xEnd> <yEnd>_ opens the maze file and traces path from the given root to the given end.
-* _trace.mzs <xRoot> <yRoot> <xEnd> <yEnd>_ traces path from the given root to the given end.
+
+* _randommaze.mzs <width> <height>_ creates a new random maze made of walls and empty boxes.
+* _.mzs <file> <xRoot> <yRoot> <xEnd> <yEnd>_ opens the maze file and traces path from the given root to the given end.
+* _.mzs <xRoot> <yRoot> <xEnd> <yEnd>_ traces path from the given root to the given end.
 
 == Compatibility Mode
 The project gave a format of file which I decided to change regarding my implementation.
-My format is not easily editable manually, so I made a compatibility mode which old-formatted mazes to be opened. To use it, simply add "compatibility" to the command 'open' or 'write'.
-Note that using 'write' in compatibility mode can result in a loss of information. First you will lose every MARKED flag when saving. Second, any box type other than Wall or Empty will not be saved and will appear as null boxes.
+My format is not easily editable manually, so I made a compatibility mode which old-formatted mazes to be opened. 
+To use it, simply add `compatibility` to the command `open` or `save`.
+
+Note that using `write` in compatibility mode can result in a loss of information. First you will lose every MARKED flag when saving. 
+Second, any box type other than Wall or Empty will not be saved and will appear as null boxes.

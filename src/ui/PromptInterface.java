@@ -198,6 +198,17 @@ public class PromptInterface implements UserInterface	{
 		}
 	}
 
+	private String removeBlanks(String str)	{
+		String ret = str;
+		if(ret.isEmpty())	{ return ret; }
+		while(ret.startsWith(" "))	{
+			ret = ret.substring(1);
+		}
+		while(ret.contains("  "))
+			ret = ret.replaceAll("  ", " ");
+		return ret;
+	}
+
 	/** Executes next command.
 	  * The command must have been pushed to a queue before
 	  * calling this method, hence a previous call to offer or
@@ -218,6 +229,9 @@ public class PromptInterface implements UserInterface	{
 		} else	{
 			return false;
 		}
+
+		cmdStr = removeBlanks(cmdStr);
+
 
 		String[] args = cmdStr.toLowerCase().split(" ");
 		boolean toRecord = recordingScript && !(args[0].equals("*"));
