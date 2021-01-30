@@ -133,8 +133,6 @@ public class PromptInterface implements UserInterface	{
 		commands.put("variables",	commandList.get(33));
 		commands.put("area",		commandList.get(34));
 		commands.put("size",		commandList.get(34));
-
-		open();
 	}
 
 	/** Runs the interface.
@@ -166,25 +164,46 @@ public class PromptInterface implements UserInterface	{
 			return false;
 		}
 
-		String[] args = cmdStr.toLowerCase().split(" ");
-		boolean toRecord = !args[0].equals("*") && !args[0].equals("record");
-		if(args[0].equals("*"))	{
-			args = Arrays.copyOfRange(args, 1, args.length);
+		ArrayList<String> args = new ArrayList<String>(Arrays.asList(cmdStr.toLowerCase().split(" ")));
+		boolean toRecord = !(args.get(0).matches("\\*|record"));
+		if(args.get(0).equals("*"))	{
+			args.remove(0);
 		}
 
 		CommandInterface cmd = null;
 
 		try	{
-			for(int i = 0; i < args.length; i++)	{
-				int len = args[i].length();
-				if(len > 0 && args[i].charAt(0) == '$')	{
-					args[i] = fetchVariable(args[i].substring(1));
+			for(int i = 0; i < args.size(); i++)	{
+				if(args.get(i).matches("\\$[a-zA-Z]*"))	{
+					String value = fetchVariable(args.get(i).substring(1));
+					args.remove(i);
+					args.add(i, value);
+				}
+
+				if(args.get(i).equals("random"))	{
+					try	{
+						int min = Integer.parseInt(args.get(i+1));
+						int max = Integer.parseInt(args.get(i+2));
+						int r = (int)(Math.random() * (max-min+1) + min);
+						args.remove(i+2);
+						args.remove(i+1);
+						args.remove(i);
+						args.add(i, Integer.toString(r));
+					} catch (IndexOutOfBoundsException e)	{
+						throw new UIException("Usage of random : random <min> <max>");
+					} catch (NumberFormatException e)	{
+						throw new UIException("random expects integer values for min and max.");
+					}
 				}
 			}
 
 			if(!cmdStr.isEmpty())	{
-				cmd = fetchCommand(args[0]);
-				cmd.run(args);
+				cmd = fetchCommand(args.get(0));
+				String[] argsArray = new String[args.size()];
+				for(int i = 0; i < args.size(); i++)	{
+					argsArray[i] = args.get(i);
+				}
+				cmd.run(argsArray);
 			}
 			if(recordingScript && toRecord)	{
 				recordQueue.offer(cmdStr);
