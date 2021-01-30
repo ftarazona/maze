@@ -24,6 +24,16 @@ public class UI_ListVariables implements CommandInterface	{
 		throws UIException	{
 
 		HashMap<String, String> vars = ui.getVariables();
+		HashMap<String, String> specVars = ui.getSpecialVariables();
+
+		ui.println(	"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n" +
+				"~ List of special variables ~\n" +
+				"~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n");
+		specVars.forEach(
+			(k, v) ->
+			ui.println(String.format("%s = %s", k, v)));
+		ui.println("");
+
 		ui.println(	"~~~~~~~~~~~~~~~~~~~~~\n" +
 				"~ List of variables ~\n" +
 				"~~~~~~~~~~~~~~~~~~~~~\n");

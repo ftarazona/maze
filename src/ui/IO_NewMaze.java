@@ -75,6 +75,8 @@ public class IO_NewMaze implements CommandInterface	{
 			for(int i = 4; i < args.length; i++)	{
 				boxArgs[i+1] = Integer.parseInt(args[i]);
 			}
+
+			ui.open();
 		} catch (NumberFormatException e)	{
 			throw new InvalidArgumentsException("Width, height and box options are expected to be integers.");
 		} catch (IndexOutOfBoundsException e)	{

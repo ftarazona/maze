@@ -20,7 +20,10 @@ public class PromptInterface implements UserInterface	{
 	private Queue<String> recordQueue	= new ArrayDeque<String>();
 	private ArrayList<String> history	= new ArrayList<String>();
 
-	private HashMap<String, String> vars	= new HashMap<String, String>();
+	private HashMap<String, String> specialVars
+		= new HashMap<String, String>();
+	private HashMap<String, String> vars
+		= new HashMap<String, String>();
 
 	private InterfaceableMaze maze	= new Maze();
 	private Pi pi			= new PiFunction();
@@ -42,6 +45,10 @@ public class PromptInterface implements UserInterface	{
 		keywords.put("start", Integer.valueOf(BoxFlag.BOX_START.toInt()));
 		keywords.put("end", Integer.valueOf(BoxFlag.BOX_END.toInt()));
 		keywords.put("marked", Integer.valueOf(BoxFlag.BOX_MARKED.toInt()));
+	}
+	
+	/** Constructs a new PromptInterface. */
+	public PromptInterface()	{
 		commandList.add(new UI_Quit(this));
 		commandList.add(new UI_LoadScript(this));
 		commandList.add(new UI_DisplayScript(this));
@@ -126,10 +133,8 @@ public class PromptInterface implements UserInterface	{
 		commands.put("variables",	commandList.get(33));
 		commands.put("area",		commandList.get(34));
 		commands.put("size",		commandList.get(34));
-	}
-	
-	/** Constructs a new PromptInterface. */
-	public PromptInterface()	{
+
+		open();
 	}
 
 	/** Runs the interface.
@@ -270,6 +275,10 @@ public class PromptInterface implements UserInterface	{
 	  * @param variable label of the new variable.
 	  * @param value value of the new variable. */
 	public void setVariable(String variable, String value)	{
+		if(variable.matches("height|width|area"))	{
+			System.out.println("WARNING : Attempting to override special variables. Aborting...");
+			return;
+		}
 		vars.put(variable, value);
 	}
 
@@ -295,6 +304,13 @@ public class PromptInterface implements UserInterface	{
 		return vars;
 	}
 
+	/** Returns a list of special variables associated with their
+	  * values.
+	  * @return a HashMap with a list of special variables. */
+	public HashMap<String, String> getSpecialVariables()	{
+		return specialVars;
+	}
+
 	/** Indicates the interface the user quits.
 	  * The interface may not effectively quit on call to this
 	  * method. */
@@ -316,10 +332,28 @@ public class PromptInterface implements UserInterface	{
 	public Queue<String> getRecord()	{ return recordQueue; }
 
 	/** Indicates the maze has been modified to the interface. */
-	public void modify()		{ modified = true; }
+	public void modify()		{ 
+		modified = true;
+		specialVars.put("height", Integer.toString(maze.getHeight()));
+		specialVars.put("width", Integer.toString(maze.getWidth()));
+		specialVars.put("area", Integer.toString(maze.getArea()));
+	}
 
 	/** Indicates the maze has been saved to the interface. */
 	public void save()		{ modified = false; }
+
+	/** Processes some specific actions on maze opening. */
+	public void open()	{
+		specialVars.put("height", Integer.toString(maze.getHeight()));
+		specialVars.put("width", Integer.toString(maze.getWidth()));
+		specialVars.put("area", Integer.toString(maze.getArea()));
+	}
+
+	/** Processes some specific actions on maze closure. */
+	public void close()	{
+		modified = false;
+		specialVars.clear();
+	}
 
 	/** Indicated whether the maze has unsaved modifications.
 	  * @return true if the maze was modified since last save, 

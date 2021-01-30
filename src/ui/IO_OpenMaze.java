@@ -114,6 +114,8 @@ public class IO_OpenMaze implements CommandInterface	{
 			} else	{
 				ui.getMazeSafe().read(bs);
 			}
+
+			ui.open();
 		} catch (IOException e)	{
 			throw new UIException(e.getMessage());
 		} catch (IndexOutOfBoundsException e)	{

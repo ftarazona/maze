@@ -38,7 +38,7 @@ public class IO_CloseMaze implements CommandInterface	{
 
 		if(closeAnyway)	{
 			ui.getMaze().close();
-			ui.save();
+			ui.close();
 		}
 	}
 }
