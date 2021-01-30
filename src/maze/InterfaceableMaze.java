@@ -15,12 +15,17 @@ public interface InterfaceableMaze extends Graph	{
 	 *  a given type of boxes.
 	 *  @param height height of the new maze.
 	 *  @param width width of the new maze.
-	 *  @param boxType type of the boxes to fill the maze with.
+	 *  @param boxArgs type of the boxes to fill the maze with.
+	 *  @throws InvalidBoxArgumentsException if the given
+	 *  arguments could not be parsed by the Box constructor.
 	 *  @throws UnexpectedBoxTypeException if the given box type
 	 *  does not match with any. */
 	public void newMaze(int height, int width, int[] boxArgs)
 		throws UnexpectedBoxTypeException, InvalidBoxArgumentsException;
 
+	/** Creates a new maze out of a matrix of boxes.
+	  * @param boxes a matrix of boxes from which the maze is
+	  * built. */
 	public void newMaze(Box[][] boxes);
 
 	/** Reads a new maze from a given input stream.
@@ -135,9 +140,11 @@ public interface InterfaceableMaze extends Graph	{
 
 	/** Adds a row.
 	 *  @param pos position of the new row.
-	 *  @param boxType box type to fill the row with.
+	 *  @param boxArgs box type to fill the row with.
 	 *  @throws MazeOutOfBoundsException if pos exceeds the height
 	 *  of the maze.
+	 *  @throws InvalidBoxArgumentsException if the given
+	 *  arguments could not be parsed by the Box constructor.
 	 *  @throws UnexpectedBoxTypeException if the given box type
 	 *  does not match any. */
 	public void addRow(int pos, int[] boxArgs)
@@ -152,9 +159,11 @@ public interface InterfaceableMaze extends Graph	{
 	
 	/** Adds a column.
 	 *  @param pos position of the new column.
-	 *  @param boxType box type to fill the column with.
+	 *  @param boxArgs box type to fill the column with.
 	 *  @throws MazeOutOfBoundsException if pos exceeds the width
 	 *  of the maze.
+	 *  @throws InvalidBoxArgumentsException if the given
+	 *  arguments could not be parsed by the Box constructor.
 	 *  @throws UnexpectedBoxTypeException if the given box type
 	 *  does not match any. */
 	public void addCol(int pos, int[] boxArgs)
@@ -168,7 +177,6 @@ public interface InterfaceableMaze extends Graph	{
 		throws MazeOutOfBoundsException;
 
 	/** Adds a new box with given type and arguments.
-	 *  @param type type of the new box.
 	 *  @param args an array of arguments to provide the
 	 *  constructor with.
 	 *  @throws MazeOutOfBoundsException if the first two
@@ -202,5 +210,11 @@ public interface InterfaceableMaze extends Graph	{
 	/** Returns a matrix of drawing IDs for drawing a tile map.
 	 *  @return A matrix of drawing IDs. */
 	public int[][] drawIDs();
+
+	/** Returns a matrix of flags in integer format for drawing
+	  * a tile map.
+	  * @return a matrix of flags in integer format for drawing
+	  * a tile map. */
+
 	public int[][] drawFlags();
 }
