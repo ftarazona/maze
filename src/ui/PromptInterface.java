@@ -5,15 +5,21 @@ import java.io.*;
 
 import dijkstra.*;
 import maze.*;
+import graphics.*;
 
+import java.awt.*;
+import javax.swing.*;
 
 /** Implementation of a user interface */
 public class PromptInterface implements UserInterface	{
 	
+	private DrawFrame window	= null;
+
 	//These booleans record various states of the interface
 	private boolean quitValue		= false;
 	private boolean recordingScript		= false;
 	private boolean modified		= false;
+	private boolean windowSetUp		= false;
 
 	//notToParse indicates which commands do not use the interface
 	//parser but their own instead.
@@ -151,6 +157,27 @@ public class PromptInterface implements UserInterface	{
 		commands.put("area",		commandList.get(34));
 		commands.put("size",		commandList.get(34));
 		commands.put("times",		commandList.get(35));
+	
+		window = new DrawFrame(this);
+		setWindowUp();
+	}
+
+	/** Refresh window */
+	public void setWindowUp()	{
+		window.refresh();
+		windowSetUp = true;
+	}
+
+	/** Closes the window */
+	public void closeWindow()	{
+		window.dispose();
+		windowSetUp = false;
+	}
+
+	/** Set the focus on the window */
+	public void focusWindow()	{
+		window.toFront();
+		window.requestFocus();
 	}
 
 /* ********************************************************************* */
@@ -158,7 +185,8 @@ public class PromptInterface implements UserInterface	{
 /* ********************************************************************* */
 
 	/** Runs the interface.
-	  * In a PromptInterface, this loops until the user quits.
+	  * In a PromptInterface, th		window.setVisible(false);
+	  windowSetUp = false;is loops until the user quits.
 	  * In this loop, the interface empty its command queues, then
 	  * asks the user to feed it with a new one. */
 	public void run(String[] args)	{
@@ -431,6 +459,8 @@ public class PromptInterface implements UserInterface	{
 		specialVars.put("height", Integer.toString(maze.getHeight()));
 		specialVars.put("width", Integer.toString(maze.getWidth()));
 		specialVars.put("area", Integer.toString(maze.getArea()));
+		if(windowSetUp)
+			window.refresh();
 	}
 
 	/** Indicates the maze has been saved to the interface. */
@@ -441,6 +471,8 @@ public class PromptInterface implements UserInterface	{
 		specialVars.put("height", Integer.toString(maze.getHeight()));
 		specialVars.put("width", Integer.toString(maze.getWidth()));
 		specialVars.put("area", Integer.toString(maze.getArea()));
+		if(windowSetUp)
+			window.refresh();
 	}
 
 	/** Processes some specific actions on maze closure. */
@@ -449,6 +481,9 @@ public class PromptInterface implements UserInterface	{
 		specialVars.remove("height");
 		specialVars.remove("width");
 		specialVars.remove("area");
+
+		if(windowSetUp)
+			window.refresh();
 	}
 
 	/** Indicated whether the maze has unsaved modifications.

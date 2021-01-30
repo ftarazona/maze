@@ -33,7 +33,8 @@ public class DISPLAY_DrawMaze implements CommandInterface	{
 		throws UIException	{
 
 		try	{
-			TileMap.drawMaze(ui.getMaze());
+			ui.setWindowUp();
+			ui.focusWindow();
 		} catch (Exception e)	{
 			throw new UIException(e.getMessage());
 		}

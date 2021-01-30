@@ -88,6 +88,7 @@ public class TileMap extends JPanel	{
 		frame.setTitle("My amazing Maze!");
 		frame.setLayout(new BorderLayout());
 		TileMap map = new TileMap(maze);
+		frame.setMinimumSize(new Dimension(200, 200));
 		frame.add(BorderLayout.CENTER, new JScrollPane(map));
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.pack();

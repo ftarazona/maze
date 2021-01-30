@@ -36,6 +36,7 @@ public class UI_Quit implements CommandInterface	{
 		}
 
 		if(closeAnyway)	{
+			ui.closeWindow();
 			ui.getMazeSafe().close();
 			ui.close();
 			ui.quit();
