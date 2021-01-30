@@ -28,8 +28,8 @@ modifiable implementation. It is divided in 4 packages :
 * *graphics* provides the classes for drawing
 
 Sample classes can be found for implementing new objects with customized behaviours. Once coded, it has to be linked :
-* *Box* : for linking a box, the only thing to do is to add an entry in the static method `newBox` in abstract class `Box`
-* *CommandInterface* : for linking a command to the prompt interface, an entry has to be added in the `constructor` of class `PromptInterface`
+* a *Box* : for linking a box, the only thing to do is to add an entry in the static method `newBox` in abstract class `Box`
+* a *CommandInterface* : for linking a command to the prompt interface, an entry has to be added in the `constructor` of class `PromptInterface`
 
 == Getting started with the PromptInterface
 It is now time to explain how to use the _PromptInterface_.
