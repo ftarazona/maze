@@ -76,13 +76,13 @@ public class IO_NewMaze implements CommandInterface	{
 				boxArgs[i+1] = Integer.parseInt(args[i]);
 			}
 
+		
+			ui.getMazeSafe().newMaze(height, width, boxArgs);
 			ui.open();
 		} catch (NumberFormatException e)	{
 			throw new InvalidArgumentsException("Width, height and box options are expected to be integers.");
 		} catch (IndexOutOfBoundsException e)	{
 			throw new IncorrectUsageException();
 		}
-		
-		ui.getMazeSafe().newMaze(height, width, boxArgs);
 	}
 }

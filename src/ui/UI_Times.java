@@ -38,7 +38,7 @@ public class UI_Times implements CommandInterface	{
 					}
 					cmd = cmd.concat(t[j]+" ");
 				}
-				ui.offerScript(cmd);
+				ui.offerIteration(cmd);
 				ui.executeCommand();
 			}
 		} catch (IndexOutOfBoundsException e)	{

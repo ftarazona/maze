@@ -131,9 +131,4 @@ public class IO_OpenMaze implements CommandInterface	{
 			}
 		}
 	}
-
-	private static void compatibilityMode(BufferedInputStream bs, InterfaceableMaze maze)	
-		throws MazeException	{
-		System.out.println("Compatibility mode");
-	}
 }

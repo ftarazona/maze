@@ -43,7 +43,7 @@ public class UI_LoadScript implements CommandInterface	{
 		try	{
 			file = new FileInputStream(args[1]);
 			scanner = new Scanner(file);
-
+			
 			while(scanner.hasNextLine())	{
 				String line = scanner.nextLine().toLowerCase();
 				int len = line.length();
@@ -55,11 +55,11 @@ public class UI_LoadScript implements CommandInterface	{
 					String[] cargs = line.split(" ");
 					String cmd = new String();
 				for(int j = 0; j < cargs.length; j++)	{
-					if(args[j].matches("\\$[a-zA-Z]*"))	{
+					if(cargs[j].matches("\\$[a-zA-Z]*"))	{
 						String label = cargs[j].substring(1);
-						cargs[j] = ui.fetchVariable(label);
-						if(cargs[j] == null)	{
-							throw new UninitializedVariableException(label);
+						String value =ui.fetchVariable(label);
+						if(value != null)	{
+							cargs[j]; = value;
 						}
 					}
 					cmd = cmd.concat(cargs[j] + " ");

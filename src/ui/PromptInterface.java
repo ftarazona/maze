@@ -13,10 +13,12 @@ public class PromptInterface implements UserInterface	{
 	private boolean quitValue		= false;
 	private boolean recordingScript		= false;
 	private boolean modified		= false;
+	private String notToParse	= "times";
 	private static ArrayList<CommandInterface> commandList
 		= new ArrayList<CommandInterface>();
 	private Queue<String> mainQueue		= new ArrayDeque<String>();
 	private Queue<String> scriptQueue	= new ArrayDeque<String>();
+	private Queue<String> iterationQueue	= new ArrayDeque<String>();
 	private Queue<String> recordQueue	= new ArrayDeque<String>();
 	private ArrayList<String> history	= new ArrayList<String>();
 
@@ -150,6 +152,46 @@ public class PromptInterface implements UserInterface	{
 		}
 	}
 
+	/** Parses str to find variable names to replace by values.
+	  * @param str string to parse.
+	  * @return parsed string
+	  * @throws UninitializedVariableException if a variable could
+	  * not be found. */
+	public String[] parse(String[] cargs)	
+		throws UIException	{
+
+		ArrayList<String> args = new ArrayList<String>(Arrays.asList(cargs));
+
+		for(int i = 0; i < args.size(); i++)	{
+			String w = args.get(i);
+			if(w.startsWith("$"))	{
+				args.remove(i);
+				args.add(i, fetchVariable(w.substring(1)));
+			}
+
+			if(w.equals("random"))	{
+				try	{
+				int min = Integer.parseInt(args.get(i+1));
+				int max = Integer.parseInt(args.get(i+2));
+				int r = (int)(Math.random() * (max-min) + min);
+				args.remove(i+2);
+				args.remove(i+1);
+				args.remove(i);
+				args.add(i, Integer.toString(r));
+				} catch (IndexOutOfBoundsException e)	{
+					throw new UIException("Usage of random : random <min> <max>");
+				} catch (NumberFormatException e)	{
+					throw new UIException("random expects integer values for min and max.");
+				}
+			}
+		}
+		
+		String[] ret = new String[args.size()];
+		for(int i = 0; i < args.size(); i++)
+			ret[i] = args.get(i);
+		return ret;
+	}
+
 	/** Executes next command.
 	  * The command must have been pushed to a queue before
 	  * calling this method, hence a previous call to offer or
@@ -157,7 +199,9 @@ public class PromptInterface implements UserInterface	{
 	  * @return true if a command was found, false otherwise. */
 	public boolean 		executeCommand()	{
 		String cmdStr = new String();
-		if(!mainQueue.isEmpty())	{
+		if(!iterationQueue.isEmpty())	{
+			cmdStr = iterationQueue.poll();
+		} else if(!mainQueue.isEmpty())	{
 			cmdStr = mainQueue.poll();
 		} else if(!scriptQueue.isEmpty())	{
 			cmdStr = scriptQueue.poll();
@@ -166,46 +210,19 @@ public class PromptInterface implements UserInterface	{
 			return false;
 		}
 
-		ArrayList<String> args = new ArrayList<String>(Arrays.asList(cmdStr.toLowerCase().split(" ")));
-		boolean toRecord = !(args.get(0).matches("\\*|record"));
-		if(args.get(0).equals("*"))	{
-			args.remove(0);
-		}
+		String[] args = cmdStr.toLowerCase().split(" ");
+		boolean toRecord = !(args[0].matches("\\*|record"));
+		args[0].replace("*", "");
 
 		CommandInterface cmd = null;
 
 		try	{
-			for(int i = 0; i < args.size(); i++)	{
-				if(args.get(i).matches("\\$[a-zA-Z]*") && !args.get(0).equals("times"))	{
-					String value = fetchVariable(args.get(i).substring(1));
-					args.remove(i);
-					args.add(i, value);
-				}
-
-				if(args.get(i).equals("random") && !args.get(0).equals("times"))	{
-					try	{
-						int min = Integer.parseInt(args.get(i+1));
-						int max = Integer.parseInt(args.get(i+2));
-						int r = (int)(Math.random() * (max-min) + min);
-						args.remove(i+2);
-						args.remove(i+1);
-						args.remove(i);
-						args.add(i, Integer.toString(r));
-					} catch (IndexOutOfBoundsException e)	{
-						throw new UIException("Usage of random : random <min> <max>");
-					} catch (NumberFormatException e)	{
-						throw new UIException("random expects integer values for min and max.");
-					}
-				}
-			}
-
 			if(!cmdStr.isEmpty())	{
-				cmd = fetchCommand(args.get(0));
-				String[] argsArray = new String[args.size()];
-				for(int i = 0; i < args.size(); i++)	{
-					argsArray[i] = args.get(i);
+				cmd = fetchCommand(args[0]);
+				if(!notToParse.contains(args[0]))	{
+					args = parse(args);
 				}
-				cmd.run(argsArray);
+				cmd.run(args);
 			}
 			if(recordingScript && toRecord)	{
 				recordQueue.offer(cmdStr);
@@ -292,6 +309,14 @@ public class PromptInterface implements UserInterface	{
 		scriptQueue.offer(cmd);
 	}
 
+	/** Pushes a command to the iteration queue (commands entered by
+	  * times). It does not check whether the command
+	  * can be executed.
+	  * @param cmd the command to push. */
+	public void offerIteration(String cmd)	{
+		iterationQueue.offer(cmd);
+	}
+
 	/** Initializes a variable.
 	  * @param variable label of the new variable.
 	  * @param value value of the new variable. */
@@ -311,8 +336,13 @@ public class PromptInterface implements UserInterface	{
 	public String fetchVariable(String variable)	
 		throws UninitializedVariableException	{
 		String value = vars.get(variable);
-		if(value == null)	{ 
-			throw new UninitializedVariableException(variable);
+		if(value == null)	{
+			value = specialVars.get(variable);
+			if(value == null)	{
+				throw new UninitializedVariableException(variable);
+			} else	{
+				return value;
+			}
 		} else	{
 			return value;
 		}
@@ -373,7 +403,9 @@ public class PromptInterface implements UserInterface	{
 	/** Processes some specific actions on maze closure. */
 	public void close()	{
 		modified = false;
-		specialVars.clear();
+		specialVars.remove("height");
+		specialVars.remove("width");
+		specialVars.remove("area");
 	}
 
 	/** Indicated whether the maze has unsaved modifications.

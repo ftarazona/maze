@@ -31,11 +31,13 @@ public class Maze
 	/** Constructs an empty maze with null dimensions.
 	 *  The new maze is not opened. */
 	public Maze()	{
-		boxes = new Box[0][0];
+		boxes = null;
 		width = 0;
 		height = 0;
 		area = 0;
 		opened = false;
+		xRoot = -1;
+		yRoot = -1;
 		hasRoot = false;
 		showFlag = EnumSet.noneOf(BoxFlag.class);
 	}
@@ -49,16 +51,19 @@ public class Maze
 	public Maze(int height, int width)	
 		throws UnexpectedBoxTypeException	{
 		showFlag = EnumSet.noneOf(BoxFlag.class);
+		boxes = new Box[height][width];
 		this.height = height;
 		this.width = width;
 		this.area = 0;
 		opened = true;
+		hasRoot = false;
 	}
 
 	/** Creates a new maze without invoking constructor.
 	 *  This method effectively opens the maze. */
 	public void newMaze(int height, int width, int[] args)	
 		throws UnexpectedBoxTypeException, InvalidBoxArgumentsException	{
+		close();
 		boxes = new Box[height][width];
 		this.height = height;
 		this.width = width;
@@ -70,6 +75,7 @@ public class Maze
 					args[2] = i;
 				}
 				boxes[i][j] = Box.newBox(args);
+				if(boxes[i][j] != null)	{ area++; }
 			}
 		}
 
@@ -84,6 +90,7 @@ public class Maze
 	}
 
 	public void newMaze(Box[][] boxes)	{
+		close();
 		this.boxes = boxes;
 		this.width = boxes.length;
 		this.height = boxes[0].length;
@@ -144,6 +151,8 @@ public class Maze
 	 */
 	public void read(InputStream in)	
 		throws IOException, ReadingException	{
+
+		close();
 
 		ArrayList<Box> boxList = new ArrayList<Box>();
 
@@ -210,11 +219,13 @@ public class Maze
 	public boolean isOpened()	{ return opened; }
 
 	public void close()	{
-		boxes = new Box[0][0];
+		boxes = null;
 		width = 0;
 		height = 0;
 		area = 0;
 		opened = false;
+		xRoot = -1;
+		yRoot = -1;
 		hasRoot = false;
 		showFlag = EnumSet.noneOf(BoxFlag.class);
 	}
@@ -425,6 +436,8 @@ public class Maze
 		try	{
 			boxes[y][x].remFlag(flag);
 			if(flag.equals(BoxFlag.BOX_START) && x == xRoot && y == yRoot)	{
+				xRoot = -1;
+				yRoot = -1;
 				hasRoot = false;
 			}
 		} catch (IndexOutOfBoundsException e)	{
@@ -441,6 +454,7 @@ public class Maze
 
 	public boolean setRoot(int x, int y)	
 		throws MazeOutOfBoundsException, NullBoxException	{
+		boolean ret = false;
 		try	{
 			boxes[y][x].addFlag(BoxFlag.BOX_START);
 		} catch (IndexOutOfBoundsException e)	{
@@ -449,21 +463,22 @@ public class Maze
 			throw new NullBoxException();
 		}
 
-		if(hasRoot)	{
+		if(hasRoot && !(x == xRoot && y == yRoot))	{
 			boxes[yRoot][xRoot].remFlag(BoxFlag.BOX_START);
-			return true;
+			ret = true;
 		}
-
 		yRoot = y;
 		xRoot = x;
 		hasRoot = true;
-		return false;
+		return ret;
 	}
 
 	public void remRoot()	{
 		if(hasRoot && boxes[yRoot][xRoot] != null)	{
 			boxes[yRoot][xRoot].remFlag(BoxFlag.BOX_START);
 		}
+		xRoot = -1;
+		yRoot = -1;
 		hasRoot = false;
 	}
 
