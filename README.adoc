@@ -2,31 +2,34 @@
 
 :sectnum!:
 == Introduction
-This repository contains source code and compiling tools for the first year JAVA project of making a maze. 
-The goal of the project is to get use to JAVA programming by implementing the Dijkstra algorithm.
+This repository contains source code, compiling tools and few extras for the Maze Project (INF103 course, 1st year at Télécom Paris).
+Please read this README, at least the *Getting started* section in order to learn how to use the interface.
 
-== What I achieved
-After getting done with the project requirements, I wanted to go further. For example I tried to think to long term developping :
-what happens if I want to add a box with a new behavior ? Or if I want to implement a new user interface ?
-In order to allow such modifications, I modified the format of the maps, considered START and END as flags instead of boxes.
-I was not able to finish the implementation of a third dimension.
-The interface took me some time. Unfortunately I had not enough time to implement a Graphcial Interface.
-The current work on it can be found in the graphics branch, the interface is drawn but I had issues with event handling. I decided to abandon this feature for now.
-However the prompt interface comes with a lot a features, such as scripting, variable recorder, iteration loops etc. which I will introduce later.
+==== Motivation
+The project was designed to understand and get used to JAVA programming by implementing the Dijkstra algorithm.
+The algorithm is used here as a tool for solving mazes.
 
-== Architecture
-The global architecture of the project has undergone many changes. The red line was to come up with an easily modifiable project.
-It is divided in 4 modules :
-* **dijkstra** contains all necessary interfaces and classes for implementing the Dijkstra algorithm
-* **maze** implements the graph and proposes an interface for editing the maze via a user interface.
-* **ui** provides a user interface with many commands
-* **graphics** provides only a TileMap to draw the maze, for the moment.
-We'll see how one can modify the project properly.
+==== What I achieved
+After finished with the project requirements, which was done by mid-December, I wanted to go further and propose additional features.
 
-== How to bring new features
-Developpers can use the samples provided for adding box types to the maze or commands to the interface.
-* When adding a box, it is required to add an entry in the static method _newBox_ of the class _Box_. In order to get access to it through the interface, a new keyword must be attached to the ID of the box in _PromptInterface_.
-* When adding a command, a new entry has to be created in the constructor of _PromptInterface_.
+Unfortunately I ran short of time. Consequently the graphical interface is limited to a display of the maze, the user can interact only via
+a prompt. Nevertheless this interface provides many tools which I will detail further on.
+
+I was also planning on adding altitude. I adapted the format of files in consequence but the graph does not take it into account. I also made
+it easy to develop new types of boxes with customized behaviour. This, nevertheless is still exprimental and calls for some modifications in
+the implementation of Maze class.
+
+==== Global architecture
+The global architecture has undergone many changes since the creation of the project. The red line was to come up with with an easily
+modifiable implementation. It is divided in 4 packages :
+* *dijkstra* contains all necessary interfaces and classes for implementing the Dijkstra algorithm
+* *maze* implements the graph via the class Maze and proposes an interface for creating a user interface
+* *ui* provides a prompt interface with window in parallel drawing the maze
+* *graphics* provides the classes for drawing
+
+Sample classes can be found for implementing new objects with customized behaviours. Once coded, it has to be linked :
+* *Box* : for linking a box, the only thing to do is to add an entry in the static method `newBox` in abstract class `Box`
+* *CommandInterface* : for linking a command to the prompt interface, an entry has to be added in the `constructor` of class `PromptInterface`
 
 == Getting started with the PromptInterface
 It is now time to explain how to use the _PromptInterface_.
