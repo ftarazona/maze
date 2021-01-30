@@ -27,7 +27,7 @@ public class UI_LoadScript implements CommandInterface	{
 	}
 
 	public String usage()	{
-		return "script <filename>";
+		return "script <filename> <expected variables values>";
 	}
 
 	
@@ -59,7 +59,7 @@ public class UI_LoadScript implements CommandInterface	{
 						String label = cargs[j].substring(1);
 						String value =ui.fetchVariable(label);
 						if(value != null)	{
-							cargs[j]; = value;
+							cargs[j] = value;
 						}
 					}
 					cmd = cmd.concat(cargs[j] + " ");

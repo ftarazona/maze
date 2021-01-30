@@ -26,8 +26,23 @@ public class UI_Times implements CommandInterface	{
 
 		try	{
 			label = args[1];
-			min = Integer.parseInt(args[2]);
-			max = Integer.parseInt(args[3]);
+			String smin = args[2];
+			String smax = args[3];
+			if(smin.matches("\\$[a-zA-Z]*"))	{
+				String vlabel = smin.substring(1);
+				String vvalue = ui.fetchVariable(vlabel);
+				min = Integer.parseInt(vvalue);
+			} else	{
+				min = Integer.parseInt(smin);
+			}
+			if(smax.matches("\\$[a-zA-Z]*"))	{
+				String vlabel = smax.substring(1);
+				String vvalue = ui.fetchVariable(vlabel);
+				max = Integer.parseInt(vvalue);
+			} else	{
+				max = Integer.parseInt(smax);
+			}
+
 			for(int i = min; i < max; i++)	{
 				value = Integer.toString(i);
 				String[] t = Arrays.copyOfRange(args, 4, args.length);

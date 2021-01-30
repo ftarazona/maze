@@ -10,22 +10,35 @@ import maze.*;
 /** Implementation of a user interface */
 public class PromptInterface implements UserInterface	{
 	
+	//These booleans record various states of the interface
 	private boolean quitValue		= false;
 	private boolean recordingScript		= false;
 	private boolean modified		= false;
+
+	//notToParse indicates which commands do not use the interface
+	//parser but their own instead.
 	private String notToParse	= "times";
-	private static ArrayList<CommandInterface> commandList
-		= new ArrayList<CommandInterface>();
+
+	//The queues allow a flexible flow when executing the commands
+	//They come with priorities : first the interface will execute
+	//every command in iteration, then main, then script.
+	private Queue<String> iterationQueue	= new ArrayDeque<String>();
 	private Queue<String> mainQueue		= new ArrayDeque<String>();
 	private Queue<String> scriptQueue	= new ArrayDeque<String>();
-	private Queue<String> iterationQueue	= new ArrayDeque<String>();
+
+	//These collections are used to record previous executed commands
 	private Queue<String> recordQueue	= new ArrayDeque<String>();
 	private ArrayList<String> history	= new ArrayList<String>();
 
+	//Some variables are said to be special, such as maze properties,
+	//in order to be used without having to modify them manually.
 	private HashMap<String, String> specialVars
 		= new HashMap<String, String>();
 	private HashMap<String, String> vars
 		= new HashMap<String, String>();
+
+	private static HashMap<String, Integer> keywords
+		= new HashMap<String, Integer>();
 
 	private InterfaceableMaze maze	= new Maze();
 	private Pi pi			= new PiFunction();
@@ -33,11 +46,12 @@ public class PromptInterface implements UserInterface	{
 	private PrintStream out		= System.out;
 	private Scanner scanner		= new Scanner(System.in);
 
-	private static HashMap<String, Integer> keywords
-		= new HashMap<String, Integer>();
+	private static ArrayList<CommandInterface> commandList
+		= new ArrayList<CommandInterface>();
 	private static HashMap<String, CommandInterface> commands
 		= new HashMap<String, CommandInterface>();
 
+	/* Links keywords to values */
 	static	{
 		keywords.put("wall", Integer.valueOf(WallBox.ID));
 		keywords.put("empty", Integer.valueOf(EmptyBox.ID));
@@ -49,7 +63,7 @@ public class PromptInterface implements UserInterface	{
 		keywords.put("marked", Integer.valueOf(BoxFlag.BOX_MARKED.toInt()));
 	}
 	
-	/** Constructs a new PromptInterface. */
+	/** Constructs a new PromptInterface, links the commands. */
 	public PromptInterface()	{
 		commandList.add(new UI_Quit(this));
 		commandList.add(new UI_LoadScript(this));
@@ -139,6 +153,10 @@ public class PromptInterface implements UserInterface	{
 		commands.put("times",		commandList.get(35));
 	}
 
+/* ********************************************************************* */
+/* ****************************** Execution **************************** */
+/* ********************************************************************* */
+
 	/** Runs the interface.
 	  * In a PromptInterface, this loops until the user quits.
 	  * In this loop, the interface empty its command queues, then
@@ -146,59 +164,25 @@ public class PromptInterface implements UserInterface	{
 	public void run(String[] args)	{
 		while(!quitValue)	{
 			while(executeCommand());
+
+			//This reads a command from direct user input
 			getOutStream().print(">>> ");
 			offer(scanner.nextLine());
 			executeCommand();
 		}
 	}
 
-	/** Parses str to find variable names to replace by values.
-	  * @param str string to parse.
-	  * @return parsed string
-	  * @throws UninitializedVariableException if a variable could
-	  * not be found. */
-	public String[] parse(String[] cargs)	
-		throws UIException	{
-
-		ArrayList<String> args = new ArrayList<String>(Arrays.asList(cargs));
-
-		for(int i = 0; i < args.size(); i++)	{
-			String w = args.get(i);
-			if(w.startsWith("$"))	{
-				args.remove(i);
-				args.add(i, fetchVariable(w.substring(1)));
-			}
-
-			if(w.equals("random"))	{
-				try	{
-				int min = Integer.parseInt(args.get(i+1));
-				int max = Integer.parseInt(args.get(i+2));
-				int r = (int)(Math.random() * (max-min) + min);
-				args.remove(i+2);
-				args.remove(i+1);
-				args.remove(i);
-				args.add(i, Integer.toString(r));
-				} catch (IndexOutOfBoundsException e)	{
-					throw new UIException("Usage of random : random <min> <max>");
-				} catch (NumberFormatException e)	{
-					throw new UIException("random expects integer values for min and max.");
-				}
-			}
-		}
-		
-		String[] ret = new String[args.size()];
-		for(int i = 0; i < args.size(); i++)
-			ret[i] = args.get(i);
-		return ret;
-	}
-
 	/** Executes next command.
 	  * The command must have been pushed to a queue before
 	  * calling this method, hence a previous call to offer or
 	  * offerScript is required.
+	  * This method does not throw exceptions, as it treats each of
+	  * them.
 	  * @return true if a command was found, false otherwise. */
 	public boolean 		executeCommand()	{
 		String cmdStr = new String();
+
+		//Implements the priority of queues
 		if(!iterationQueue.isEmpty())	{
 			cmdStr = iterationQueue.poll();
 		} else if(!mainQueue.isEmpty())	{
@@ -211,8 +195,9 @@ public class PromptInterface implements UserInterface	{
 		}
 
 		String[] args = cmdStr.toLowerCase().split(" ");
-		boolean toRecord = !(args[0].matches("\\*|record"));
-		args[0].replace("*", "");
+		boolean toRecord = recordingScript && !(args[0].equals("*"));
+		//Removes the * meaning the command is not to be recorded
+		if(args[0].equals("*"))	{ args = Arrays.copyOfRange(args, 1, args.length); }
 
 		CommandInterface cmd = null;
 
@@ -224,9 +209,8 @@ public class PromptInterface implements UserInterface	{
 				}
 				cmd.run(args);
 			}
-			if(recordingScript && toRecord)	{
-				recordQueue.offer(cmdStr);
-			}
+			if(toRecord)	{ recordQueue.offer(cmdStr); }
+
 		} catch (IncorrectUsageException e)	{
 			getOutStream().print(String.format(
 				"Wrong usage :\n%s\n", 
@@ -241,13 +225,45 @@ public class PromptInterface implements UserInterface	{
 			getOutStream().print(String.format(
 				"An internal error occured : \n" +
 				"%s\n" +
-				"Please report the bug to " +
+				"Please report this bug to " +
 				"florian.tarazona@telecom-paris.fr\n",
 				e.getMessage()));
 			e.printStackTrace();
 		}
 		return true;
 	}
+
+/* ********************************************************************* */
+/* **************************** Flow Control *************************** */
+/* ********************************************************************* */
+
+	/** Pushes a command to the main queue (commands entered by
+	  * the user directly. It does not check whether the command
+	  * can be executed.
+	  * @param cmd the command to push. */
+	public void offer(String cmd)	{
+		mainQueue.offer(cmd);
+	}
+
+	/** Pushes a command to the script queue (commands found in a
+	  * script. It does not check whether the command
+	  * can be executed.
+	  * @param cmd the command to push. */
+	public void offerScript(String cmd)	{
+		scriptQueue.offer(cmd);
+	}
+
+	/** Pushes a command to the iteration queue (commands entered by
+	  * times). It does not check whether the command
+	  * can be executed.
+	  * @param cmd the command to push. */
+	public void offerIteration(String cmd)	{
+		iterationQueue.offer(cmd);
+	}
+
+/* ********************************************************************* */
+/* *********************** Manipulation of commands ******************** */
+/* ********************************************************************* */
 
 	/** Fetches a command given a string.
 	  * @param str command name to search for.
@@ -277,45 +293,9 @@ public class PromptInterface implements UserInterface	{
 		return commands.get(cmd) != null;
 	}
 
-	/** Returns the integer corresponding to a key word of the
-	  * interface.
-	  * @param key keyword to search for.
-	  * @return the integer corresponding.
-	  * @throws UnexpectedKeyWordException if the keyword is not
-	  * defined by the interface. */
-	public int keyWord(String key)
-		throws UnexpectedKeyWordException	{
-
-		Integer ret = keywords.get(key);
-		if(ret == null)	{
-			throw new UnexpectedKeyWordException(key);
-		}
-		return ret.intValue();
-	}
-
-	/** Pushes a command to the main queue (commands entered by
-	  * the user directly. It does not check whether the command
-	  * can be executed.
-	  * @param cmd the command to push. */
-	public void offer(String cmd)	{
-		mainQueue.offer(cmd);
-	}
-
-	/** Pushes a command to the script queue (commands found in a
-	  * script. It does not check whether the command
-	  * can be executed.
-	  * @param cmd the command to push. */
-	public void offerScript(String cmd)	{
-		scriptQueue.offer(cmd);
-	}
-
-	/** Pushes a command to the iteration queue (commands entered by
-	  * times). It does not check whether the command
-	  * can be executed.
-	  * @param cmd the command to push. */
-	public void offerIteration(String cmd)	{
-		iterationQueue.offer(cmd);
-	}
+/* ********************************************************************* */
+/* *********************** Declare & fetch Variables ******************* */
+/* ********************************************************************* */
 
 	/** Initializes a variable.
 	  * @param variable label of the new variable.
@@ -326,6 +306,20 @@ public class PromptInterface implements UserInterface	{
 			return;
 		}
 		vars.put(variable, value);
+	}
+
+	/** Returns a list of current variables associated with their
+	  * values.
+	  * @return a HashMap with a list of the variables. */
+	public HashMap<String, String> getVariables()	{
+		return vars;
+	}
+
+	/** Returns a list of special variables associated with their
+	  * values.
+	  * @return a HashMap with a list of special variables. */
+	public HashMap<String, String> getSpecialVariables()	{
+		return specialVars;
 	}
 
 	/** Fetches a variable.
@@ -348,19 +342,68 @@ public class PromptInterface implements UserInterface	{
 		}
 	}
 
-	/** Returns a list of current variables associated with their
-	  * values.
-	  * @return a HashMap with a list of the variables. */
-	public HashMap<String, String> getVariables()	{
-		return vars;
+	/** Returns the integer corresponding to a key word of the
+	  * interface.
+	  * @param key keyword to search for.
+	  * @return the integer corresponding.
+	  * @throws UnexpectedKeyWordException if the keyword is not
+	  * defined by the interface. */
+	public int keyWord(String key)
+		throws UnexpectedKeyWordException	{
+
+		Integer ret = keywords.get(key);
+		if(ret == null)	{
+			throw new UnexpectedKeyWordException(key);
+		}
+		return ret.intValue();
 	}
 
-	/** Returns a list of special variables associated with their
-	  * values.
-	  * @return a HashMap with a list of special variables. */
-	public HashMap<String, String> getSpecialVariables()	{
-		return specialVars;
+	/** Parses str to find variable names to replace by values.
+	  * @param str string to parse.
+	  * @return parsed string
+	  * @throws UninitializedVariableException if a variable could
+	  * not be found. */
+	public String[] parse(String[] cargs)	
+		throws UIException	{
+
+		ArrayList<String> args = new ArrayList<String>(Arrays.asList(cargs));
+
+		for(int i = 0; i < args.size(); i++)	{
+			String w = args.get(i);
+			if(w.startsWith("$"))	{
+				//We replace the label by its value
+				args.remove(i);
+				args.add(i, fetchVariable(w.substring(1)));
+			}
+
+			if(w.equals("random"))	{
+				try	{
+				//The next arguments must be the min/max
+				int min = Integer.parseInt(args.get(i+1));
+				int max = Integer.parseInt(args.get(i+2));
+				int r = (int)(Math.random() * (max-min) + min);
+				args.remove(i+2);
+				args.remove(i+1);
+				args.remove(i);
+				args.add(i, Integer.toString(r));
+				} catch (IndexOutOfBoundsException e)	{
+					throw new UIException("Usage of random : random <min> <max>");
+				} catch (NumberFormatException e)	{
+					throw new UIException("random expects integer values for min and max.");
+				}
+			}
+		}
+		
+		//Generating the new array from an ArrayList
+		String[] ret = new String[args.size()];
+		for(int i = 0; i < args.size(); i++)
+			ret[i] = args.get(i);
+		return ret;
 	}
+
+/* ********************************************************************* */
+/* ***************** Control of the State of the Interface ************* */
+/* ********************************************************************* */
 
 	/** Indicates the interface the user quits.
 	  * The interface may not effectively quit on call to this
@@ -412,6 +455,10 @@ public class PromptInterface implements UserInterface	{
 	  * @return true if the maze was modified since last save, 
 	  * false otherwise. */
 	public boolean wasModified()	{ return modified; }
+
+/* ********************************************************************* */
+/* ************************* Getters and Writers *********************** */
+/* ********************************************************************* */
 
 	/** Returns the current maze.
 	  * @return the current maze.
