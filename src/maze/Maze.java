@@ -40,11 +40,10 @@ public class Maze
 		showFlag = EnumSet.noneOf(BoxFlag.class);
 	}
 
-	/** Constructs a new maze with given dimensions and box type.
+	/** Constructs a new maze with given dimensions.
 	 *  The maze is considered opened.
 	 *  @param height height of the new maze.
 	 *  @param width width of the new maze.
-	 *  @param type box type to fill with.
 	 *  @throws UnexpectedBoxTypeException if type does not match
 	 *  any. */
 	public Maze(int height, int width)	

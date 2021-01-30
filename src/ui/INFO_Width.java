@@ -2,6 +2,7 @@ package ui;
 
 import maze.*;
 
+/** Width tells the width of the maze. */
 public class INFO_Width implements CommandInterface	{
 
 	private final PromptInterface ui;

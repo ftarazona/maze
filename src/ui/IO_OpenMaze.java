@@ -10,7 +10,8 @@ import java.util.Scanner;
 import maze.*;
 
 
-/** OpenMaze reads a maze from an input stream, typically a file. */
+/** OpenMaze reads a maze from an input stream, typically a file. 
+ *  A compatibility mode allows one to load an old-format file. */
 public class IO_OpenMaze implements CommandInterface	{
 
 	private final PromptInterface ui;

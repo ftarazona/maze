@@ -2,6 +2,7 @@ package ui;
 
 import maze.*;
 
+/** Height tells the height of the maze. */
 public class INFO_Height implements CommandInterface	{
 
 	private final PromptInterface ui;

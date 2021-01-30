@@ -50,6 +50,13 @@ public abstract class Box
 		this.drawid	= SPRITE;
 	}
 
+	/** Returns a new box given arguments.
+	  * @param args contains the box type and the arguments to
+	  * pass the constructor.
+	  * @throws InvalidBoxArgumentsException if the given
+	  * arguments could not be parsed by the Box constructor.
+	  * @throws UnexpectedBoxTypeException if the given box type
+	  * does not match with any. */
 	public static Box newBox(int[] args)
 		throws InvalidBoxArgumentsException, UnexpectedBoxTypeException	{
 		int boxType = args[0];

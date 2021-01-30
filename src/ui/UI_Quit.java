@@ -1,5 +1,6 @@
 package ui;
 
+/** Quit requests the interface to quit. */
 public class UI_Quit implements CommandInterface	{
 
 	private final PromptInterface ui;

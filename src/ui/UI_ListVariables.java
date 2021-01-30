@@ -2,6 +2,7 @@ package ui;
 
 import java.util.*;
 
+/** ListVariable displays a list of all the variables and their values. */
 public class UI_ListVariables implements CommandInterface	{
 
 	private final PromptInterface ui;

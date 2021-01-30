@@ -13,7 +13,7 @@ public class PromptInterface implements UserInterface	{
 	private boolean quitValue		= false;
 	private boolean recordingScript		= false;
 	private boolean modified		= false;
-	private ArrayList<CommandInterface> commandList
+	private static ArrayList<CommandInterface> commandList
 		= new ArrayList<CommandInterface>();
 	private Queue<String> mainQueue		= new ArrayDeque<String>();
 	private Queue<String> scriptQueue	= new ArrayDeque<String>();
@@ -30,7 +30,7 @@ public class PromptInterface implements UserInterface	{
 
 	private static HashMap<String, Integer> keywords
 		= new HashMap<String, Integer>();
-	private HashMap<String, CommandInterface> commands
+	private static HashMap<String, CommandInterface> commands
 		= new HashMap<String, CommandInterface>();
 
 	static	{
@@ -42,10 +42,6 @@ public class PromptInterface implements UserInterface	{
 		keywords.put("start", Integer.valueOf(BoxFlag.BOX_START.toInt()));
 		keywords.put("end", Integer.valueOf(BoxFlag.BOX_END.toInt()));
 		keywords.put("marked", Integer.valueOf(BoxFlag.BOX_MARKED.toInt()));
-	}
-	
-	/** Constructs a new PromptInterface. */
-	public PromptInterface()	{
 		commandList.add(new UI_Quit(this));
 		commandList.add(new UI_LoadScript(this));
 		commandList.add(new UI_DisplayScript(this));
@@ -131,10 +127,17 @@ public class PromptInterface implements UserInterface	{
 		commands.put("area",		commandList.get(34));
 		commands.put("size",		commandList.get(34));
 	}
+	
+	/** Constructs a new PromptInterface. */
+	public PromptInterface()	{
+	}
 
-
+	/** Runs the interface.
+	  * In a PromptInterface, this loops until the user quits.
+	  * In this loop, the interface empty its command queues, then
+	  * asks the user to feed it with a new one. */
 	public void run(String[] args)	{
-		while(!hasQuitted())	{
+		while(!quitValue)	{
 			while(executeCommand());
 			getOutStream().print(">>> ");
 			offer(scanner.nextLine());
@@ -142,6 +145,11 @@ public class PromptInterface implements UserInterface	{
 		}
 	}
 
+	/** Executes next command.
+	  * The command must have been pushed to a queue before
+	  * calling this method, hence a previous call to offer or
+	  * offerScript is required.
+	  * @return true if a command was found, false otherwise. */
 	public boolean 		executeCommand()	{
 		String cmdStr = new String();
 		if(!mainQueue.isEmpty())	{
@@ -198,6 +206,11 @@ public class PromptInterface implements UserInterface	{
 		return true;
 	}
 
+	/** Fetches a command given a string.
+	  * @param str command name to search for.
+	  * @return the command corresponding.
+	  * @throws UnknownCommandException if the name did not match
+	  * any command name defined by the interface. */
 	public CommandInterface	fetchCommand(String str)
 		throws UnknownCommandException	{
 
@@ -208,14 +221,25 @@ public class PromptInterface implements UserInterface	{
 		return cmd;
 	}
 
+	/** Returns the list of commands linked to the interface.
+	  * @return the list of commands. */
 	public ArrayList<CommandInterface> getCommandList()	{
 		return commandList;
 	}
 
+	/** Indicates whether a string matches a command.
+	  * @param cmd command name to check.
+	  * @return true if cmd matches a command, false otherwise. */
 	public boolean isCommand(String cmd)	{
 		return commands.get(cmd) != null;
 	}
 
+	/** Returns the integer corresponding to a key word of the
+	  * interface.
+	  * @param key keyword to search for.
+	  * @return the integer corresponding.
+	  * @throws UnexpectedKeyWordException if the keyword is not
+	  * defined by the interface. */
 	public int keyWord(String key)
 		throws UnexpectedKeyWordException	{
 
@@ -226,17 +250,34 @@ public class PromptInterface implements UserInterface	{
 		return ret.intValue();
 	}
 
+	/** Pushes a command to the main queue (commands entered by
+	  * the user directly. It does not check whether the command
+	  * can be executed.
+	  * @param cmd the command to push. */
 	public void offer(String cmd)	{
 		mainQueue.offer(cmd);
 	}
 
+	/** Pushes a command to the script queue (commands found in a
+	  * script. It does not check whether the command
+	  * can be executed.
+	  * @param cmd the command to push. */
 	public void offerScript(String cmd)	{
 		scriptQueue.offer(cmd);
 	}
 
+	/** Initializes a variable.
+	  * @param variable label of the new variable.
+	  * @param value value of the new variable. */
 	public void setVariable(String variable, String value)	{
 		vars.put(variable, value);
 	}
+
+	/** Fetches a variable.
+	  * @param variable label of the variable to search for.
+	  * @return the value of the variable.
+	  * @throws UninitializedVariableException if the variable was
+	  * never set via a call to setVariable. */
 	public String fetchVariable(String variable)	
 		throws UninitializedVariableException	{
 		String value = vars.get(variable);
@@ -246,24 +287,48 @@ public class PromptInterface implements UserInterface	{
 			return value;
 		}
 	}
+
+	/** Returns a list of current variables associated with their
+	  * values.
+	  * @return a HashMap with a list of the variables. */
 	public HashMap<String, String> getVariables()	{
 		return vars;
 	}
 
+	/** Indicates the interface the user quits.
+	  * The interface may not effectively quit on call to this
+	  * method. */
 	public void quit()		{ quitValue = true; }
-	public boolean hasQuitted()	{ return quitValue; }
 
+	/** Indicates the interface to record next commands from
+	  * direct user input. 
+	  * The previous record is deleted on call to this method. */
 	public void startRecording()	{ 
 		recordQueue.clear();
 		recordingScript = true; 
 	}
+
+	/** Indicates the interface to stop recording. */
 	public void stopRecording()	{ recordingScript = false; }
+
+	/** Returns the last record.
+	  * @return a queue containing the record. */
 	public Queue<String> getRecord()	{ return recordQueue; }
 
+	/** Indicates the maze has been modified to the interface. */
 	public void modify()		{ modified = true; }
+
+	/** Indicates the maze has been saved to the interface. */
 	public void save()		{ modified = false; }
+
+	/** Indicated whether the maze has unsaved modifications.
+	  * @return true if the maze was modified since last save, 
+	  * false otherwise. */
 	public boolean wasModified()	{ return modified; }
 
+	/** Returns the current maze.
+	  * @return the current maze.
+	  * @throws NoMazeOpenedException if no maze is opened. */
 	public InterfaceableMaze 	getMaze()	
 		throws NoMazeOpenedException	{ 
 		if(maze.isOpened())
@@ -271,6 +336,12 @@ public class PromptInterface implements UserInterface	{
 		else
 			throw new NoMazeOpenedException();
 	}
+
+	/** Returns the current maze assuming the calling method will
+	  * not attempt to modify with an access method.
+	  * @return the current maze.
+	  * @throws NullMazeException if anything kept the maze to be
+	  * built with default constructor. */
 	public InterfaceableMaze	getMazeSafe()
 		throws NullMazeException	{
 		if(maze != null)
@@ -278,10 +349,25 @@ public class PromptInterface implements UserInterface	{
 		else
 			throw new NullMazeException();
 	}
+
+	/** Returns Pi function used in Dijkstra algorithm.
+	  * @return Pi function. */
 	public Pi			getPi()		{ return pi; }
+	
+	/** Returns Previous function used in Dijkstra algorithm.
+	  * @return Previous function. */
 	public Previous		getPrevious()	{ return previous; }
 
+	/** Returns the default stream used by the interface as the
+	  * output.
+	  * @return the output stream of the interface. */
 	public PrintStream	getOutStream()		{ return out; }
+
+	/** Writes in the output.
+	  * @param str string to be written. */
 	public void		print(String str)	{ out.print(str); }
+	
+	/** Writes in the output and adds a new line character.
+	  * @param str string to be written. */
 	public void		println(String str)	{ out.println(str); }
 }

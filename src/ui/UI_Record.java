@@ -3,6 +3,7 @@ package ui;
 import java.util.*;
 import java.io.*;
 
+/** Record requests the interface to start a record. */
 public class UI_Record implements CommandInterface	{
 
 	private final PromptInterface ui;
