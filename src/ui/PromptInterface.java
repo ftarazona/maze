@@ -176,7 +176,6 @@ public class PromptInterface implements UserInterface	{
 
 	/** Set the focus on the window */
 	public void focusWindow()	{
-		window.toFront();
 	}
 
 /* ********************************************************************* */
