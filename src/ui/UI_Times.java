@@ -29,6 +29,7 @@ public class UI_Times implements CommandInterface	{
 			min = Integer.parseInt(args[2]);
 			max = Integer.parseInt(args[3]);
 			for(int i = min; i < max; i++)	{
+				value = Integer.toString(i);
 				String[] t = Arrays.copyOfRange(args, 4, args.length);
 				String cmd = new String();
 				for(int j = 0; j < t.length; j++)	{

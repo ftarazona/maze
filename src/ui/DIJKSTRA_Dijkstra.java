@@ -34,7 +34,10 @@ public class DIJKSTRA_Dijkstra implements CommandInterface	{
 	/** @throws NoRootException if the maze has no root. */
 	public void run(String[] args)	
 		throws UIException	{
-		
+
+		ui.getPi().clear();
+		ui.getPrevious().clear();
+
 		Vertex root = ui.getMaze().getRoot();
 		if(root == null)	{
 			throw new NoRootException();

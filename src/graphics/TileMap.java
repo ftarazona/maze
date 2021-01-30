@@ -85,8 +85,10 @@ public class TileMap extends JPanel	{
 	public static void drawMaze(InterfaceableMaze maze)	
 		throws IOException	{
 		JFrame frame = new JFrame();
+		frame.setTitle("My amazing Maze!");
+		frame.setLayout(new BorderLayout());
 		TileMap map = new TileMap(maze);
-		frame.setContentPane(map);
+		frame.add(BorderLayout.CENTER, new JScrollPane(map));
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.pack();
 		frame.setVisible(true);
