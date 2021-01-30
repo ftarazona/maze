@@ -1,6 +1,6 @@
 package ui;
 
-import java.util.Queue;
+import java.util.Stack;
 import java.util.Scanner;
 import java.util.HashMap;
 
@@ -37,6 +37,7 @@ public class UI_LoadScript implements CommandInterface	{
 
 		int i = 2;
 
+		Stack<String> temp = new Stack<String>();
 		FileInputStream file = null;
 		Scanner scanner = null;
 
@@ -64,8 +65,12 @@ public class UI_LoadScript implements CommandInterface	{
 					}
 					cmd = cmd.concat(cargs[j] + " ");
 				}
-					ui.offerScript(cmd);
+					temp.push(cmd);
 				}
+			}
+
+			while(!temp.isEmpty())	{
+				ui.offerScript(temp.pop());
 			}
 		} catch (IndexOutOfBoundsException e)	{
 			throw new IncorrectUsageException();

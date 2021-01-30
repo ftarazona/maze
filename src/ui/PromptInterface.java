@@ -30,7 +30,7 @@ public class PromptInterface implements UserInterface	{
 	//every command in iteration, then main, then script.
 	private Queue<String> iterationQueue	= new ArrayDeque<String>();
 	private Queue<String> mainQueue		= new ArrayDeque<String>();
-	private Queue<String> scriptQueue	= new ArrayDeque<String>();
+	private Stack<String> scriptStack	= new Stack<String>();
 
 	//These collections are used to record previous executed commands
 	private Queue<String> recordQueue	= new ArrayDeque<String>();
@@ -214,8 +214,8 @@ public class PromptInterface implements UserInterface	{
 			cmdStr = iterationQueue.poll();
 		} else if(!mainQueue.isEmpty())	{
 			cmdStr = mainQueue.poll();
-		} else if(!scriptQueue.isEmpty())	{
-			cmdStr = scriptQueue.poll();
+		} else if(!scriptStack.isEmpty())	{
+			cmdStr = scriptStack.pop();
 		} else	{
 			return false;
 		}
@@ -276,7 +276,7 @@ public class PromptInterface implements UserInterface	{
 	  * can be executed.
 	  * @param cmd the command to push. */
 	public void offerScript(String cmd)	{
-		scriptQueue.offer(cmd);
+		scriptStack.push(cmd);
 	}
 
 	/** Pushes a command to the iteration queue (commands entered by
