@@ -8,6 +8,7 @@ import javax.swing.event.*;
 import ui.*;
 import maze.*;
 
+/** Frame running in parallel of the prompt interface */
 public class DrawFrame extends JFrame	{
 
 	private final PromptInterface ui;

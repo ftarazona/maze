@@ -9,6 +9,7 @@ import maze.InterfaceableMaze;
 import maze.MazeException;
 import maze.BoxFlag;
 
+/** Panel for drawing maze. */
 public class TileMap extends JPanel	{
 	
 	private final static Color START_COLOR	= new Color(49, 200, 214, 130);
@@ -80,18 +81,5 @@ public class TileMap extends JPanel	{
 
 			}
 		}
-	}
-
-	public static void drawMaze(InterfaceableMaze maze)	
-		throws IOException	{
-		JFrame frame = new JFrame();
-		frame.setTitle("My amazing Maze!");
-		frame.setLayout(new BorderLayout());
-		TileMap map = new TileMap(maze);
-		frame.setMinimumSize(new Dimension(200, 200));
-		frame.add(BorderLayout.CENTER, new JScrollPane(map));
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.pack();
-		frame.setVisible(true);
 	}
 }
