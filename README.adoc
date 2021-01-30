@@ -33,6 +33,13 @@ Sample classes can be found for implementing new objects with customized behavio
 * *Box* : for linking a box, the only thing to do is to add an entry in the static method `newBox` in abstract class `Box`
 * *CommandInterface* : for linking a command to the prompt interface, an entry has to be added in the `constructor` of class `PromptInterface`
 
+== Compilation
+This project was not made in Eclipse, however you will find, at the root of the repository, a Makefile. To compile, please follow the steps :
+
+. `make clean` to remove every .class file and force `make` to recompile
+. `make` to compile
+. Launch the app : `java -jar app.jar`
+
 == Getting started with the PromptInterface
 It is now time to explain how to use the _PromptInterface_.
 
@@ -156,10 +163,36 @@ I thought some scripts might prove useful to get started. They can be found in t
 * _.mzs <file> <xRoot> <yRoot> <xEnd> <yEnd>_ opens the maze file and traces path from the given root to the given end.
 * _.mzs <xRoot> <yRoot> <xEnd> <yEnd>_ traces path from the given root to the given end.
 
-== Compatibility Mode
+=== Compatibility Mode
 The project gave a format of file which I decided to change regarding my implementation.
 My format is not easily editable manually, so I made a compatibility mode which old-formatted mazes to be opened. 
 To use it, simply add `compatibility` to the command `open` or `save`.
 
 Note that using `write` in compatibility mode can result in a loss of information. First you will lose every MARKED flag when saving. 
 Second, any box type other than Wall or Empty will not be saved and will appear as null boxes.
+
+=== Example
+Let's say we have maze saved in an old-formatted file, named maze.map in maps/ . This file indicates the position of root and end.
+Once the interface launched, we can load the script project_assess.mzs with arguments maps/maze.map and maps/maze_solved.map :
+`script scripts/project_assess.mzs maps/maze.map maps/maze_solved.map`
+
+This script uses the compatibility mode to read and write the maze, so that you can run tests more easily.
+
+=== Need help ?
+In case you have questions about the interface or want to report a bug, you can send a mail to 
+mailto:florian.tarazona@telecom-paris.fr[Florian Tarazona].
+
+== Features to add
+
+Here is a list of features that could be implemented yet :
+
+* Run scripts when launching `app.jar` via the program arguments
+* Add z coordinate (we can use HashMap instead of matrix to allow several boxes on same (x, y), such as bridges)
+* For the moment, having setters for coordinates in Box is used by maze when adding columns and rows, but it breaks encapsulation in some
+ way. It shall be removed.
+* Adding tests for scripts in the interface would allow making real mini-programs.
+* As integer values in the current format are limited to 254, it is not possible to make big maps. It would possible to consider agglomerate
+ chunks within an object Map which would have the same interface as Maze.
+* Create a graphical interface with graphical input.
+* Just like in a game we could imagine some boxes could be triggered, hence modify their own behaviour, depending on the position of other
+ boxes.

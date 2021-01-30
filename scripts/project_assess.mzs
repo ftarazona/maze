@@ -1,0 +1,6 @@
+$file_to_open;
+$file_to_save;
+open $file_to_open compatibility
+dijkstra tracepath
+open $file_to_save compatibility
+
