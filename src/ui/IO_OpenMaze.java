@@ -57,6 +57,9 @@ public class IO_OpenMaze implements CommandInterface	{
 				case 'D': args[0] = EmptyBox.ID;
 					  args[4] = BoxFlag.BOX_START.toInt();
 					  break;
+				case 'X': args[0] = EmptyBox.ID;
+					  args[4] = BoxFlag.BOX_MARKED.toInt();
+					  break;
 				default:
 					  break;
 			}

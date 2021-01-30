@@ -38,10 +38,13 @@ public class IO_SaveMaze implements CommandInterface	{
 					Box box = (Box)maze.getBox(x, y);
 					boolean root = box.hasFlag(BoxFlag.BOX_START);
 					boolean end = box.hasFlag(BoxFlag.BOX_END);
+					boolean marked = box.hasFlag(BoxFlag.BOX_MARKED);
 					if (root)	{
 						buf.write('D');
 					} else if(end)	{
 						buf.write('A');
+					} else if(marked)	{
+						buf.write('X');
 					} else	{
 						buf.write(box.compatibilityID());
 					}

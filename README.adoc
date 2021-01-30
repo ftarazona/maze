@@ -196,3 +196,4 @@ Here is a list of features that could be implemented yet :
 * Create a graphical interface with graphical input.
 * Just like in a game we could imagine some boxes could be triggered, hence modify their own behaviour, depending on the position of other
  boxes.
+* Manage better exceptions, they can be very unclear currently
