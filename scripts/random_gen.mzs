@@ -1,0 +1,4 @@
+$w;
+$h;
+new $h $w wall
+times x 0 $h times y 0 $w addbox random 0 $w random 0 $h empty

@@ -6,6 +6,3 @@
 
 *.class
 *.jar
-
-maps/*
-scripts/*

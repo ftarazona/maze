@@ -1,0 +1,13 @@
+$openfile;
+$savefile;
+$xroot;
+$yroot;
+$xend;
+$yend;
+open $openfile
+setroot $xroot $yroot
+addflag $xend $yend end
+clear marked
+dijkstra
+tracepath
+save $savefile

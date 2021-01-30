@@ -1,0 +1,11 @@
+$file;
+$xroot;
+$yroot;
+$xend;
+$yend;
+open $file
+setroot $xroot $yroot
+addflag $xend $yend end
+clear marked
+dijkstra
+tracepath
