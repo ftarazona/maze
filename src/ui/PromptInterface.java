@@ -84,6 +84,7 @@ public class PromptInterface implements UserInterface	{
 		commandList.add(new EDIT_Clear(this));
 		commandList.add(new UI_ListVariables(this));
 		commandList.add(new INFO_Area(this));
+		commandList.add(new UI_Times(this));
 
 		commands.put("quit", 		commandList.get(0));
 		commands.put("exit", 		commandList.get(0));
@@ -133,6 +134,7 @@ public class PromptInterface implements UserInterface	{
 		commands.put("variables",	commandList.get(33));
 		commands.put("area",		commandList.get(34));
 		commands.put("size",		commandList.get(34));
+		commands.put("times",		commandList.get(35));
 	}
 
 	/** Runs the interface.
@@ -174,17 +176,17 @@ public class PromptInterface implements UserInterface	{
 
 		try	{
 			for(int i = 0; i < args.size(); i++)	{
-				if(args.get(i).matches("\\$[a-zA-Z]*"))	{
+				if(args.get(i).matches("\\$[a-zA-Z]*") && !args.get(0).equals("times"))	{
 					String value = fetchVariable(args.get(i).substring(1));
 					args.remove(i);
 					args.add(i, value);
 				}
 
-				if(args.get(i).equals("random"))	{
+				if(args.get(i).equals("random") && !args.get(0).equals("times"))	{
 					try	{
 						int min = Integer.parseInt(args.get(i+1));
 						int max = Integer.parseInt(args.get(i+2));
-						int r = (int)(Math.random() * (max-min+1) + min);
+						int r = (int)(Math.random() * (max-min) + min);
 						args.remove(i+2);
 						args.remove(i+1);
 						args.remove(i);
