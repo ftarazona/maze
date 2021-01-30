@@ -1,5 +1,6 @@
 package ui;
 
+/** Signals an attempt to access an uninitialized variable. */
 public class UninitializedVariableException extends UIException	{
 
 	public static final long serialVersionUID = 202101282153L;

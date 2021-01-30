@@ -2,6 +2,7 @@ package ui;
 
 import java.util.*;
 
+/** Declare initiliazes a new variable. */
 public class UI_DeclareVariable implements CommandInterface	{
 
 	private final PromptInterface ui;

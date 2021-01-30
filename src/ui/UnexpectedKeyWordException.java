@@ -1,5 +1,6 @@
 package ui;
 
+/** Signals an undefined keyword was encountered. */
 public class UnexpectedKeyWordException extends UIException	{
 
 	public static final long serialVersionUID = 202101280306L;

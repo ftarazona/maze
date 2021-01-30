@@ -5,6 +5,7 @@ import dijkstra.*;
 import java.util.*;
 import java.io.*;
 
+/** This interface describes a user interface. */
 public interface UserInterface	{
 
 	/** Runs the interface.

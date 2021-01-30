@@ -3,6 +3,7 @@ package ui;
 import java.util.*;
 import java.io.*;
 
+/** DisplayScript shows the content of a script, but does not load it. */
 public class UI_DisplayScript implements CommandInterface	{
 
 	private final PromptInterface ui;

@@ -3,6 +3,7 @@ package ui;
 import java.util.*;
 import java.io.*;
 
+/** Close closes the current maze. */
 public class IO_CloseMaze implements CommandInterface	{
 
 	private final PromptInterface ui;

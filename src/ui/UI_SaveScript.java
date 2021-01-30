@@ -3,6 +3,7 @@ package ui;
 import java.util.*;
 import java.io.*;
 
+/** SaveScript stops the current recording and save it in a script. */
 public class UI_SaveScript implements CommandInterface	{
 
 	private final PromptInterface ui;
