@@ -3,4 +3,89 @@
 :sectnum!:
 == Introduction
 This repository contains source code and compiling tools for the first year JAVA project of making a maze. 
-The goal of the project is to get use to JAVA
+The goal of the project is to get use to JAVA programming by implementing the Dijkstra algorithm.
+
+== What I achieved
+After getting done with the project requirements, I wanted to go further. For example I tried to think to long term developping :
+what happens if I want to add a box with a new behavior ? Or if I want to implement a new user interface ?
+In order to allow such modifications, I modified the format of the maps, considered START and END as flags instead of boxes.
+I was not able to finish the implementation of a third dimension.
+The interface took me some time. Unfortunately I had not enough time to implement a Graphcial Interface.
+The current work on it can be found in the graphics branch, the interface is drawn but I had issues with event handling. I decided to abandon this feature for now.
+However the prompt interface comes with a lot a features, such as scripting, variable recorder, iteration loops etc. which I will introduce later.
+
+== Architecture
+The global architecture of the project has undergone many changes. The red line was to come up with an easily modifiable project.
+It is divided in 4 modules :
+* **dijkstra** contains all necessary interfaces and classes for implementing the Dijkstra algorithm
+* **maze** implements the graph and proposes an interface for editing the maze via a user interface.
+* **ui** provides a user interface with many commands
+* **graphics** provides only a TileMap to draw the maze, for the moment.
+We'll see how one can modify the project properly.
+
+== How to bring new features
+Developpers can use the samples provided for adding box types to the maze or commands to the interface.
+* When adding a box, it is required to add an entry in the static method _newBox_ of the class _Box_. In order to get access to it through the interface, a new keyword must be attached to the ID of the box in _PromptInterface_.
+* When adding a command, a new entry has to be created in the constructor of _PromptInterface_.
+
+== Getting started with the PromptInterface
+It is now time to explain how to use the _PromptInterface_.
+When entering the interface you will see a ">>>" appear. This means the interface has no more command to execute such as commands given by a script, and it is waiting for a direct user input.
+
+=== Syntax of a command
+The syntax is quite simple : <command name> (arguments).
+
+===== Get help about a command
+help will show a list of commands and usage <command name> will show how to use a command.
+
+=== Variables
+The interface can record variables. A variable consists of a label and a value, both are String objects.
+To define a variable, you can use the var command : "var label = value"
+To use a variable in a command, you write $label.
+
+===== Special variables
+Some variables can be useful, such maze dimensions. In order to make it easier, not having to demand for it each you want it, the interface defines several special variables.
+These are updated each the maze is modified and can not be overriden.
+
+=== Random values
+The interface allows you to randomize integer arguments. In order to use this feature, simply replace an integer argument by "random <min> <max>
+
+=== Iterations
+The times command allows you iterate a command : "times label <first value> <last value> <command>"
+The label is increased from first value to last (excluded) and can be used as an integer value in the command.
+Be careful however, this feature in currently experimental. times
+ defines its own parser, meaning that variables and random features might have weird behaviors. To avoid it, please do not use a label reserved for a special variable nor use a randomized value for first or last.
+
+=== Scripts
+One of the main feature is scripting. It allows one to execute several commands very without having to enter them manually.
+
+==== Show a script
+The command 'showscript <script name>' will display the given script.
+There are two sections, one detailing the variables to provide when loading the script, and the second the actual commands.
+
+==== Load a script
+To load a script, you must enter "script <script name> (arguments)".
+The arguments are the ones showed by showscript, in that order.
+When a script is loaded, it is parsed and all the script variables are replaced.
+If some undefined variables are encountered, the loader will assume these are already defined in the interface. For example you can use height, width or area. You can even override them locally in the script.
+When loading a script, the commands are placed in the script queue, meaning that when times is used in script, it will fill the iteration queue, which has a higher priority, so as to get a consistent flow. Believe me, an inconsistent flow can result in very undefined behviors...
+
+==== Write your own scripts
+The syntax of scripts is pretty much the same as the interface syntax.
+You can however use variables that are to define by the user, by using the syntax '$label;'. This will require the user to provide the value of label when calling the script. Such variables remain defined in the interface even after the script was executed.
+
+==== Record scripts
+You can also record a list of commands in a script. For starting to record, simply use the 'record' command. When finished, use 'savescript <script name>' to stop recording and save the commands in a script.
+You might want to avoid some commands to be recorded. For instance, you might to display the maze while recording, for checking purpose, so it is not desired in the final script. You can do so by starting your command by '*', for example '* display'.
+Note that the parser is called before recording, so you can not use variables in recorded scripts except for iterations first/last.
+
+==== Some useful scripts
+I thought some scripts might prove useful to get started. They can be found in the scripts/
+* _random_gen.mzs <width> <height>_ creates a new random maze made of walls and empty boxes.
+* _dijkstra.mzs <file> <xRoot> <yRoot> <xEnd> <yEnd>_ opens the maze file and traces path from the given root to the given end.
+* _trace.mzs <xRoot> <yRoot> <xEnd> <yEnd>_ traces path from the given root to the given end.
+
+== Compatibility Mode
+The project gave a format of file which I decided to change regarding my implementation.
+My format is not easily editable manually, so I made a compatibility mode which old-formatted mazes to be opened. To use it, simply add "compatibility" to the command 'open' or 'write'.
+Note that using 'write' in compatibility mode can result in a loss of information. First you will lose every MARKED flag when saving. Second, any box type other than Wall or Empty will not be saved and will appear as null boxes.
