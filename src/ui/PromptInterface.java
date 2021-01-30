@@ -80,6 +80,7 @@ public class PromptInterface implements UserInterface	{
 		commandList.add(new EDIT_RemRoot(this));
 		commandList.add(new EDIT_Clear(this));
 		commandList.add(new UI_ListVariables(this));
+		commandList.add(new INFO_Area(this));
 
 		commands.put("quit", 		commandList.get(0));
 		commands.put("exit", 		commandList.get(0));
@@ -127,6 +128,8 @@ public class PromptInterface implements UserInterface	{
 		commands.put("remroot",		commandList.get(31));
 		commands.put("clear",		commandList.get(32));
 		commands.put("variables",	commandList.get(33));
+		commands.put("area",		commandList.get(34));
+		commands.put("size",		commandList.get(34));
 	}
 
 

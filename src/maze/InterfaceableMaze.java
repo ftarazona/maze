@@ -64,7 +64,7 @@ public interface InterfaceableMaze extends Graph	{
 
 	/** Returns the number of vertices in the maze.
 	 *  @return The number of vertices in the maze. */
-	public int size();
+	public int getArea();
 	
 	/** Returns the height of the maze.
 	 *  @return The height of the maze. */

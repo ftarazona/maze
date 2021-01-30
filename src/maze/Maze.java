@@ -225,17 +225,10 @@ public class Maze
 /* ********************** Dimension Getters *********************** */
 /* **************************************************************** */
 
-	public int size()	{
-		return area;
-	}
-
-	public int getHeight()	{
-		return height;
-	}
-
-	public int getWidth()	{
-		return width;
-	}
+	public int size()	{ return area; }
+	public int getArea()	{ return area; }
+	public int getHeight()	{ return height; }
+	public int getWidth()	{ return width; }
 
 
 /* **************************************************************** */
@@ -533,11 +526,11 @@ public class Maze
 			}
 		}
 		for(int j = 0; j < width; j++)	{
-			if(boxes[pos][j] == null)	{
+			if(boxes[pos][j] != null)	{
 				area--;
-			}
-			if(boxes[pos][j].hasFlag(BoxFlag.BOX_START))	{
-				hasRoot = false;
+				if(boxes[pos][j].hasFlag(BoxFlag.BOX_START))	{
+					hasRoot = false;
+				}
 			}
 		}
 		for(int i = pos; i < height - 1; i++)	{
@@ -605,11 +598,11 @@ public class Maze
 			}
 		}
 		for(int i = 0; i < height; i++)	{
-			if(boxes[i][pos] == null)	{
+			if(boxes[i][pos] != null)	{
 				area--;
-			}
-			if(boxes[i][pos].hasFlag(BoxFlag.BOX_START))	{
-				hasRoot = false;
+				if(boxes[i][pos].hasFlag(BoxFlag.BOX_START))	{
+					hasRoot = false;
+				}
 			}
 		}
 		for(int j = pos; j < width - 1; j++)	{

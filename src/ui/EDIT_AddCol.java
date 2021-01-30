@@ -34,7 +34,7 @@ public class EDIT_AddCol implements CommandInterface	{
 		throws UIException, MazeException	{
 
 		int pos = 0;
-		int[] boxArgs = new int[args.length + 2];
+		int[] boxArgs = new int[args.length + 5];
 
 		try	{
 			pos = Integer.parseInt(args[1]);
