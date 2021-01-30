@@ -22,14 +22,16 @@ the implementation of Maze class.
 ==== Global architecture
 The global architecture has undergone many changes since the creation of the project. The red line was to come up with with an easily
 modifiable implementation. It is divided in 4 packages :
+
 * *dijkstra* contains all necessary interfaces and classes for implementing the Dijkstra algorithm
 * *maze* implements the graph via the class Maze and proposes an interface for creating a user interface
 * *ui* provides a prompt interface with window in parallel drawing the maze
 * *graphics* provides the classes for drawing
 
 Sample classes can be found for implementing new objects with customized behaviours. Once coded, it has to be linked :
-* a *Box* : for linking a box, the only thing to do is to add an entry in the static method `newBox` in abstract class `Box`
-* a *CommandInterface* : for linking a command to the prompt interface, an entry has to be added in the `constructor` of class `PromptInterface`
+
+* *Box* : for linking a box, the only thing to do is to add an entry in the static method `newBox` in abstract class `Box`
+* *CommandInterface* : for linking a command to the prompt interface, an entry has to be added in the `constructor` of class `PromptInterface`
 
 == Getting started with the PromptInterface
 It is now time to explain how to use the _PromptInterface_.
