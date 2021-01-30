@@ -51,7 +51,7 @@ public class EDIT_AddCol implements CommandInterface	{
 				boxArgs[i+2] = Integer.parseInt(args[i]);
 			}
 		} catch (NumberFormatException e)	{
-			throw new InvalidArgumentsException("Box options are expected to be integers");
+			throw new InvalidArgumentsException("Position and box options are expected to be integers");
 		} catch (IndexOutOfBoundsException e)	{
 			throw new IncorrectUsageException();
 		}

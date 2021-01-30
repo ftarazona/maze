@@ -177,7 +177,6 @@ public class PromptInterface implements UserInterface	{
 	/** Set the focus on the window */
 	public void focusWindow()	{
 		window.toFront();
-		window.requestFocus();
 	}
 
 /* ********************************************************************* */
@@ -217,7 +216,6 @@ public class PromptInterface implements UserInterface	{
 			cmdStr = mainQueue.poll();
 		} else if(!scriptQueue.isEmpty())	{
 			cmdStr = scriptQueue.poll();
-			history.add(cmdStr);
 		} else	{
 			return false;
 		}
@@ -403,7 +401,10 @@ public class PromptInterface implements UserInterface	{
 				args.remove(i);
 				args.add(i, fetchVariable(w.substring(1)));
 			}
+		}
 
+		for(int i = 0; i < args.size(); i++)	{
+			String w = args.get(i);
 			if(w.equals("random"))	{
 				try	{
 				//The next arguments must be the min/max
